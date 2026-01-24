@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import { CollateralCoverageChart } from "@/components/hr/CollateralCoverageChart";
 
 // Mock data
 const mockCompany = {
@@ -33,6 +34,7 @@ const mockCompany = {
   rnc: "1-23-45678-9",
   totalEmployees: 45,
   activeUsers: 32,
+  totalCollateral: 2500000, // Total Employee Severance Held
 };
 
 const mockPendingRequests = [
@@ -44,6 +46,8 @@ const mockPendingRequests = [
 const mockActiveLoans = [
   { id: 1, employee: "Carlos Santos", cedula: "004-1111111-1", amount: 10000, totalDebt: 10700, disbursedDate: "2024-01-05", status: "active" },
   { id: 2, employee: "Laura Mejía", cedula: "005-2222222-2", amount: 5000, totalDebt: 5350, disbursedDate: "2024-01-03", status: "active" },
+  { id: 3, employee: "Pedro Núñez", cedula: "006-3333333-3", amount: 20000, totalDebt: 21400, disbursedDate: "2024-01-01", status: "active" },
+  { id: 4, employee: "Rosa Martínez", cedula: "007-4444444-4", amount: 8000, totalDebt: 8560, disbursedDate: "2024-01-02", status: "active" },
 ];
 
 export default function HRDashboard() {
@@ -72,6 +76,12 @@ export default function HRDashboard() {
   const filteredRequests = mockPendingRequests.filter(req =>
     req.employee.toLowerCase().includes(searchTerm.toLowerCase()) ||
     req.cedula.includes(searchTerm)
+  );
+
+  // Calculate total active advances for collateral coverage
+  const totalActiveAdvances = useMemo(() => 
+    mockActiveLoans.reduce((sum, loan) => sum + loan.amount, 0),
+    []
   );
 
   const handleExportPayroll = () => {
@@ -156,11 +166,17 @@ export default function HRDashboard() {
           <StatCard
             icon={<Wallet className="w-5 h-5" />}
             label="Total Adelantado"
-            value={formatDOP(mockActiveLoans.reduce((sum, l) => sum + l.amount, 0))}
+            value={formatDOP(totalActiveAdvances)}
             sublabel="Este mes"
             color="bg-secondary"
           />
         </div>
+
+        {/* Collateral Coverage Chart - "Sleep Easy" Widget */}
+        <CollateralCoverageChart 
+          totalCollateral={mockCompany.totalCollateral}
+          totalActiveAdvances={totalActiveAdvances}
+        />
 
         {/* Pending Requests Section */}
         <section className="bg-background rounded-2xl shadow-soft overflow-hidden">
