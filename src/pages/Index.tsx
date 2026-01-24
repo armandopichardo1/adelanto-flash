@@ -5,6 +5,7 @@ import { HowItWorks } from "@/components/landing/HowItWorks";
 import { Stats } from "@/components/landing/Stats";
 import { CTA } from "@/components/landing/CTA";
 import { Footer } from "@/components/landing/Footer";
+import { LoanCalculator } from "@/components/landing/LoanCalculator";
 
 const Index = () => {
   return (
@@ -12,10 +13,17 @@ const Index = () => {
       <Header />
       <main className="pt-16 md:pt-20">
         <Hero />
+        <section id="como-funciona">
+          <HowItWorks />
+        </section>
         <Features />
-        <HowItWorks />
+        <section id="calculadora">
+          <LoanCalculator />
+        </section>
         <Stats />
-        <CTA />
+        <section id="empresas">
+          <CTA />
+        </section>
       </main>
       <Footer />
     </div>
