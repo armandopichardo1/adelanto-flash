@@ -12,7 +12,7 @@ import {
   Award,
   Zap,
   History,
-  User,
+  RefreshCw,
   LogOut,
   Home
 } from "lucide-react";
@@ -22,6 +22,10 @@ import {
   formatDOP, 
   getTenureLevel 
 } from "@/lib/loan-calculator";
+import { checkSmartRefill, calculateRefillDetails, type ActiveAdvance } from "@/lib/smart-refill";
+import { PatrimonioCard } from "@/components/employee/PatrimonioCard";
+import { DineroScoreGauge } from "@/components/employee/DineroScoreGauge";
+import { SavingsComparison } from "@/components/employee/SavingsComparison";
 import { toast } from "sonner";
 
 // Mock employee data
@@ -31,8 +35,18 @@ const mockEmployee = {
   monthlySalary: 45000,
   tenureYears: 2.5,
   riskMode: 'conservative' as const,
-  hasActiveLoans: false,
   preApproved: true,
+  repaidCycles: 3, // For Dinero Score
+};
+
+// Mock active advance for Smart Refill demo (set to null for no active advance)
+const mockActiveAdvance: ActiveAdvance | null = {
+  id: "adv-001",
+  amount: 5000,
+  fee: 350,
+  totalDebt: 5350,
+  disbursedDate: "2024-01-10",
+  status: 'active',
 };
 
 const tenureLevelConfig = {
@@ -71,9 +85,35 @@ export default function EmployeeDashboard() {
     riskMode: mockEmployee.riskMode,
   }), []);
 
-  const [requestedAmount, setRequestedAmount] = useState(Math.floor(loanLimit.maxLoanAmount / 2));
+  // Smart Refill logic
+  const smartRefill = useMemo(() => 
+    checkSmartRefill(mockActiveAdvance, loanLimit.maxLoanAmount), 
+    [loanLimit.maxLoanAmount]
+  );
+
+  // For Smart Refill: max is remaining available, min is 1000
+  const sliderMax = smartRefill.canRefill ? smartRefill.remainingAvailable : loanLimit.maxLoanAmount;
+  const sliderMin = 1000;
   
-  const loanDetails = useMemo(() => calculateLoanDetails(requestedAmount), [requestedAmount]);
+  const [requestedAmount, setRequestedAmount] = useState(
+    Math.floor(Math.min(sliderMax / 2, sliderMax))
+  );
+  
+  // Ensure requested amount doesn't exceed slider max
+  useEffect(() => {
+    if (requestedAmount > sliderMax) {
+      setRequestedAmount(sliderMax);
+    }
+  }, [sliderMax, requestedAmount]);
+
+  const loanDetails = useMemo(() => {
+    if (smartRefill.canRefill) {
+      // For refill, use incremental calculation
+      return calculateRefillDetails(requestedAmount);
+    }
+    return calculateLoanDetails(requestedAmount);
+  }, [requestedAmount, smartRefill.canRefill]);
+
   const tenureConfig = tenureLevelConfig[loanLimit.tenureLevel];
 
   return (
@@ -142,21 +182,49 @@ export default function EmployeeDashboard() {
           </div>
         </div>
 
+        {/* Patrimonio Disponible Card (Anti-Debt UI) */}
+        <PatrimonioCard 
+          collateralBase={loanLimit.collateralBase}
+          availableToday={loanLimit.maxLoanAmount}
+          tenureYears={mockEmployee.tenureYears}
+        />
+
+        {/* Dinero Score Gauge */}
+        <DineroScoreGauge 
+          tenureYears={mockEmployee.tenureYears}
+          repaidCycles={mockEmployee.repaidCycles}
+        />
+
         {/* Loan Request Card */}
         <div className="bg-background rounded-2xl p-6 shadow-soft">
           <div className="text-center mb-6">
-            <h3 className="text-lg font-semibold text-foreground mb-1">Solicitar Adelanto Flash</h3>
-            <p className="text-sm text-muted-foreground">Desliza para elegir tu monto</p>
+            <h3 className="text-lg font-semibold text-foreground mb-1">
+              {smartRefill.canRefill ? 'Recargar Adelanto' : 'Solicitar Adelanto Flash'}
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              {smartRefill.canRefill 
+                ? `Ya tienes ${formatDOP(smartRefill.currentlyUsed)} activo. Recarga hasta ${formatDOP(smartRefill.remainingAvailable)} más.`
+                : 'Desliza para elegir tu monto'
+              }
+            </p>
           </div>
 
           {/* Amount Display */}
-          <div className="text-center mb-8">
+          <div className="text-center mb-4">
             <p className="text-5xl font-bold text-primary mb-2 tabular-nums">
               {formatDOP(requestedAmount)}
             </p>
             <p className="text-muted-foreground">
-              Límite disponible: {formatDOP(loanLimit.maxLoanAmount)}
+              {smartRefill.canRefill 
+                ? `Recarga disponible: ${formatDOP(smartRefill.remainingAvailable)}`
+                : `Límite disponible: ${formatDOP(loanLimit.maxLoanAmount)}`
+              }
             </p>
+          </div>
+
+          {/* Savings Comparison Pill */}
+          <div className="flex justify-center mb-6">
+            <SavingsComparison requestedAmount={requestedAmount} />
           </div>
 
           {/* Slider */}
@@ -164,37 +232,65 @@ export default function EmployeeDashboard() {
             <Slider
               value={[requestedAmount]}
               onValueChange={([value]) => setRequestedAmount(value)}
-              min={1000}
-              max={loanLimit.maxLoanAmount}
+              min={sliderMin}
+              max={sliderMax}
               step={500}
               className="w-full"
             />
             <div className="flex justify-between mt-2 text-sm text-muted-foreground">
-              <span>{formatDOP(1000)}</span>
-              <span>{formatDOP(loanLimit.maxLoanAmount)}</span>
+              <span>{formatDOP(sliderMin)}</span>
+              <span>{formatDOP(sliderMax)}</span>
             </div>
           </div>
 
           {/* Fee Breakdown */}
           <div className="bg-muted/50 rounded-xl p-4 mb-6 space-y-3">
             <div className="flex justify-between items-center">
-              <span className="text-muted-foreground">Monto solicitado</span>
+              <span className="text-muted-foreground">
+                {smartRefill.canRefill ? 'Monto adicional' : 'Monto solicitado'}
+              </span>
               <span className="font-semibold text-foreground">{formatDOP(requestedAmount)}</span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-muted-foreground">Comisión de servicio (7%)</span>
-              <span className="font-semibold text-foreground">{formatDOP(loanDetails.fee)}</span>
+              <span className="font-semibold text-foreground">
+                {formatDOP('incrementalFee' in loanDetails 
+                  ? loanDetails.incrementalFee
+                  : loanDetails.fee
+                )}
+              </span>
             </div>
+            {smartRefill.canRefill && (
+              <div className="flex justify-between items-center text-xs text-muted-foreground">
+                <span>* Comisión solo sobre el monto adicional</span>
+              </div>
+            )}
             <div className="border-t border-border pt-3 flex justify-between items-center">
-              <span className="font-semibold text-foreground">Total a descontar</span>
-              <span className="font-bold text-xl text-foreground">{formatDOP(loanDetails.totalDebt)}</span>
+              <span className="font-semibold text-foreground">
+                {smartRefill.canRefill ? 'Total adicional a descontar' : 'Total a descontar'}
+              </span>
+              <span className="font-bold text-xl text-foreground">
+                {formatDOP('incrementalTotalDebt' in loanDetails 
+                  ? loanDetails.incrementalTotalDebt
+                  : loanDetails.totalDebt
+                )}
+              </span>
             </div>
           </div>
 
           {/* CTA Button */}
           <Button variant="flash" size="xl" className="w-full">
-            <Zap className="w-5 h-5" />
-            Solicitar Adelanto Flash
+            {smartRefill.canRefill ? (
+              <>
+                <RefreshCw className="w-5 h-5" />
+                Recargar Adelanto
+              </>
+            ) : (
+              <>
+                <Zap className="w-5 h-5" />
+                Solicitar Adelanto Flash
+              </>
+            )}
           </Button>
 
           <p className="text-xs text-muted-foreground text-center mt-4">
