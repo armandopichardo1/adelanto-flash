@@ -1,5 +1,5 @@
-import { useState, useMemo } from "react";
-import { Link } from "react-router-dom";
+import { useState, useMemo, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Progress } from "@/components/ui/progress";
@@ -12,7 +12,9 @@ import {
   Award,
   Zap,
   History,
-  User
+  User,
+  LogOut,
+  Home
 } from "lucide-react";
 import { 
   calculateLoanLimit, 
@@ -20,6 +22,7 @@ import {
   formatDOP, 
   getTenureLevel 
 } from "@/lib/loan-calculator";
+import { toast } from "sonner";
 
 // Mock employee data
 const mockEmployee = {
@@ -40,6 +43,28 @@ const tenureLevelConfig = {
 };
 
 export default function EmployeeDashboard() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const session = localStorage.getItem("dineroYaSession");
+    if (!session) {
+      toast.error("Por favor inicia sesión para continuar");
+      navigate("/login");
+      return;
+    }
+    const parsed = JSON.parse(session);
+    if (parsed.type !== "employee") {
+      toast.error("Acceso no autorizado");
+      navigate("/login");
+    }
+  }, [navigate]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("dineroYaSession");
+    toast.success("Sesión cerrada");
+    navigate("/");
+  };
+
   const loanLimit = useMemo(() => calculateLoanLimit({
     monthlySalary: mockEmployee.monthlySalary,
     tenureYears: mockEmployee.tenureYears,
@@ -66,9 +91,16 @@ export default function EmployeeDashboard() {
                 <p className="text-xs text-muted-foreground">{mockEmployee.company}</p>
               </div>
             </Link>
-            <button className="w-10 h-10 rounded-full bg-accent flex items-center justify-center">
-              <User className="w-5 h-5 text-accent-foreground" />
-            </button>
+            <div className="flex items-center gap-2">
+              <Button variant="ghost" size="icon" asChild>
+                <Link to="/">
+                  <Home className="w-5 h-5" />
+                </Link>
+              </Button>
+              <Button variant="ghost" size="icon" onClick={handleLogout}>
+                <LogOut className="w-5 h-5" />
+              </Button>
+            </div>
           </div>
         </div>
       </header>
