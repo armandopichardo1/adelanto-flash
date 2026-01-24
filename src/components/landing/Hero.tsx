@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import { ArrowRight, Shield, Zap, Clock } from "lucide-react";
 
 export function Hero() {
@@ -32,12 +33,14 @@ export function Hero() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-            <Button variant="hero" size="xl">
-              Solicitar Adelanto
-              <ArrowRight className="w-5 h-5" />
+            <Button variant="hero" size="xl" asChild>
+              <Link to="/employee">
+                Solicitar Adelanto
+                <ArrowRight className="w-5 h-5" />
+              </Link>
             </Button>
-            <Button variant="white" size="lg">
-              ¿Cómo funciona?
+            <Button variant="white" size="lg" asChild>
+              <a href="#como-funciona">¿Cómo funciona?</a>
             </Button>
           </div>
 
