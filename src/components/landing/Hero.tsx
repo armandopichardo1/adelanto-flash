@@ -34,7 +34,7 @@ export function Hero() {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16 animate-slide-up" style={{ animationDelay: '0.2s' }}>
             <Button variant="hero" size="xl" asChild>
-              <Link to="/employee">
+              <Link to="/login">
                 Solicitar Adelanto
                 <ArrowRight className="w-5 h-5" />
               </Link>

@@ -1,18 +1,19 @@
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Wallet,
   Settings,
   Building2,
-  Users,
   TrendingUp,
   AlertTriangle,
   CheckCircle2,
   Clock,
   DollarSign,
   BarChart3,
-  PieChart,
   Activity,
+  Home,
+  LogOut,
 } from "lucide-react";
 import { formatDOP, formatPercent } from "@/lib/loan-calculator";
 import {
@@ -34,10 +35,8 @@ import {
   ResponsiveContainer,
   BarChart,
   Bar,
-  PieChart as RechartsPie,
-  Pie,
-  Cell,
 } from "recharts";
+import { toast } from "sonner";
 
 // Mock KPI Data
 const kpiData = {
@@ -75,6 +74,27 @@ const pendingDisbursements = [
 const COLORS = ["hsl(145, 100%, 39%)", "hsl(232, 76%, 17%)", "hsl(38, 92%, 50%)", "hsl(0, 84%, 60%)"];
 
 export default function AdminDashboard() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const session = localStorage.getItem("dineroYaSession");
+    if (!session) {
+      navigate("/login");
+      return;
+    }
+    const parsed = JSON.parse(session);
+    if (parsed.type !== "admin") {
+      toast.error("Acceso no autorizado");
+      navigate("/login");
+    }
+  }, [navigate]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("dineroYaSession");
+    toast.success("Sesión cerrada");
+    navigate("/");
+  };
+
   return (
     <div className="min-h-screen bg-muted/30">
       {/* Header */}
@@ -82,18 +102,28 @@ export default function AdminDashboard() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
+              <Link to="/" className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
                 <Wallet className="w-5 h-5 text-primary-foreground" />
-              </div>
+              </Link>
               <div>
                 <h1 className="font-bold">Dinero Ya</h1>
                 <p className="text-xs text-secondary-foreground/70">Panel de Administración</p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <Button variant="ghost" size="sm" asChild className="text-secondary-foreground">
+                <Link to="/">
+                  <Home className="w-4 h-4 mr-2" />
+                  <span className="hidden sm:inline">Inicio</span>
+                </Link>
+              </Button>
               <Button variant="ghost" size="sm" className="text-secondary-foreground">
                 <Settings className="w-4 h-4 mr-2" />
-                Configuración
+                <span className="hidden sm:inline">Configuración</span>
+              </Button>
+              <Button variant="ghost" size="sm" onClick={handleLogout} className="text-secondary-foreground">
+                <LogOut className="w-4 h-4 mr-2" />
+                <span className="hidden sm:inline">Salir</span>
               </Button>
             </div>
           </div>

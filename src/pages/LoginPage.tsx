@@ -1,11 +1,18 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Wallet, ArrowLeft, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Wallet, ArrowLeft, Mail, Lock, Eye, EyeOff, Building2, User } from "lucide-react";
+import { toast } from "sonner";
+
+type LoginType = "employee" | "hr" | "admin";
 
 export default function LoginPage() {
+  const navigate = useNavigate();
+  const [loginType, setLoginType] = useState<LoginType>("employee");
+  const [companyCode, setCompanyCode] = useState("");
+  const [cedula, setCedula] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -14,8 +21,38 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    // TODO: Implement actual authentication
-    setTimeout(() => setIsLoading(false), 1000);
+
+    // Mock authentication - simulate login
+    setTimeout(() => {
+      if (loginType === "employee") {
+        // Store mock employee session
+        localStorage.setItem("dineroYaSession", JSON.stringify({
+          type: "employee",
+          companyCode,
+          cedula,
+          name: "María García",
+          company: "Tech Solutions SRL",
+        }));
+        toast.success("¡Bienvenido!");
+        navigate("/employee");
+      } else if (loginType === "hr") {
+        localStorage.setItem("dineroYaSession", JSON.stringify({
+          type: "hr",
+          email,
+          company: "Tech Solutions SRL",
+        }));
+        toast.success("¡Bienvenido al Panel de RRHH!");
+        navigate("/hr");
+      } else {
+        localStorage.setItem("dineroYaSession", JSON.stringify({
+          type: "admin",
+          email,
+        }));
+        toast.success("¡Bienvenido al Panel de Administración!");
+        navigate("/admin");
+      }
+      setIsLoading(false);
+    }, 1000);
   };
 
   return (
@@ -45,25 +82,112 @@ export default function LoginPage() {
             <p className="text-muted-foreground">Accede a tu cuenta para solicitar adelantos</p>
           </div>
 
+          {/* Login Type Tabs */}
+          <div className="bg-background rounded-2xl shadow-card p-2 mb-4">
+            <div className="grid grid-cols-3 gap-2">
+              <button
+                type="button"
+                onClick={() => setLoginType("employee")}
+                className={`py-3 px-4 rounded-xl text-sm font-medium transition-colors ${
+                  loginType === "employee"
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:bg-muted"
+                }`}
+              >
+                <User className="w-4 h-4 mx-auto mb-1" />
+                Empleado
+              </button>
+              <button
+                type="button"
+                onClick={() => setLoginType("hr")}
+                className={`py-3 px-4 rounded-xl text-sm font-medium transition-colors ${
+                  loginType === "hr"
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:bg-muted"
+                }`}
+              >
+                <Building2 className="w-4 h-4 mx-auto mb-1" />
+                RRHH
+              </button>
+              <button
+                type="button"
+                onClick={() => setLoginType("admin")}
+                className={`py-3 px-4 rounded-xl text-sm font-medium transition-colors ${
+                  loginType === "admin"
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:bg-muted"
+                }`}
+              >
+                <Wallet className="w-4 h-4 mx-auto mb-1" />
+                Admin
+              </button>
+            </div>
+          </div>
+
           {/* Login Form */}
           <div className="bg-background rounded-2xl shadow-card p-8">
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="email">Correo electrónico</Label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="tu@email.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10"
-                    required
-                  />
-                </div>
-              </div>
+              {loginType === "employee" ? (
+                <>
+                  {/* Company Code */}
+                  <div className="space-y-2">
+                    <Label htmlFor="companyCode">Código de Empresa</Label>
+                    <div className="relative">
+                      <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                      <Input
+                        id="companyCode"
+                        type="text"
+                        placeholder="Ej: TECH-001"
+                        value={companyCode}
+                        onChange={(e) => setCompanyCode(e.target.value.toUpperCase())}
+                        className="pl-10 uppercase"
+                        required
+                      />
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      Solicita el código a tu departamento de RRHH
+                    </p>
+                  </div>
 
+                  {/* Cedula */}
+                  <div className="space-y-2">
+                    <Label htmlFor="cedula">Cédula</Label>
+                    <div className="relative">
+                      <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                      <Input
+                        id="cedula"
+                        type="text"
+                        placeholder="000-0000000-0"
+                        value={cedula}
+                        onChange={(e) => setCedula(e.target.value)}
+                        className="pl-10"
+                        required
+                      />
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  {/* Email */}
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Correo electrónico</Label>
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="tu@empresa.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="pl-10"
+                        required
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* Password */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="password">Contraseña</Label>
@@ -97,32 +221,16 @@ export default function LoginPage() {
               </Button>
             </form>
 
-            <div className="mt-6 text-center">
-              <p className="text-muted-foreground text-sm">
-                ¿No tienes cuenta?{" "}
-                <Link to="/register" className="text-primary hover:underline font-medium">
-                  Contacta a tu empresa
-                </Link>
-              </p>
-            </div>
-          </div>
-
-          {/* Role Quick Links */}
-          <div className="mt-6 grid grid-cols-2 gap-4">
-            <Link
-              to="/hr"
-              className="p-4 bg-background rounded-xl shadow-soft hover:shadow-card transition-shadow text-center"
-            >
-              <p className="font-medium text-foreground">Panel de RRHH</p>
-              <p className="text-sm text-muted-foreground">Para administradores</p>
-            </Link>
-            <Link
-              to="/admin"
-              className="p-4 bg-background rounded-xl shadow-soft hover:shadow-card transition-shadow text-center"
-            >
-              <p className="font-medium text-foreground">Super Admin</p>
-              <p className="text-sm text-muted-foreground">Panel ejecutivo</p>
-            </Link>
+            {loginType === "employee" && (
+              <div className="mt-6 text-center">
+                <p className="text-muted-foreground text-sm">
+                  ¿Tu empresa no está registrada?{" "}
+                  <Link to="/#empresas" className="text-primary hover:underline font-medium">
+                    Invítalos aquí
+                  </Link>
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </main>

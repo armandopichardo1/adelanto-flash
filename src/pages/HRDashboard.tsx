@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { 
@@ -11,7 +12,8 @@ import {
   Download,
   Search,
   Filter,
-  MoreHorizontal
+  Home,
+  LogOut
 } from "lucide-react";
 import { formatDOP } from "@/lib/loan-calculator";
 import {
@@ -23,6 +25,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
 
 // Mock data
 const mockCompany = {
@@ -44,7 +47,27 @@ const mockActiveLoans = [
 ];
 
 export default function HRDashboard() {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    const session = localStorage.getItem("dineroYaSession");
+    if (!session) {
+      navigate("/login");
+      return;
+    }
+    const parsed = JSON.parse(session);
+    if (parsed.type !== "hr") {
+      toast.error("Acceso no autorizado");
+      navigate("/login");
+    }
+  }, [navigate]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("dineroYaSession");
+    toast.success("Sesión cerrada");
+    navigate("/");
+  };
 
   const filteredRequests = mockPendingRequests.filter(req =>
     req.employee.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -76,17 +99,31 @@ export default function HRDashboard() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
+              <Link to="/" className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
                 <Wallet className="w-5 h-5 text-primary-foreground" />
-              </div>
+              </Link>
               <div>
                 <h1 className="font-bold">Dinero Ya</h1>
                 <p className="text-xs text-secondary-foreground/70">Panel de RRHH</p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <Building2 className="w-5 h-5" />
-              <span className="font-medium">{mockCompany.name}</span>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <Building2 className="w-5 h-5" />
+                <span className="font-medium hidden sm:inline">{mockCompany.name}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button variant="ghost" size="sm" asChild className="text-secondary-foreground">
+                  <Link to="/">
+                    <Home className="w-4 h-4 mr-2" />
+                    <span className="hidden sm:inline">Inicio</span>
+                  </Link>
+                </Button>
+                <Button variant="ghost" size="sm" onClick={handleLogout} className="text-secondary-foreground">
+                  <LogOut className="w-4 h-4 mr-2" />
+                  <span className="hidden sm:inline">Salir</span>
+                </Button>
+              </div>
             </div>
           </div>
         </div>

@@ -23,7 +23,7 @@ export function CTA() {
                 ¿Tu empresa ya está en Dinero Ya? Accede ahora a tu cuenta y solicita tu primer adelanto.
               </p>
               <Button variant="white" size="lg" asChild>
-                <Link to="/employee">
+                <Link to="/login">
                   Acceder a mi Cuenta
                   <ArrowRight className="w-5 h-5" />
                 </Link>
@@ -39,7 +39,7 @@ export function CTA() {
                 Ofrece bienestar financiero a tu equipo. Retención mejorada, cero costo para ti.
               </p>
               <Button variant="white" size="lg" asChild>
-                <Link to="/hr">
+                <Link to="/login">
                   <Building2 className="w-5 h-5" />
                   Solicitar Demo
                 </Link>
