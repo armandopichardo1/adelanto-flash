@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Progress } from "@/components/ui/progress";
@@ -56,7 +57,7 @@ export default function EmployeeDashboard() {
       <header className="bg-background border-b border-border sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+            <Link to="/" className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl gradient-hero flex items-center justify-center">
                 <Wallet className="w-5 h-5 text-primary-foreground" />
               </div>
@@ -64,7 +65,7 @@ export default function EmployeeDashboard() {
                 <h1 className="font-bold text-foreground">Dinero Ya</h1>
                 <p className="text-xs text-muted-foreground">{mockEmployee.company}</p>
               </div>
-            </div>
+            </Link>
             <button className="w-10 h-10 rounded-full bg-accent flex items-center justify-center">
               <User className="w-5 h-5 text-accent-foreground" />
             </button>

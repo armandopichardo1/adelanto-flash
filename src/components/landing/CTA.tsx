@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import { ArrowRight, Building2 } from "lucide-react";
 
 export function CTA() {
@@ -21,9 +22,11 @@ export function CTA() {
               <p className="text-primary-foreground/90 text-lg mb-6">
                 ¿Tu empresa ya está en Dinero Ya? Accede ahora a tu cuenta y solicita tu primer adelanto.
               </p>
-              <Button variant="white" size="lg">
-                Acceder a mi Cuenta
-                <ArrowRight className="w-5 h-5" />
+              <Button variant="white" size="lg" asChild>
+                <Link to="/employee">
+                  Acceder a mi Cuenta
+                  <ArrowRight className="w-5 h-5" />
+                </Link>
               </Button>
             </div>
 
@@ -35,9 +38,11 @@ export function CTA() {
               <p className="text-primary-foreground/90 text-lg mb-6">
                 Ofrece bienestar financiero a tu equipo. Retención mejorada, cero costo para ti.
               </p>
-              <Button variant="white" size="lg">
-                <Building2 className="w-5 h-5" />
-                Solicitar Demo
+              <Button variant="white" size="lg" asChild>
+                <Link to="/hr">
+                  <Building2 className="w-5 h-5" />
+                  Solicitar Demo
+                </Link>
               </Button>
             </div>
           </div>
