@@ -4,13 +4,26 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const navLinks = [
-  { label: "¿Cómo funciona?", href: "#como-funciona" },
-  { label: "Para Empresas", href: "#empresas" },
-  { label: "Calculadora", href: "#calculadora" },
+  { label: "¿Cómo funciona?", href: "/#como-funciona" },
+  { label: "Para Empresas", href: "/#empresas" },
+  { label: "Calculadora", href: "/#calculadora" },
 ];
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    // Only handle hash links on the same page
+    if (href.startsWith("/#")) {
+      const sectionId = href.replace("/#", "");
+      const element = document.getElementById(sectionId);
+      if (element) {
+        e.preventDefault();
+        element.scrollIntoView({ behavior: "smooth" });
+        setMobileMenuOpen(false);
+      }
+    }
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 glass border-b border-border/50">
@@ -30,6 +43,7 @@ export function Header() {
               <a
                 key={link.label}
                 href={link.href}
+                onClick={(e) => scrollToSection(e, link.href)}
                 className="text-muted-foreground hover:text-foreground font-medium transition-colors"
               >
                 {link.label}
@@ -64,8 +78,8 @@ export function Header() {
                 <a
                   key={link.label}
                   href={link.href}
+                  onClick={(e) => scrollToSection(e, link.href)}
                   className="text-muted-foreground hover:text-foreground font-medium transition-colors py-2"
-                  onClick={() => setMobileMenuOpen(false)}
                 >
                   {link.label}
                 </a>
