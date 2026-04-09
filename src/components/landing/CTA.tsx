@@ -1,29 +1,59 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Building2, Users, ShieldCheck } from "lucide-react";
+
+const benefits = [
+  { icon: Users, text: "Reduce rotación hasta un 32%" },
+  { icon: ShieldCheck, text: "Cero riesgo para tu empresa" },
+  { icon: Building2, text: "Integración simple con nómina" },
+];
 
 export function CTA() {
   return (
-    <section className="py-20 md:py-28 bg-surface">
+    <section className="py-24 md:py-32 bg-surface-container-low">
       <div className="container mx-auto px-4">
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-primary-container p-8 md:p-16 shadow-[0_20px_40px_rgba(0,110,42,0.1)]">
-          {/* Background decoration */}
-          <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-primary-foreground/10 rounded-full blur-3xl" />
-          <div className="absolute -top-1/2 -left-1/4 w-[400px] h-[400px] rounded-full bg-primary-foreground/5 blur-3xl" />
+        <div className="relative rounded-3xl overflow-hidden">
+          {/* Background */}
+          <div className="absolute inset-0 bg-foreground" />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent" />
+          <div className="absolute top-0 right-0 w-1/2 h-full bg-primary/5 rounded-bl-[200px]" />
 
-          <div className="relative text-center max-w-2xl mx-auto">
-            <h2 className="font-headline text-3xl md:text-4xl font-bold text-primary-foreground mb-4">
-              ¿Listo para acceder a tu salario?
-            </h2>
-            <p className="text-primary-foreground/90 text-lg mb-8">
-              Únete a miles de trabajadores dominicanos que ya disfrutan de libertad financiera. Tu dinero ganado, cuando lo necesites.
-            </p>
-            <Button variant="white" size="xl" asChild>
-              <Link to="/login">
-                Iniciar Sesión
-                <ArrowRight className="w-5 h-5" />
-              </Link>
-            </Button>
+          <div className="relative px-8 py-16 md:px-16 md:py-20">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              {/* Left */}
+              <div>
+                <p className="text-primary font-semibold text-sm tracking-wide uppercase mb-3">Para empresas</p>
+                <h2 className="font-headline text-3xl md:text-4xl font-bold text-background mb-4">
+                  Ofrece bienestar financiero real a tu equipo
+                </h2>
+                <p className="text-background/70 text-lg mb-8 leading-relaxed">
+                  Más que un beneficio laboral — una herramienta que reduce estrés financiero, mejora productividad y posiciona a tu empresa como empleador de preferencia.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Button variant="hero" size="xl" className="rounded-2xl bg-primary text-primary-foreground" asChild>
+                    <Link to="/login?type=hr">
+                      Registra tu Empresa
+                      <ArrowRight className="w-5 h-5" />
+                    </Link>
+                  </Button>
+                  <Button variant="white" size="lg" className="rounded-2xl" asChild>
+                    <Link to="/login">Solicitar Demo</Link>
+                  </Button>
+                </div>
+              </div>
+
+              {/* Right — Benefits */}
+              <div className="space-y-5">
+                {benefits.map((b) => (
+                  <div key={b.text} className="flex items-center gap-4 p-5 rounded-2xl bg-background/5 backdrop-blur-sm">
+                    <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center flex-shrink-0">
+                      <b.icon className="w-6 h-6 text-primary" />
+                    </div>
+                    <p className="text-background font-medium text-lg">{b.text}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
