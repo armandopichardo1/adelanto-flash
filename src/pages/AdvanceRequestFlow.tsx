@@ -163,7 +163,7 @@ export default function AdvanceRequestFlow() {
               </label>
             </div>
           </div>
-          <Button variant="flash" size="xl" className="w-full" onClick={handleConfirm} disabled={!termsAccepted}>
+          <Button variant="flash" size="xl" className="w-full" onClick={handleConfirm} disabled={!termsAccepted || !hasSig}>
             <Check className="w-5 h-5" /> Confirmar Solicitud
           </Button>
         </main>
