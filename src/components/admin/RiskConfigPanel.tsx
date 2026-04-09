@@ -266,7 +266,11 @@ export function RiskConfigPanel() {
     setSelectedCompany(value);
   };
 
-  function getHealthColor(categoryId: string, value: number): string {
+  const impacts = useMemo(
+    () => calculateImpact(safetyCap, tenureUnder1, tenure1to3, tenureOver3),
+    [safetyCap, tenureUnder1, tenure1to3, tenureOver3]
+  );
+
     const cat = RISK_CATEGORIES[categoryId];
     if (!cat) return "text-foreground";
     if (cat.dangerThreshold.below !== undefined && value < cat.dangerThreshold.below) return "text-destructive";
