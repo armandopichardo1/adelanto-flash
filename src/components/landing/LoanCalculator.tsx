@@ -1,13 +1,15 @@
 import { useState, useMemo } from "react";
 import { Slider } from "@/components/ui/slider";
-import { 
-  calculateAdvanceLimit, 
-  calculateAdvanceDetails, 
+import {
+  calculateAdvanceLimit,
+  calculateAdvanceDetails,
   formatDOP,
   getFeeLabel,
   DEFAULT_FEE_CONFIG,
 } from "@/lib/advance-calculator";
-import { Calculator, TrendingUp, Shield, Clock } from "lucide-react";
+import { Shield, TrendingUp, Clock, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 export function LoanCalculator() {
   const [salary, setSalary] = useState(45000);
@@ -24,36 +26,28 @@ export function LoanCalculator() {
   const feeLabel = getFeeLabel(DEFAULT_FEE_CONFIG);
 
   return (
-    <section className="py-20 md:py-28 bg-surface-container-low">
+    <section className="py-24 md:py-32 bg-surface-container-low">
       <div className="container mx-auto px-4">
-        {/* Section header */}
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent text-accent-foreground text-sm font-medium mb-4">
-            <Calculator className="w-4 h-4" />
-            <span>Calculadora de Adelanto</span>
-          </div>
+        <div className="max-w-xl mb-12">
+          <p className="text-primary font-semibold text-sm tracking-wide uppercase mb-3">Calculadora</p>
           <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Calcula Tu Límite
+            ¿Cuánto puedes solicitar?
           </h2>
           <p className="text-lg text-muted-foreground">
-            Descubre cuánto puedes solicitar basado en tu salario y antigüedad.
+            Mueve los controles para ver tu límite estimado basado en salario y antigüedad.
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-surface-container-lowest rounded-3xl shadow-card p-8 md:p-10">
-            <div className="grid md:grid-cols-2 gap-10">
-              {/* Inputs */}
-              <div className="space-y-8">
-                {/* Salary Input */}
+        <div className="max-w-4xl">
+          <div className="bg-surface-container-lowest rounded-3xl shadow-card overflow-hidden">
+            <div className="grid md:grid-cols-5 gap-0">
+              {/* Inputs — 3 cols */}
+              <div className="md:col-span-3 p-8 md:p-10 space-y-10">
+                {/* Salary */}
                 <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <label className="text-sm font-medium text-foreground">
-                      Salario Mensual
-                    </label>
-                    <span className="font-headline text-2xl font-bold text-primary">
-                      {formatDOP(salary)}
-                    </span>
+                  <div className="flex items-baseline justify-between mb-5">
+                    <label className="text-sm font-medium text-muted-foreground">Salario Mensual</label>
+                    <span className="font-headline text-3xl font-bold text-foreground">{formatDOP(salary)}</span>
                   </div>
                   <Slider
                     value={[salary]}
@@ -63,19 +57,17 @@ export function LoanCalculator() {
                     step={5000}
                     className="w-full"
                   />
-                  <div className="flex justify-between mt-2 text-xs text-muted-foreground">
+                  <div className="flex justify-between mt-2.5 text-xs text-muted-foreground">
                     <span>{formatDOP(15000)}</span>
                     <span>{formatDOP(150000)}</span>
                   </div>
                 </div>
 
-                {/* Tenure Input */}
+                {/* Tenure */}
                 <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <label className="text-sm font-medium text-foreground">
-                      Años de Antigüedad
-                    </label>
-                    <span className="font-headline text-2xl font-bold text-primary">
+                  <div className="flex items-baseline justify-between mb-5">
+                    <label className="text-sm font-medium text-muted-foreground">Antigüedad</label>
+                    <span className="font-headline text-3xl font-bold text-foreground">
                       {tenure} {tenure === 1 ? 'año' : 'años'}
                     </span>
                   </div>
@@ -87,51 +79,53 @@ export function LoanCalculator() {
                     step={0.5}
                     className="w-full"
                   />
-                  <div className="flex justify-between mt-2 text-xs text-muted-foreground">
-                    <span>0 años</span>
+                  <div className="flex justify-between mt-2.5 text-xs text-muted-foreground">
+                    <span>Nuevo</span>
                     <span>10+ años</span>
                   </div>
                 </div>
               </div>
 
-              {/* Results */}
-              <div className="bg-surface-container-low rounded-2xl p-6">
-                <h3 className="font-headline text-lg font-semibold text-foreground mb-6">
-                  Tu Resultado
-                </h3>
-
-                <div className="text-center mb-6">
-                  <p className="text-sm text-muted-foreground mb-2">
-                    Límite de Adelanto Disponible
-                  </p>
-                  <p className="font-headline text-5xl font-bold text-primary">
+              {/* Results — 2 cols */}
+              <div className="md:col-span-2 bg-foreground p-8 md:p-10 flex flex-col justify-between">
+                <div>
+                  <p className="text-background/50 text-sm mb-2">Tu Límite Disponible</p>
+                  <p className="font-headline text-4xl md:text-5xl font-extrabold text-primary mb-8">
                     {formatDOP(advanceLimit.maxAdvanceAmount)}
                   </p>
+
+                  <div className="space-y-4">
+                    <ResultRow
+                      icon={<Shield className="w-4 h-4" />}
+                      label="Respaldo Laboral"
+                      value={formatDOP(advanceLimit.collateralBase)}
+                    />
+                    <ResultRow
+                      icon={<TrendingUp className="w-4 h-4" />}
+                      label={`Comisión (${feeLabel})`}
+                      value={formatDOP(advanceDetails.fee)}
+                    />
+                    <div className="h-px bg-background/10 my-2" />
+                    <ResultRow
+                      icon={<Clock className="w-4 h-4" />}
+                      label="Descuento en Nómina"
+                      value={formatDOP(advanceDetails.totalToDeduct)}
+                      highlight
+                    />
+                  </div>
                 </div>
 
-                <div className="space-y-4">
-                  <ResultRow 
-                    icon={<Shield className="w-4 h-4" />}
-                    label="Tu Respaldo Laboral"
-                    value={formatDOP(advanceLimit.collateralBase)}
-                  />
-                  <ResultRow 
-                    icon={<TrendingUp className="w-4 h-4" />}
-                    label={`Comisión de servicio (${feeLabel})`}
-                    value={formatDOP(advanceDetails.fee)}
-                  />
-                  <ResultRow 
-                    icon={<Clock className="w-4 h-4" />}
-                    label="Total a Descontar"
-                    value={formatDOP(advanceDetails.totalToDeduct)}
-                    highlight
-                  />
+                <div className="mt-8">
+                  <Button variant="hero" className="w-full rounded-2xl bg-primary" asChild>
+                    <Link to="/login">
+                      Solicitar Ahora
+                      <ArrowRight className="w-5 h-5" />
+                    </Link>
+                  </Button>
+                  <p className="text-background/30 text-xs text-center mt-4">
+                    *Estimado. Monto final sujeto a validación.
+                  </p>
                 </div>
-
-                <p className="text-xs text-muted-foreground text-center mt-6">
-                  *Cálculo estimado basado en el Código Laboral de RD. 
-                  El monto final puede variar según validación.
-                </p>
               </div>
             </div>
           </div>
@@ -141,24 +135,24 @@ export function LoanCalculator() {
   );
 }
 
-function ResultRow({ 
-  icon, 
-  label, 
-  value, 
-  highlight = false 
-}: { 
+function ResultRow({
+  icon,
+  label,
+  value,
+  highlight = false,
+}: {
   icon: React.ReactNode;
   label: string;
   value: string;
   highlight?: boolean;
 }) {
   return (
-    <div className={`flex items-center justify-between p-3 rounded-xl ${highlight ? 'bg-accent' : ''}`}>
-      <div className="flex items-center gap-2 text-muted-foreground">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-2 text-background/50">
         {icon}
         <span className="text-sm">{label}</span>
       </div>
-      <span className={`font-semibold ${highlight ? 'text-primary text-lg' : 'text-foreground'}`}>
+      <span className={`font-semibold ${highlight ? 'text-primary text-lg' : 'text-background'}`}>
         {value}
       </span>
     </div>

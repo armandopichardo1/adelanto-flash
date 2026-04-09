@@ -1,91 +1,92 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, Shield, Zap, Clock } from "lucide-react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
+import heroImage from "@/assets/hero-worker.jpg";
+
+const trustPoints = [
+  "Aprobación en minutos",
+  "Sin cargos ocultos",
+  "Regulado y transparente",
+];
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden bg-surface">
-      {/* Background decoration */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-1/2 -right-1/4 w-[800px] h-[800px] rounded-full bg-accent opacity-50 blur-3xl" />
-        <div className="absolute -bottom-1/4 -left-1/4 w-[600px] h-[600px] rounded-full bg-secondary-container/20 opacity-30 blur-3xl" />
+    <section className="relative overflow-hidden bg-surface min-h-[90vh] flex items-center">
+      {/* Subtle organic background shapes */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 right-0 w-[60%] h-full bg-accent/30 rounded-bl-[120px]" />
+        <div className="absolute -bottom-20 -left-20 w-80 h-80 rounded-full bg-secondary-container/10 blur-3xl" />
       </div>
 
-      <div className="relative container mx-auto px-4 pt-20 pb-24 md:pt-32 md:pb-32">
-        <div className="max-w-4xl mx-auto text-center">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent text-accent-foreground text-sm font-medium mb-8 animate-fade-in">
-            <Zap className="w-4 h-4" />
-            <span>Adelanto Flash • Sin trámites complicados</span>
+      <div className="relative container mx-auto px-4 py-16 md:py-0">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          {/* Left — Copy */}
+          <div className="max-w-xl">
+            <p className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent text-accent-foreground text-xs font-semibold tracking-wide uppercase mb-6">
+              Bienestar financiero para tu equipo
+            </p>
+
+            <h1 className="font-headline text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold leading-[1.1] text-foreground mb-6">
+              Accede a tu salario{" "}
+              <span className="relative">
+                <span className="text-primary">cuando lo necesites</span>
+                <svg className="absolute -bottom-1 left-0 w-full" viewBox="0 0 300 12" fill="none">
+                  <path d="M2 8C50 3 150 2 298 8" stroke="hsl(145 100% 22%)" strokeWidth="3" strokeLinecap="round" opacity="0.3" />
+                </svg>
+              </span>
+            </h1>
+
+            <p className="text-lg text-muted-foreground leading-relaxed mb-8">
+              Adelanto Ya permite a los trabajadores dominicanos acceder a su dinero ganado antes del día de pago. Sin trámites, sin esperas — solo tu esfuerzo convertido en liquidez inmediata.
+            </p>
+
+            {/* Trust checklist */}
+            <ul className="space-y-3 mb-10">
+              {trustPoints.map((point) => (
+                <li key={point} className="flex items-center gap-3 text-foreground">
+                  <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0" />
+                  <span className="font-medium">{point}</span>
+                </li>
+              ))}
+            </ul>
+
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Button variant="hero" size="xl" className="rounded-2xl" asChild>
+                <Link to="/login">
+                  Solicitar Adelanto
+                  <ArrowRight className="w-5 h-5" />
+                </Link>
+              </Button>
+              <Button variant="white" size="lg" className="rounded-2xl" asChild>
+                <a href="#como-funciona">¿Cómo funciona?</a>
+              </Button>
+            </div>
           </div>
 
-          {/* Headline */}
-          <h1 className="font-headline text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-foreground mb-6 animate-slide-up">
-            Tu Salario,{" "}
-            <span className="text-primary">On-Demand</span>
-          </h1>
+          {/* Right — Photo */}
+          <div className="relative hidden lg:block">
+            <div className="relative rounded-3xl overflow-hidden shadow-elevated">
+              <img
+                src={heroImage}
+                alt="Trabajadora dominicana accediendo a su adelanto de salario desde su celular"
+                width={1280}
+                height={960}
+                className="w-full h-[540px] object-cover object-top"
+              />
+              {/* Floating stat card */}
+              <div className="absolute bottom-6 left-6 bg-surface-container-lowest/90 backdrop-blur-xl rounded-2xl p-4 shadow-elevated">
+                <p className="text-xs text-muted-foreground mb-0.5">Adelanto aprobado</p>
+                <p className="font-headline text-2xl font-bold text-primary">RD$12,500</p>
+                <p className="text-xs text-muted-foreground mt-1">En tu cuenta en 3 minutos →</p>
+              </div>
+            </div>
 
-          {/* Subheadline */}
-          <p className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: '0.1s' }}>
-            Accede a tu dinero ganado cuando lo necesites. 
-            <span className="text-foreground font-medium"> Sin complicaciones, sin esperas</span> — solo tu salario adelantado.
-          </p>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-            <Button variant="hero" size="xl" asChild>
-              <Link to="/login">
-                Solicitar Adelanto
-                <ArrowRight className="w-5 h-5" />
-              </Link>
-            </Button>
-            <Button variant="white" size="lg" asChild>
-              <a href="#como-funciona">¿Cómo funciona?</a>
-            </Button>
-          </div>
-
-          {/* Trust indicators */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto animate-fade-in" style={{ animationDelay: '0.3s' }}>
-            <TrustBadge 
-              icon={<Clock className="w-5 h-5" />}
-              title="En Minutos"
-              description="Aprobación instantánea"
-            />
-            <TrustBadge 
-              icon={<Shield className="w-5 h-5" />}
-              title="100% Seguro"
-              description="Regulado y transparente"
-            />
-            <TrustBadge 
-              icon={<Zap className="w-5 h-5" />}
-              title="Sin Cargos Ocultos"
-              description="Solo comisión de servicio"
-            />
+            {/* Decorative elements */}
+            <div className="absolute -top-6 -right-6 w-24 h-24 rounded-2xl bg-accent/60 -z-10" />
+            <div className="absolute -bottom-4 -left-4 w-16 h-16 rounded-full bg-secondary-container/30 -z-10" />
           </div>
         </div>
       </div>
     </section>
-  );
-}
-
-function TrustBadge({ 
-  icon, 
-  title, 
-  description 
-}: { 
-  icon: React.ReactNode; 
-  title: string; 
-  description: string;
-}) {
-  return (
-    <div className="flex items-center gap-3 p-4 rounded-2xl bg-surface-container-lowest shadow-card">
-      <div className="flex items-center justify-center w-10 h-10 rounded-full bg-accent text-primary">
-        {icon}
-      </div>
-      <div className="text-left">
-        <p className="font-headline font-semibold text-foreground">{title}</p>
-        <p className="text-sm text-muted-foreground">{description}</p>
-      </div>
-    </div>
   );
 }
