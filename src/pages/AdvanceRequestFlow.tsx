@@ -53,7 +53,7 @@ export default function AdvanceRequestFlow() {
   const totalToDeduct = "incrementalTotalToDeduct" in advanceDetails ? advanceDetails.incrementalTotalToDeduct : advanceDetails.totalToDeduct;
 
   const handleConfirm = () => {
-    if (!termsAccepted) { toast.error("Debes aceptar los términos para continuar"); return; }
+    if (!termsAccepted || !hasSig) { toast.error("Debes firmar y aceptar los términos para continuar"); return; }
     setStep(4);
     toast.success("¡Solicitud enviada exitosamente!");
   };
