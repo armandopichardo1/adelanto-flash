@@ -49,16 +49,36 @@ export default function HRDashboard() {
   const adoptionRate = Math.round((hrCompany.activeUsers / hrCompany.totalEmployees) * 100);
 
   const handleExportPayroll = () => {
-    const csvContent = [
-      ["Cédula", "Concepto", "Monto"].join(","),
-      ...hrActiveAdvances.map((a) => [a.cedula, "Adelanto Ya", a.totalToDeduct].join(",")),
+    const now = new Date();
+    const dateStr = now.toISOString().split("T")[0];
+    const bom = "\uFEFF"; // UTF-8 BOM for Excel compatibility
+    const csvContent = bom + [
+      ["Empresa", "RNC", "Período", "Fecha Generación"].join(","),
+      [hrCompany.name, hrCompany.rnc, `${now.toLocaleDateString("es-DO", { month: "long", year: "numeric" })}`, dateStr].join(","),
+      "",
+      ["Cédula", "Nombre Completo", "Concepto", "Monto Adelanto (RD$)", "Comisión Servicio (RD$)", "Total a Descontar (RD$)", "Fecha Desembolso", "Estado"].join(","),
+      ...hrActiveAdvances.map((a) => [
+        a.cedula,
+        `"${a.employee}"`,
+        "Adelanto de Nómina - Adelanto Ya",
+        a.amount,
+        a.totalToDeduct - a.amount,
+        a.totalToDeduct,
+        a.disbursedDate,
+        a.status === "active" ? "ACTIVO" : "COMPLETADO",
+      ].join(",")),
+      "",
+      `"Total descuentos:,,,,,${hrActiveAdvances.reduce((s, a) => s + a.totalToDeduct, 0)},,"`,
+      `"Registros:,,,,,,${hrActiveAdvances.length},"`,
     ].join("\n");
-    const blob = new Blob([csvContent], { type: "text/csv" });
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `nomina_adelanto_ya_${new Date().toISOString().split("T")[0]}.csv`;
+    a.download = `nomina_descuentos_${hrCompany.name.replace(/\s+/g, "_")}_${dateStr}.csv`;
     a.click();
+    URL.revokeObjectURL(url);
+    toast.success(`Archivo de nómina exportado: ${hrActiveAdvances.length} descuentos`);
   };
 
   // Filter employees by the HR company
