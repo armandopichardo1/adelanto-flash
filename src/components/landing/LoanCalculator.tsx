@@ -87,10 +87,10 @@ export function LoanCalculator() {
               </div>
 
               {/* Results — 2 cols */}
-              <div className="md:col-span-2 bg-foreground p-8 md:p-10 flex flex-col justify-between">
+              <div className="md:col-span-2 gradient-hero p-8 md:p-10 flex flex-col justify-between">
                 <div>
-                  <p className="text-background/50 text-sm mb-2">Tu Límite Disponible</p>
-                  <p className="font-headline text-4xl md:text-5xl font-extrabold text-primary mb-8">
+                  <p className="text-primary-foreground/70 text-sm mb-2">Tu Límite Disponible</p>
+                  <p className="font-headline text-4xl md:text-5xl font-extrabold text-primary-foreground mb-8">
                     {formatDOP(advanceLimit.maxAdvanceAmount)}
                   </p>
 
@@ -105,7 +105,7 @@ export function LoanCalculator() {
                       label={`Comisión (${feeLabel})`}
                       value={formatDOP(advanceDetails.fee)}
                     />
-                    <div className="h-px bg-background/10 my-2" />
+                    <div className="h-px bg-white/20 my-2" />
                     <ResultRow
                       icon={<Clock className="w-4 h-4" />}
                       label="Descuento en Nómina"
@@ -122,7 +122,7 @@ export function LoanCalculator() {
                       <ArrowRight className="w-5 h-5" />
                     </Link>
                   </Button>
-                  <p className="text-background/30 text-xs text-center mt-4">
+                  <p className="text-primary-foreground/40 text-xs text-center mt-4">
                     *Estimado. Monto final sujeto a validación.
                   </p>
                 </div>
@@ -148,11 +148,11 @@ function ResultRow({
 }) {
   return (
     <div className="flex items-center justify-between">
-      <div className="flex items-center gap-2 text-background/50">
+      <div className="flex items-center gap-2 text-primary-foreground/70">
         {icon}
         <span className="text-sm">{label}</span>
       </div>
-      <span className={`font-semibold ${highlight ? 'text-primary text-lg' : 'text-background'}`}>
+      <span className={`font-semibold ${highlight ? 'text-primary-foreground text-lg' : 'text-primary-foreground'}`}>
         {value}
       </span>
     </div>
