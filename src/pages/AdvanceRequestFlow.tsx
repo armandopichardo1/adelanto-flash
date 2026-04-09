@@ -208,7 +208,7 @@ function StepHeader({ title, onBack, step }: { title: string; onBack: () => void
           </button>
           <div className="flex-1">
             <h1 className="font-headline font-bold text-foreground">{title}</h1>
-            <p className="text-xs text-muted-foreground">Paso {step} de 3</p>
+            <p className="text-xs text-muted-foreground">Paso {step} de {totalSteps}</p>
           </div>
         </div>
       </div>
