@@ -19,7 +19,7 @@ export function CollateralCoverageChart({
 
   const data = [
     {
-      name: "Prestaciones Laborales",
+      name: "Valor Laboral Acumulado",
       value: totalCollateral,
       fill: "hsl(var(--primary))",
     },
