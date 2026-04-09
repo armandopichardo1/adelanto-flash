@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import workersImage from "@/assets/workers-team.jpg";
 
 const stats = [
@@ -13,7 +14,13 @@ export function Stats() {
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left — Image */}
-          <div className="relative rounded-3xl overflow-hidden shadow-card">
+          <motion.div
+            className="relative rounded-3xl overflow-hidden shadow-card"
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
             <img
               src={workersImage}
               alt="Equipo de trabajadores dominicanos usando Adelanto Ya"
@@ -29,10 +36,15 @@ export function Stats() {
               </p>
               <p className="text-background/80 text-sm mt-2">— María Elena, Grupo Corripio ZF</p>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right — Stats */}
-          <div>
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
             <p className="text-primary font-semibold text-sm tracking-wide uppercase mb-3">Números que hablan</p>
             <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground mb-4">
               Crecimiento real, impacto medible
@@ -42,16 +54,23 @@ export function Stats() {
             </p>
 
             <div className="grid grid-cols-2 gap-6">
-              {stats.map((stat) => (
-                <div key={stat.label} className="p-5 rounded-2xl bg-surface-container-low">
+              {stats.map((stat, i) => (
+                <motion.div
+                  key={stat.label}
+                  className="p-5 rounded-2xl bg-surface-container-low"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ delay: 0.2 + i * 0.1, duration: 0.4 }}
+                >
                   <p className="font-headline text-3xl md:text-4xl font-extrabold text-primary mb-1">
                     {stat.value}
                   </p>
                   <p className="text-sm text-muted-foreground font-medium">{stat.label}</p>
-                </div>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
