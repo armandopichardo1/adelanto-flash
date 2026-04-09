@@ -34,11 +34,6 @@ import {
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
-  const [safetyCap, setSafetyCap] = useState(50);
-  const [tenureUnder1, setTenureUnder1] = useState(20);
-  const [tenure1to3, setTenure1to3] = useState(50);
-  const [tenureOver3, setTenureOver3] = useState(80);
-  const [maxConcentration, setMaxConcentration] = useState(15);
 
   useEffect(() => {
     const session = localStorage.getItem("adelantoYaSession");
@@ -48,7 +43,6 @@ export default function AdminDashboard() {
   }, [navigate]);
 
   const handleLogout = () => { localStorage.removeItem("adelantoYaSession"); toast.success("Sesión cerrada"); navigate("/"); };
-  const handleSaveRisk = () => { toast.success("Configuración de riesgo guardada"); };
 
   return (
     <div className="min-h-screen bg-surface-container-low">
