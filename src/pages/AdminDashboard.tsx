@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { FeeConfigPanel } from "@/components/admin/FeeConfigPanel";
+import { RiskConfigPanel } from "@/components/admin/RiskConfigPanel";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
 import {
   Wallet,
   Settings,
@@ -15,7 +14,6 @@ import {
   Home,
   LogOut,
   Bell,
-  Save,
 } from "lucide-react";
 import { formatDOP, formatPercent } from "@/lib/advance-calculator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -35,11 +33,6 @@ import {
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
-  const [safetyCap, setSafetyCap] = useState(50);
-  const [tenureUnder1, setTenureUnder1] = useState(20);
-  const [tenure1to3, setTenure1to3] = useState(50);
-  const [tenureOver3, setTenureOver3] = useState(80);
-  const [maxConcentration, setMaxConcentration] = useState(15);
 
   useEffect(() => {
     const session = localStorage.getItem("adelantoYaSession");
@@ -49,7 +42,6 @@ export default function AdminDashboard() {
   }, [navigate]);
 
   const handleLogout = () => { localStorage.removeItem("adelantoYaSession"); toast.success("Sesión cerrada"); navigate("/"); };
-  const handleSaveRisk = () => { toast.success("Configuración de riesgo guardada"); };
 
   return (
     <div className="min-h-screen bg-surface-container-low">
@@ -156,32 +148,7 @@ export default function AdminDashboard() {
           </div>
         </section>
 
-        {/* Risk Config */}
-        <section className="bg-surface-container-lowest rounded-2xl shadow-card overflow-hidden">
-          <div className="p-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2"><Settings className="w-5 h-5 text-primary" /><h2 className="font-headline text-xl font-bold text-foreground">Configuración de Riesgo</h2></div>
-              <Button onClick={handleSaveRisk} size="sm"><Save className="w-4 h-4" /> Guardar</Button>
-            </div>
-            <p className="text-muted-foreground mt-1">Ajusta los caps de riesgo que controlan los límites de adelanto.</p>
-          </div>
-          <div className="px-6 pb-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-surface-container-low rounded-2xl p-5 space-y-4">
-              <SliderField label="Safety Cap" value={safetyCap} onChange={setSafetyCap} min={10} max={100} step={5} suffix="%" />
-              <div>
-                <div className="flex justify-between mb-2"><Label className="text-sm">Art. 201 Cap (fijo)</Label><span className="text-sm font-bold text-muted-foreground">30%</span></div>
-                <div className="h-2 rounded-full bg-surface-container-high"><div className="h-full w-[30%] rounded-full bg-muted-foreground/50" /></div>
-                <p className="text-xs text-muted-foreground mt-1">No modificable — Código Laboral Art. 201</p>
-              </div>
-            </div>
-            <div className="bg-surface-container-low rounded-2xl p-5 space-y-4">
-              <SliderField label="Tenure <1 año" value={tenureUnder1} onChange={setTenureUnder1} min={5} max={50} step={5} suffix="%" />
-              <SliderField label="Tenure 1-3 años" value={tenure1to3} onChange={setTenure1to3} min={10} max={80} step={5} suffix="%" />
-              <SliderField label="Tenure >3 años" value={tenureOver3} onChange={setTenureOver3} min={20} max={100} step={5} suffix="%" />
-              <SliderField label="Max Concentración por Empresa" value={maxConcentration} onChange={setMaxConcentration} min={5} max={25} step={1} suffix="%" />
-            </div>
-          </div>
-        </section>
+        <RiskConfigPanel />
 
         {/* Disbursement Queue */}
         <section className="bg-surface-container-lowest rounded-2xl shadow-card overflow-hidden">
@@ -249,14 +216,6 @@ function KPICard({ icon, label, value, badge, badgeColor, status }: { icon: Reac
   );
 }
 
-function SliderField({ label, value, onChange, min, max, step, suffix }: { label: string; value: number; onChange: (v: number) => void; min: number; max: number; step: number; suffix: string }) {
-  return (
-    <div>
-      <div className="flex justify-between mb-2"><Label className="text-sm">{label}</Label><span className="text-sm font-bold text-foreground">{value}{suffix}</span></div>
-      <Slider value={[value]} onValueChange={([v]) => onChange(v)} min={min} max={max} step={step} />
-    </div>
-  );
-}
 
 function StatusBadge({ status }: { status: "healthy" | "warning" | "toxic" }) {
   const config = { healthy: { label: "Saludable", className: "bg-accent text-accent-foreground" }, warning: { label: "Precaución", className: "bg-warning/10 text-warning" }, toxic: { label: "Tóxico", className: "bg-destructive/10 text-destructive" } };
