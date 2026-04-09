@@ -27,7 +27,7 @@ export function SavingsComparison({
         <Sparkles className="w-3 h-3" />
       </div>
       <span className="text-sm font-medium text-foreground">
-        Te ahorras <span className="font-bold text-primary">{formatDOP(savings)}</span> vs. Préstamo informal
+        Te ahorras <span className="font-bold text-primary">{formatDOP(savings)}</span> vs. Alternativa informal
       </span>
     </div>
   );

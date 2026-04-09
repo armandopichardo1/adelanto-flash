@@ -111,7 +111,7 @@ export default function AdvanceRequestFlow() {
             <div className="flex items-start gap-3">
               <Checkbox id="terms" checked={termsAccepted} onCheckedChange={(c) => setTermsAccepted(c === true)} className="mt-1" />
               <label htmlFor="terms" className="text-sm text-muted-foreground leading-relaxed cursor-pointer">
-                Autorizo el descuento automático de mi salario para cubrir el monto del servicio de adelanto de nómina provisto por <strong className="text-foreground">Adelanto Ya</strong>. Entiendo que esto no constituye un préstamo ni genera intereses.
+                Autorizo el descuento automático de mi salario para cubrir el monto total. Entiendo que este es un servicio de adelanto de nómina provisto por <strong className="text-foreground">Adelanto Ya</strong>.
               </label>
             </div>
           </div>
