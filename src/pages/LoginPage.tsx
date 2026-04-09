@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,8 +26,7 @@ export default function LoginPage() {
     // Mock authentication - simulate login
     setTimeout(() => {
       if (loginType === "employee") {
-        // Store mock employee session
-        localStorage.setItem("dineroYaSession", JSON.stringify({
+        localStorage.setItem("adelantoYaSession", JSON.stringify({
           type: "employee",
           companyCode,
           cedula,
@@ -37,7 +36,7 @@ export default function LoginPage() {
         toast.success("¡Bienvenido!");
         navigate("/employee");
       } else if (loginType === "hr") {
-        localStorage.setItem("dineroYaSession", JSON.stringify({
+        localStorage.setItem("adelantoYaSession", JSON.stringify({
           type: "hr",
           email,
           company: "Tech Solutions SRL",
@@ -45,7 +44,7 @@ export default function LoginPage() {
         toast.success("¡Bienvenido al Panel de RRHH!");
         navigate("/hr");
       } else {
-        localStorage.setItem("dineroYaSession", JSON.stringify({
+        localStorage.setItem("adelantoYaSession", JSON.stringify({
           type: "admin",
           email,
         }));
@@ -77,7 +76,7 @@ export default function LoginPage() {
               <div className="w-12 h-12 rounded-xl gradient-hero flex items-center justify-center shadow-soft">
                 <Wallet className="w-6 h-6 text-primary-foreground" />
               </div>
-              <span className="text-2xl font-bold text-foreground">Dinero Ya</span>
+              <span className="text-2xl font-bold text-foreground">Adelanto Ya</span>
             </Link>
             <h1 className="text-2xl font-bold text-foreground mb-2">Iniciar Sesión</h1>
             <p className="text-muted-foreground">Accede a tu cuenta para solicitar adelantos</p>

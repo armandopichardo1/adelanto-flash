@@ -1,18 +1,22 @@
 import { TrendingDown, Sparkles } from "lucide-react";
-import { formatDOP } from "@/lib/loan-calculator";
+import { formatDOP, type FeeConfig, DEFAULT_FEE_CONFIG, calculateFee } from "@/lib/advance-calculator";
 
 interface SavingsComparisonProps {
   requestedAmount: number;
+  monthlySalary?: number;
+  feeConfig?: FeeConfig;
 }
 
 // Street loan rate (typical informal lending in DR)
 const STREET_LOAN_RATE = 0.20; // 20%
-// Our service fee
-const SERVICE_FEE_RATE = 0.07; // 7%
 
-export function SavingsComparison({ requestedAmount }: SavingsComparisonProps) {
+export function SavingsComparison({ 
+  requestedAmount, 
+  monthlySalary = 45000,
+  feeConfig = DEFAULT_FEE_CONFIG 
+}: SavingsComparisonProps) {
   const streetLoanFee = Math.floor(requestedAmount * STREET_LOAN_RATE);
-  const ourFee = Math.floor(requestedAmount * SERVICE_FEE_RATE);
+  const ourFee = calculateFee(requestedAmount, monthlySalary, feeConfig);
   const savings = streetLoanFee - ourFee;
 
   if (savings <= 0) return null;

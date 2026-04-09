@@ -1,27 +1,9 @@
 import { TrendingUp } from "lucide-react";
+import { calculateDineroScore, getScoreLevel } from "@/lib/dinero-score";
 
 interface DineroScoreGaugeProps {
   tenureYears: number;
   repaidCycles: number;
-}
-
-/**
- * Dinero Score Logic:
- * Base 500 + (10 pts per repaid cycle) + (50 pts per year of tenure)
- * Range: 0-1000
- */
-export function calculateDineroScore(tenureYears: number, repaidCycles: number): number {
-  const base = 500;
-  const tenureBonus = Math.floor(tenureYears) * 50;
-  const cycleBonus = repaidCycles * 10;
-  return Math.min(1000, Math.max(0, base + tenureBonus + cycleBonus));
-}
-
-export function getScoreLevel(score: number): { label: string; color: string; bgColor: string } {
-  if (score >= 800) return { label: "Excelente", color: "text-primary", bgColor: "bg-primary/20" };
-  if (score >= 650) return { label: "Muy Bueno", color: "text-emerald-600", bgColor: "bg-emerald-100" };
-  if (score >= 550) return { label: "Bueno", color: "text-blue-600", bgColor: "bg-blue-100" };
-  return { label: "En Construcción", color: "text-amber-600", bgColor: "bg-amber-100" };
 }
 
 export function DineroScoreGauge({ tenureYears, repaidCycles }: DineroScoreGaugeProps) {

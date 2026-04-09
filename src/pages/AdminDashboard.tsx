@@ -15,7 +15,7 @@ import {
   Home,
   LogOut,
 } from "lucide-react";
-import { formatDOP, formatPercent } from "@/lib/loan-calculator";
+import { formatDOP, formatPercent } from "@/lib/advance-calculator";
 import {
   Table,
   TableBody,
@@ -43,7 +43,7 @@ const kpiData = {
   collateralCoverage: 2.4,
   defaultRate: 0.028,
   capitalVelocity: 12.5,
-  totalActiveDebt: 850000,
+  totalActivePending: 850000,
   totalCollateralHeld: 2040000,
   adoptionRate: 0.71,
 };
@@ -71,13 +71,11 @@ const pendingDisbursements = [
   { id: 3, employee: "Ana Rodríguez", company: "Tech Solutions", amount: 12000, bankAccount: "156-555555-5", status: "approved" },
 ];
 
-const COLORS = ["hsl(145, 100%, 39%)", "hsl(232, 76%, 17%)", "hsl(38, 92%, 50%)", "hsl(0, 84%, 60%)"];
-
 export default function AdminDashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const session = localStorage.getItem("dineroYaSession");
+    const session = localStorage.getItem("adelantoYaSession");
     if (!session) {
       navigate("/login");
       return;
@@ -90,7 +88,7 @@ export default function AdminDashboard() {
   }, [navigate]);
 
   const handleLogout = () => {
-    localStorage.removeItem("dineroYaSession");
+    localStorage.removeItem("adelantoYaSession");
     toast.success("Sesión cerrada");
     navigate("/");
   };
@@ -106,7 +104,7 @@ export default function AdminDashboard() {
                 <Wallet className="w-5 h-5 text-primary-foreground" />
               </Link>
               <div>
-                <h1 className="font-bold">Dinero Ya</h1>
+                <h1 className="font-bold">Adelanto Ya</h1>
                 <p className="text-xs text-secondary-foreground/70">Panel de Administración</p>
               </div>
             </div>
@@ -137,11 +135,11 @@ export default function AdminDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
             <KPICard
               icon={<BarChart3 className="w-5 h-5" />}
-              label="Cobertura de Colateral"
+              label="Cobertura de Garantía"
               value={`${kpiData.collateralCoverage.toFixed(1)}x`}
               target="Meta: > 2.0x"
               status={kpiData.collateralCoverage >= 2 ? "success" : "warning"}
-              description="Cesantía / Deuda Activa"
+              description="Respaldo / Saldo Activo"
             />
             <KPICard
               icon={<AlertTriangle className="w-5 h-5" />}
@@ -149,7 +147,7 @@ export default function AdminDashboard() {
               value={formatPercent(kpiData.defaultRate)}
               target="Alerta si > 4%"
               status={kpiData.defaultRate <= 0.04 ? "success" : "danger"}
-              description="Préstamos +30 días vencidos"
+              description="Adelantos +30 días vencidos"
             />
             <KPICard
               icon={<Activity className="w-5 h-5" />}
@@ -169,11 +167,11 @@ export default function AdminDashboard() {
             />
             <KPICard
               icon={<DollarSign className="w-5 h-5" />}
-              label="Deuda Activa Total"
-              value={formatDOP(kpiData.totalActiveDebt)}
-              target={`Colateral: ${formatDOP(kpiData.totalCollateralHeld)}`}
+              label="Saldo Activo Total"
+              value={formatDOP(kpiData.totalActivePending)}
+              target={`Respaldo: ${formatDOP(kpiData.totalCollateralHeld)}`}
               status="neutral"
-              description="Saldo vivo actual"
+              description="Monto pendiente actual"
             />
           </div>
         </section>

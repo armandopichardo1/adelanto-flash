@@ -1,23 +1,27 @@
 import { useState, useMemo } from "react";
 import { Slider } from "@/components/ui/slider";
 import { 
-  calculateLoanLimit, 
-  calculateLoanDetails, 
-  formatDOP 
-} from "@/lib/loan-calculator";
+  calculateAdvanceLimit, 
+  calculateAdvanceDetails, 
+  formatDOP,
+  getFeeLabel,
+  DEFAULT_FEE_CONFIG,
+} from "@/lib/advance-calculator";
 import { Calculator, TrendingUp, Shield, Clock } from "lucide-react";
 
 export function LoanCalculator() {
   const [salary, setSalary] = useState(45000);
   const [tenure, setTenure] = useState(2);
 
-  const loanLimit = useMemo(() => calculateLoanLimit({
+  const advanceLimit = useMemo(() => calculateAdvanceLimit({
     monthlySalary: salary,
     tenureYears: tenure,
     riskMode: 'conservative',
   }), [salary, tenure]);
 
-  const loanDetails = useMemo(() => calculateLoanDetails(loanLimit.maxLoanAmount), [loanLimit.maxLoanAmount]);
+  const advanceDetails = useMemo(() => calculateAdvanceDetails(advanceLimit.maxAdvanceAmount, salary), [advanceLimit.maxAdvanceAmount, salary]);
+
+  const feeLabel = getFeeLabel(DEFAULT_FEE_CONFIG);
 
   return (
     <section className="py-20 md:py-28 bg-background">
@@ -101,25 +105,25 @@ export function LoanCalculator() {
                     Límite de Adelanto Disponible
                   </p>
                   <p className="text-5xl font-bold text-primary">
-                    {formatDOP(loanLimit.maxLoanAmount)}
+                    {formatDOP(advanceLimit.maxAdvanceAmount)}
                   </p>
                 </div>
 
                 <div className="space-y-4">
                   <ResultRow 
                     icon={<Shield className="w-4 h-4" />}
-                    label="Respaldo (Cesantía)"
-                    value={formatDOP(loanLimit.collateralBase)}
+                    label="Tu Respaldo Laboral"
+                    value={formatDOP(advanceLimit.collateralBase)}
                   />
                   <ResultRow 
                     icon={<TrendingUp className="w-4 h-4" />}
-                    label="Comisión (7%)"
-                    value={formatDOP(loanDetails.fee)}
+                    label={`Comisión de servicio (${feeLabel})`}
+                    value={formatDOP(advanceDetails.fee)}
                   />
                   <ResultRow 
                     icon={<Clock className="w-4 h-4" />}
-                    label="Total a Pagar"
-                    value={formatDOP(loanDetails.totalDebt)}
+                    label="Total a Descontar"
+                    value={formatDOP(advanceDetails.totalToDeduct)}
                     highlight
                   />
                 </div>

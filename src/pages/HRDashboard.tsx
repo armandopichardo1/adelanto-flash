@@ -15,7 +15,7 @@ import {
   Home,
   LogOut
 } from "lucide-react";
-import { formatDOP } from "@/lib/loan-calculator";
+import { formatDOP } from "@/lib/advance-calculator";
 import {
   Table,
   TableBody,
@@ -34,7 +34,7 @@ const mockCompany = {
   rnc: "1-23-45678-9",
   totalEmployees: 45,
   activeUsers: 32,
-  totalCollateral: 2500000, // Total Employee Severance Held
+  totalCollateral: 2500000, // Internal: Total Employee Severance Held
 };
 
 const mockPendingRequests = [
@@ -43,11 +43,11 @@ const mockPendingRequests = [
   { id: 3, employee: "Ana Rodríguez", cedula: "003-5555555-5", amount: 12000, requestDate: "2024-01-09", tenure: 4.1 },
 ];
 
-const mockActiveLoans = [
-  { id: 1, employee: "Carlos Santos", cedula: "004-1111111-1", amount: 10000, totalDebt: 10700, disbursedDate: "2024-01-05", status: "active" },
-  { id: 2, employee: "Laura Mejía", cedula: "005-2222222-2", amount: 5000, totalDebt: 5350, disbursedDate: "2024-01-03", status: "active" },
-  { id: 3, employee: "Pedro Núñez", cedula: "006-3333333-3", amount: 20000, totalDebt: 21400, disbursedDate: "2024-01-01", status: "active" },
-  { id: 4, employee: "Rosa Martínez", cedula: "007-4444444-4", amount: 8000, totalDebt: 8560, disbursedDate: "2024-01-02", status: "active" },
+const mockActiveAdvances = [
+  { id: 1, employee: "Carlos Santos", cedula: "004-1111111-1", amount: 10000, totalToDeduct: 10200, disbursedDate: "2024-01-05", status: "active" },
+  { id: 2, employee: "Laura Mejía", cedula: "005-2222222-2", amount: 5000, totalToDeduct: 5200, disbursedDate: "2024-01-03", status: "active" },
+  { id: 3, employee: "Pedro Núñez", cedula: "006-3333333-3", amount: 20000, totalToDeduct: 20200, disbursedDate: "2024-01-01", status: "active" },
+  { id: 4, employee: "Rosa Martínez", cedula: "007-4444444-4", amount: 8000, totalToDeduct: 8200, disbursedDate: "2024-01-02", status: "active" },
 ];
 
 export default function HRDashboard() {
@@ -55,7 +55,7 @@ export default function HRDashboard() {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    const session = localStorage.getItem("dineroYaSession");
+    const session = localStorage.getItem("adelantoYaSession");
     if (!session) {
       navigate("/login");
       return;
@@ -68,7 +68,7 @@ export default function HRDashboard() {
   }, [navigate]);
 
   const handleLogout = () => {
-    localStorage.removeItem("dineroYaSession");
+    localStorage.removeItem("adelantoYaSession");
     toast.success("Sesión cerrada");
     navigate("/");
   };
@@ -80,7 +80,7 @@ export default function HRDashboard() {
 
   // Calculate total active advances for collateral coverage
   const totalActiveAdvances = useMemo(() => 
-    mockActiveLoans.reduce((sum, loan) => sum + loan.amount, 0),
+    mockActiveAdvances.reduce((sum, adv) => sum + adv.amount, 0),
     []
   );
 
@@ -88,8 +88,8 @@ export default function HRDashboard() {
     // Generate CSV content
     const csvContent = [
       ["Cédula", "Concepto", "Monto"].join(","),
-      ...mockActiveLoans.map(loan => 
-        [loan.cedula, "Adelanto Dinero Ya", loan.totalDebt].join(",")
+      ...mockActiveAdvances.map(adv => 
+        [adv.cedula, "Adelanto Ya", adv.totalToDeduct].join(",")
       )
     ].join("\n");
 
@@ -98,7 +98,7 @@ export default function HRDashboard() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `nomina_dinero_ya_${new Date().toISOString().split('T')[0]}.csv`;
+    a.download = `nomina_adelanto_ya_${new Date().toISOString().split('T')[0]}.csv`;
     a.click();
   };
 
@@ -113,7 +113,7 @@ export default function HRDashboard() {
                 <Wallet className="w-5 h-5 text-primary-foreground" />
               </Link>
               <div>
-                <h1 className="font-bold">Dinero Ya</h1>
+                <h1 className="font-bold">Adelanto Ya</h1>
                 <p className="text-xs text-secondary-foreground/70">Panel de RRHH</p>
               </div>
             </div>
@@ -159,7 +159,7 @@ export default function HRDashboard() {
           <StatCard
             icon={<CheckCircle2 className="w-5 h-5" />}
             label="Adelantos Activos"
-            value={mockActiveLoans.length.toString()}
+            value={mockActiveAdvances.length.toString()}
             sublabel="En período de cobro"
             color="bg-primary"
           />
@@ -247,7 +247,7 @@ export default function HRDashboard() {
           )}
         </section>
 
-        {/* Active Loans Section */}
+        {/* Active Advances Section */}
         <section className="bg-background rounded-2xl shadow-soft overflow-hidden">
           <div className="p-6 border-b border-border">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -274,13 +274,13 @@ export default function HRDashboard() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {mockActiveLoans.map((loan) => (
-                <TableRow key={loan.id}>
-                  <TableCell className="font-medium">{loan.employee}</TableCell>
-                  <TableCell className="font-mono text-sm">{loan.cedula}</TableCell>
-                  <TableCell>{formatDOP(loan.amount)}</TableCell>
-                  <TableCell className="font-semibold">{formatDOP(loan.totalDebt)}</TableCell>
-                  <TableCell className="text-muted-foreground">{loan.disbursedDate}</TableCell>
+              {mockActiveAdvances.map((adv) => (
+                <TableRow key={adv.id}>
+                  <TableCell className="font-medium">{adv.employee}</TableCell>
+                  <TableCell className="font-mono text-sm">{adv.cedula}</TableCell>
+                  <TableCell>{formatDOP(adv.amount)}</TableCell>
+                  <TableCell className="font-semibold">{formatDOP(adv.totalToDeduct)}</TableCell>
+                  <TableCell className="text-muted-foreground">{adv.disbursedDate}</TableCell>
                   <TableCell>
                     <Badge variant="default" className="bg-primary/10 text-primary hover:bg-primary/20">
                       Activo

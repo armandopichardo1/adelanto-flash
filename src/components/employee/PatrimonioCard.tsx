@@ -1,8 +1,8 @@
 import { Shield, Sparkles } from "lucide-react";
-import { formatDOP } from "@/lib/loan-calculator";
+import { formatDOP } from "@/lib/advance-calculator";
 
 interface PatrimonioCardProps {
-  collateralBase: number; // Prestaciones Acumuladas (Cesantía)
+  collateralBase: number; // Internal: Prestaciones Acumuladas
   availableToday: number; // Disponible Hoy (after risk multiplier)
   tenureYears: number;
 }
@@ -23,12 +23,12 @@ export function PatrimonioCard({ collateralBase, availableToday, tenureYears }: 
         </span>
       </div>
 
-      {/* Prestaciones Acumuladas */}
+      {/* Valor Laboral Acumulado */}
       <div className="mb-4">
-        <p className="text-secondary-foreground/70 text-sm mb-1">Prestaciones Acumuladas</p>
+        <p className="text-secondary-foreground/70 text-sm mb-1">Valor Laboral Acumulado</p>
         <p className="text-3xl font-bold">{formatDOP(collateralBase)}</p>
         <p className="text-secondary-foreground/60 text-xs mt-1">
-          Cesantía acumulada en {tenureYears.toFixed(1)} años
+          Antigüedad: {tenureYears.toFixed(1)} años de servicio
         </p>
       </div>
 

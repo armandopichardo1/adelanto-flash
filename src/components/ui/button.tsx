@@ -15,7 +15,7 @@ const buttonVariants = cva(
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/90",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        // Dinero Ya Custom Variants
+        // Adelanto Ya Custom Variants
         hero: "bg-primary text-primary-foreground text-lg px-8 py-6 rounded-xl shadow-button hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] font-bold",
         trust: "bg-secondary text-secondary-foreground hover:bg-secondary/90 shadow-soft",
         money: "gradient-hero text-primary-foreground shadow-button hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]",
