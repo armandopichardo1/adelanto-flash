@@ -118,9 +118,9 @@ export default function HRDashboard() {
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-widest mb-1">Panel de Control B2B</p>
           <h1 className="font-headline text-3xl md:text-4xl font-extrabold text-foreground">{hrCompany.name}</h1>
           <p className="text-muted-foreground mt-1 max-w-2xl">Gestiona adelantos de nómina y valida solicitudes de tus empleados en tiempo real.</p>
-          <div className="flex gap-3 mt-4">
-            <Button variant="default" onClick={handleExportPayroll}><Download className="w-4 h-4" /> Exportar para Nómina (CSV)</Button>
-            <Button variant="outline"><UserPlus className="w-4 h-4" /> Nuevo Empleado</Button>
+          <div className="flex gap-3 mt-4 flex-wrap">
+            <Button variant="default" onClick={handleExportPayroll}><Download className="w-4 h-4" /> Exportar Descuentos Nómina (CSV)</Button>
+            <PayrollUpload onImportComplete={(n) => toast.info(`${n} empleados listos para activar`)} />
           </div>
         </div>
 
