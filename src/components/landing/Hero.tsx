@@ -64,7 +64,7 @@ export function Hero() {
           </div>
 
           {/* Right — Photo */}
-          <div className="relative hidden lg:block">
+          <div className="relative">
             <div className="relative rounded-3xl overflow-hidden shadow-elevated">
               <img
                 src={heroImage}
