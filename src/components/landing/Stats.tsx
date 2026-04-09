@@ -32,7 +32,7 @@ export function Stats() {
             <div className="absolute inset-0 bg-gradient-to-t from-foreground/40 to-transparent" />
             <div className="absolute bottom-6 left-6 right-6">
               <p className="text-background font-headline text-xl font-bold">
-                "Antes pedía prestado para las emergencias. Ahora uso mi propio dinero ganado."
+                "Antes esperaba quincena para resolver emergencias. Ahora accedo a mi propio dinero ganado."
               </p>
               <p className="text-background/80 text-sm mt-2">— María Elena, Grupo Corripio ZF</p>
             </div>

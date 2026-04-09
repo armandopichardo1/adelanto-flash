@@ -11,7 +11,7 @@ import { Shield, TrendingUp, Clock, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
-export function LoanCalculator() {
+export function AdvanceCalculator() {
   const [salary, setSalary] = useState(45000);
   const [tenure, setTenure] = useState(2);
 
