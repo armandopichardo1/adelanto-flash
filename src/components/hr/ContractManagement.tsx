@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+// Table imports removed - using card layout for mobile
 import { FileText, Plus, CheckCircle2, Clock, Eye, PenLine } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -92,48 +92,36 @@ export function ContractManagement({ employees, companyName, companyRNC }: Contr
         </Badge>
       </div>
 
-      <div className="px-6 pb-6">
-        <div className="rounded-xl border border-outline-variant/20 overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-surface-container-low">
-                <TableHead>Empleado</TableHead>
-                <TableHead>Cédula</TableHead>
-                <TableHead>Estado</TableHead>
-                <TableHead className="text-right">Acciones</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {employees.map(emp => {
-                const contract = getEmployeeContract(emp.id);
-                return (
-                  <TableRow key={emp.id}>
-                    <TableCell className="font-medium">{emp.name}</TableCell>
-                    <TableCell className="text-muted-foreground">{emp.cedula}</TableCell>
-                    <TableCell>{getStatusBadge(contract)}</TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex gap-2 justify-end">
-                        <Button variant="ghost" size="sm" onClick={() => handlePreview(emp)}>
-                          <Eye className="w-4 h-4" /> Ver
-                        </Button>
-                        {!contract && (
-                          <Button variant="default" size="sm" onClick={() => handleCreateContract(emp)}>
-                            <Plus className="w-4 h-4" /> Crear
-                          </Button>
-                        )}
-                        {contract?.status === "pending_employer" && (
-                          <Button variant="default" size="sm" onClick={() => handleSignAsEmployer(contract.id)}>
-                            <PenLine className="w-4 h-4" /> Firmar
-                          </Button>
-                        )}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </div>
+      <div className="px-4 pb-6 space-y-3">
+        {employees.map(emp => {
+          const contract = getEmployeeContract(emp.id);
+          return (
+            <div key={emp.id} className="rounded-xl border border-outline-variant/20 p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-medium text-foreground text-sm">{emp.name}</p>
+                  <p className="text-xs text-muted-foreground">{emp.cedula}</p>
+                </div>
+                {getStatusBadge(contract)}
+              </div>
+              <div className="flex gap-2 flex-wrap">
+                <Button variant="ghost" size="sm" onClick={() => handlePreview(emp)}>
+                  <Eye className="w-4 h-4" /> Ver
+                </Button>
+                {!contract && (
+                  <Button variant="default" size="sm" onClick={() => handleCreateContract(emp)}>
+                    <Plus className="w-4 h-4" /> Crear
+                  </Button>
+                )}
+                {contract?.status === "pending_employer" && (
+                  <Button variant="default" size="sm" onClick={() => handleSignAsEmployer(contract.id)}>
+                    <PenLine className="w-4 h-4" /> Firmar
+                  </Button>
+                )}
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       {/* Contract Preview Dialog */}
