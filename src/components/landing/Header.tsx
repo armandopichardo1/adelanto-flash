@@ -32,7 +32,7 @@ export function Header() {
           <div className="flex items-center justify-between h-14 md:h-16">
             {/* Logo */}
             <Link to="/" className="flex items-center">
-              <img src={logoImage} alt="Adelanto Ya" className="h-10 md:h-12 w-auto" />
+              <img src={logoImage} alt="Adelanto Ya" className="h-20 md:h-24 w-auto" />
             </Link>
 
             {/* Desktop Navigation */}
