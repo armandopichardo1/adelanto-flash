@@ -226,6 +226,68 @@ export default function LoginPage() {
                 </p>
               </div>
             )}
+
+            {/* Quick Demo Access */}
+            <div className="mt-8 pt-6 border-t border-outline-variant/20">
+              <p className="text-xs text-muted-foreground text-center mb-3">Acceso rápido (demo)</p>
+              <div className="grid grid-cols-3 gap-2">
+                <Button
+                  type="button"
+                  variant="soft"
+                  size="sm"
+                  className="text-xs"
+                  onClick={() => {
+                    localStorage.setItem("adelantoYaSession", JSON.stringify({
+                      type: "employee",
+                      companyCode: "TECH-001",
+                      cedula: "001-1234567-8",
+                      name: "María García",
+                      company: "Tech Solutions SRL",
+                    }));
+                    toast.success("¡Bienvenido, María!");
+                    navigate("/employee");
+                  }}
+                >
+                  <User className="w-3 h-3" />
+                  Empleado
+                </Button>
+                <Button
+                  type="button"
+                  variant="soft"
+                  size="sm"
+                  className="text-xs"
+                  onClick={() => {
+                    localStorage.setItem("adelantoYaSession", JSON.stringify({
+                      type: "hr",
+                      email: "rrhh@techsolutions.com",
+                      company: "Tech Solutions SRL",
+                    }));
+                    toast.success("¡Bienvenido al Panel de RRHH!");
+                    navigate("/hr");
+                  }}
+                >
+                  <Building2 className="w-3 h-3" />
+                  RRHH
+                </Button>
+                <Button
+                  type="button"
+                  variant="soft"
+                  size="sm"
+                  className="text-xs"
+                  onClick={() => {
+                    localStorage.setItem("adelantoYaSession", JSON.stringify({
+                      type: "admin",
+                      email: "admin@adelantoya.com",
+                    }));
+                    toast.success("¡Bienvenido al Panel de Admin!");
+                    navigate("/admin");
+                  }}
+                >
+                  <Wallet className="w-3 h-3" />
+                  Admin
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </main>
