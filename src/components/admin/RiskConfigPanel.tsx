@@ -271,6 +271,7 @@ export function RiskConfigPanel() {
     [safetyCap, tenureUnder1, tenure1to3, tenureOver3]
   );
 
+  function getHealthColor(categoryId: string, value: number): string {
     const cat = RISK_CATEGORIES[categoryId];
     if (!cat) return "text-foreground";
     if (cat.dangerThreshold.below !== undefined && value < cat.dangerThreshold.below) return "text-destructive";
