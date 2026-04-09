@@ -36,6 +36,7 @@ import {
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
+  const [viewingCompany, setViewingCompany] = useState<string | null>(null);
 
   useEffect(() => {
     const session = localStorage.getItem("adelantoYaSession");
@@ -267,7 +268,7 @@ function KPICard({ icon, label, value, badge, badgeColor, status }: { icon: Reac
     </div>
   );
 }
-  const [viewingCompany, setViewingCompany] = useState<string | null>(null);
+
 
 function StatusBadge({ status }: { status: "healthy" | "warning" | "toxic" }) {
   const config = { healthy: { label: "Saludable", className: "bg-accent text-accent-foreground" }, warning: { label: "Precaución", className: "bg-warning/10 text-warning" }, toxic: { label: "Tóxico", className: "bg-destructive/10 text-destructive" } };
