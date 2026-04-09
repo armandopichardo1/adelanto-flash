@@ -29,9 +29,9 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section className="py-24 md:py-32 bg-surface">
+    <section className="py-16 md:py-32 bg-surface">
       <div className="container mx-auto px-4">
-        <div className="max-w-xl mb-16">
+        <div className="max-w-xl mb-10 md:mb-16">
           <p className="text-primary font-semibold text-sm tracking-wide uppercase mb-3">Proceso simple</p>
           <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground mb-4">
             4 pasos para acceder a tu salario

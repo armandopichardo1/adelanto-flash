@@ -11,22 +11,22 @@ const trustPoints = [
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden bg-surface min-h-[90vh] flex items-center">
+    <section className="relative overflow-hidden bg-surface min-h-[70vh] lg:min-h-[90vh] flex items-center">
       {/* Subtle organic background shapes */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 right-0 w-[60%] h-full bg-accent/30 rounded-bl-[120px]" />
         <div className="absolute -bottom-20 -left-20 w-80 h-80 rounded-full bg-secondary-container/10 blur-3xl" />
       </div>
 
-      <div className="relative container mx-auto px-4 py-16 md:py-0">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <div className="relative container mx-auto px-4 py-10 md:py-0">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           {/* Left — Copy */}
           <div className="max-w-xl">
-            <p className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent text-accent-foreground text-xs font-semibold tracking-wide uppercase mb-6">
+            <p className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent text-accent-foreground text-xs font-semibold tracking-wide uppercase mb-4">
               Bienestar financiero para tu equipo
             </p>
 
-            <h1 className="font-headline text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold leading-[1.1] text-foreground mb-6">
+            <h1 className="font-headline text-3xl md:text-5xl lg:text-[3.5rem] font-extrabold leading-[1.1] text-foreground mb-4">
               Accede a tu salario{" "}
               <span className="relative">
                 <span className="text-primary">cuando lo necesites</span>
@@ -36,12 +36,12 @@ export function Hero() {
               </span>
             </h1>
 
-            <p className="text-lg text-muted-foreground leading-relaxed mb-8">
+            <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-6">
               Adelanto Ya permite a los trabajadores dominicanos acceder a su dinero ganado antes del día de pago. Sin trámites, sin esperas — solo tu esfuerzo convertido en liquidez inmediata.
             </p>
 
             {/* Trust checklist */}
-            <ul className="space-y-3 mb-10">
+            <ul className="space-y-2 mb-8">
               {trustPoints.map((point) => (
                 <li key={point} className="flex items-center gap-3 text-foreground">
                   <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0" />
