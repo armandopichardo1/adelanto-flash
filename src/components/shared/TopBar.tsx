@@ -26,7 +26,7 @@ export function TopBar({ subtitle, variant = "employee", companyName, children }
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link to="/" className="flex items-center">
-              <img src={logoImage} alt="Adelanto Ya" className="h-8 w-auto" />
+              <img src={logoImage} alt="Adelanto Ya" className="h-14 w-auto" />
             </Link>
             <div>
               <h1 className="font-headline font-bold text-foreground">Adelanto Ya</h1>
