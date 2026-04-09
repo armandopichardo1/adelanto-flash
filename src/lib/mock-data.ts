@@ -110,12 +110,12 @@ export const adminKPIs = {
 };
 
 export const adminMonthlyData = [
-  { month: "Sep", disbursed: 2800000, recovered: 2720000, advances: 320, users: 890 },
-  { month: "Oct", disbursed: 4900000, recovered: 4780000, advances: 580, users: 1450 },
-  { month: "Nov", disbursed: 7600000, recovered: 7400000, advances: 890, users: 2100 },
-  { month: "Dic", disbursed: 12100000, recovered: 11800000, advances: 1420, users: 3200 },
-  { month: "Ene", disbursed: 16300000, recovered: 15900000, advances: 1890, users: 4100 },
-  { month: "Feb", disbursed: 20100000, recovered: 19600000, advances: 2340, users: 5250 },
+  { month: "Sep", disbursed: 2800000, recovered: 2720000, advances: 320, users: 890, corripio: 800000, codevi: 900000, hanes: 600000, gildan: 350000, nigua: 150000 },
+  { month: "Oct", disbursed: 4900000, recovered: 4780000, advances: 580, users: 1450, corripio: 1400000, codevi: 1500000, hanes: 1100000, gildan: 600000, nigua: 300000 },
+  { month: "Nov", disbursed: 7600000, recovered: 7400000, advances: 890, users: 2100, corripio: 2100000, codevi: 2400000, hanes: 1700000, gildan: 950000, nigua: 450000 },
+  { month: "Dic", disbursed: 12100000, recovered: 11800000, advances: 1420, users: 3200, corripio: 3400000, codevi: 3800000, hanes: 2700000, gildan: 1500000, nigua: 700000 },
+  { month: "Ene", disbursed: 16300000, recovered: 15900000, advances: 1890, users: 4100, corripio: 4600000, codevi: 5100000, hanes: 3600000, gildan: 2000000, nigua: 1000000 },
+  { month: "Feb", disbursed: 20100000, recovered: 19600000, advances: 2340, users: 5250, corripio: 5700000, codevi: 6300000, hanes: 4400000, gildan: 2500000, nigua: 1200000 },
 ];
 
 export const adminCompanyProfitData = [

@@ -19,8 +19,8 @@ import { formatDOP, formatPercent } from "@/lib/advance-calculator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  BarChart, Bar, PieChart, Pie, Cell,
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
+  BarChart, Bar, PieChart, Pie, Cell, ComposedChart,
 } from "recharts";
 import { toast } from "sonner";
 import {
@@ -29,6 +29,7 @@ import {
   adminCompanyProfitData,
   adminPortfolioData,
   adminPendingDisbursements,
+  mockEmployers,
 } from "@/lib/mock-data";
 
 export default function AdminDashboard() {
@@ -93,6 +94,36 @@ export default function AdminDashboard() {
           </div>
         </section>
 
+        {/* Adopción por Empresa */}
+        <section className="bg-surface-container-lowest rounded-2xl shadow-card p-6">
+          <h3 className="font-headline text-lg font-bold text-foreground mb-1">Adopción por Empresa</h3>
+          <p className="text-sm text-muted-foreground mb-4">Empleados activos en la plataforma vs. total registrado</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            {mockEmployers.map((emp) => {
+              const rate = emp.active / emp.workers;
+              const barWidth = Math.round(rate * 100);
+              return (
+                <div key={emp.id} className="bg-surface-container-low rounded-xl p-4 space-y-2">
+                  <p className="font-semibold text-sm text-foreground truncate">{emp.name}</p>
+                  <div className="flex items-baseline gap-1">
+                    <span className="font-headline text-2xl font-bold text-primary">{(rate * 100).toFixed(0)}%</span>
+                  </div>
+                  <div className="h-2 rounded-full bg-surface-container-high overflow-hidden">
+                    <div
+                      className={`h-full rounded-full transition-all duration-700 ${rate >= 0.6 ? "bg-primary" : rate >= 0.4 ? "bg-warning" : "bg-destructive"}`}
+                      style={{ width: `${barWidth}%` }}
+                    />
+                  </div>
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>{emp.active.toLocaleString("es-DO")} activos</span>
+                    <span>{emp.workers.toLocaleString("es-DO")} total</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
         {/* Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <section className="lg:col-span-2 bg-surface-container-lowest rounded-2xl shadow-card p-6">
@@ -131,19 +162,29 @@ export default function AdminDashboard() {
           </section>
         </div>
 
-        {/* Trend */}
+        {/* Trend — Stacked by Company + Lines */}
         <section className="bg-surface-container-lowest rounded-2xl shadow-card p-6">
-          <h3 className="font-headline text-lg font-bold text-foreground mb-4">Tendencia Mensual — Crecimiento ZF</h3>
-          <div className="h-64">
+          <h3 className="font-headline text-lg font-bold text-foreground mb-1">Tendencia Mensual — Volumen por Empresa</h3>
+          <p className="text-sm text-muted-foreground mb-4">Desembolsos acumulados por empresa (barras) y total desembolsado vs. recuperado (líneas)</p>
+          <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={adminMonthlyData}>
+              <ComposedChart data={adminMonthlyData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--outline-variant))" strokeOpacity={0.3} />
                 <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" fontSize={12} />
                 <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickFormatter={(v) => `${v / 1000000}M`} />
-                <Tooltip contentStyle={{ backgroundColor: "hsl(var(--card))", border: "none", borderRadius: "12px", boxShadow: "0 10px 30px rgba(0,0,0,0.08)" }} formatter={(value: number) => formatDOP(value)} />
-                <Line type="monotone" dataKey="disbursed" stroke="hsl(var(--primary))" strokeWidth={2} name="Desembolsado" dot={{ fill: "hsl(var(--primary))" }} />
-                <Line type="monotone" dataKey="recovered" stroke="hsl(var(--secondary))" strokeWidth={2} name="Recuperado" dot={{ fill: "hsl(var(--secondary))" }} />
-              </LineChart>
+                <Tooltip
+                  contentStyle={{ backgroundColor: "hsl(var(--card))", border: "none", borderRadius: "12px", boxShadow: "0 10px 30px rgba(0,0,0,0.08)" }}
+                  formatter={(value: number, name: string) => [formatDOP(value), name]}
+                />
+                <Legend wrapperStyle={{ fontSize: "11px" }} />
+                <Bar dataKey="corripio" stackId="companies" fill="hsl(142, 71%, 28%)" name="Corripio" radius={[0, 0, 0, 0]} />
+                <Bar dataKey="codevi" stackId="companies" fill="hsl(142, 50%, 42%)" name="CODEVI" />
+                <Bar dataKey="hanes" stackId="companies" fill="hsl(142, 40%, 55%)" name="Hanes" />
+                <Bar dataKey="gildan" stackId="companies" fill="hsl(230, 40%, 55%)" name="Gildan" />
+                <Bar dataKey="nigua" stackId="companies" fill="hsl(230, 30%, 70%)" name="Nigua" radius={[4, 4, 0, 0]} />
+                <Line type="monotone" dataKey="disbursed" stroke="hsl(var(--foreground))" strokeWidth={2} strokeDasharray="5 5" name="Total Desembolsado" dot={false} />
+                <Line type="monotone" dataKey="recovered" stroke="hsl(var(--secondary))" strokeWidth={2} name="Recuperado" dot={{ fill: "hsl(var(--secondary))", r: 3 }} />
+              </ComposedChart>
             </ResponsiveContainer>
           </div>
         </section>
