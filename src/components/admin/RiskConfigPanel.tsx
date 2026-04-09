@@ -25,6 +25,8 @@ import {
 } from "lucide-react";
 import { formatDOP } from "@/lib/advance-calculator";
 import { mockEmployers } from "@/lib/mock-data";
+import { supabase } from "@/integrations/supabase/client";
+import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 // ─── Risk Category Definitions & Recommendations ────────────
