@@ -28,7 +28,7 @@ export function Footer() {
           {/* Brand column */}
           <div className="col-span-2 md:col-span-1">
             <Link to="/" className="flex items-center mb-5">
-              <img src={logoImage} alt="Adelanto Ya" className="h-20 w-auto" style={{ filter: "brightness(0) invert(1)", mixBlendMode: "screen" }} />
+              <img src={logoImage} alt="Adelanto Ya" className="h-20 w-auto invert" style={{ mixBlendMode: "screen" }} />
             </Link>
             <p className="text-background/50 text-sm leading-relaxed mb-6">
               Tu salario ganado, cuando lo necesites. Libertad financiera para los trabajadores dominicanos.
