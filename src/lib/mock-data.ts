@@ -39,6 +39,12 @@ export const currentEmployee = {
   department: "Producción",
   cedula: "001-1234567-8",
   dineroScore: 680,
+  birthDate: "1995-06-12",
+  phone: "+18091234567",
+  email: "maria.perez@corripio.com.do",
+  bankName: "Banco Popular Dominicano",
+  bankAccountType: "Ahorro" as const,
+  bankAccountNumber: "****4523",
 };
 
 // ─── Active Advance ─────────────────────────────────────────
