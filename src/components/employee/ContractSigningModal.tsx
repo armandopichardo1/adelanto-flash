@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Checkbox } from "@/components/ui/checkbox";
 import { FileText, PenLine, Check } from "lucide-react";
 import { toast } from "sonner";
+import { SignatureCanvas } from "@/components/shared/SignatureCanvas";
 import {
   generateContractHTML,
   signContractAsEmployee,
@@ -22,6 +23,7 @@ interface ContractSigningModalProps {
 export function ContractSigningModal({ open, onOpenChange, contract, contractData, onSigned }: ContractSigningModalProps) {
   const [accepted, setAccepted] = useState(false);
   const [signed, setSigned] = useState(false);
+  const [hasSig, setHasSig] = useState(false);
 
   const handleSign = () => {
     signContractAsEmployee(contract.id);
@@ -59,13 +61,9 @@ export function ContractSigningModal({ open, onOpenChange, contract, contractDat
             />
 
             <div className="space-y-4 mt-4">
-              {/* Signature pad placeholder */}
-              <div>
-                <p className="text-sm font-medium text-foreground mb-2">Firma Digital</p>
-                <div className="h-24 border-2 border-dashed border-outline-variant rounded-2xl flex items-center justify-center cursor-crosshair bg-surface-container-low">
-                  <p className="text-muted-foreground text-sm">Firma aquí con el dedo o mouse</p>
-                </div>
-              </div>
+              <SignatureCanvas
+                onSignatureChange={(has) => setHasSig(has)}
+              />
 
               <div className="flex items-start gap-3">
                 <Checkbox
@@ -84,7 +82,7 @@ export function ContractSigningModal({ open, onOpenChange, contract, contractDat
                 size="xl"
                 className="w-full"
                 onClick={handleSign}
-                disabled={!accepted}
+                disabled={!accepted || !hasSig}
               >
                 <PenLine className="w-5 h-5" /> Firmar Contrato
               </Button>
