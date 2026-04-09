@@ -149,32 +149,7 @@ export default function AdminDashboard() {
           </div>
         </section>
 
-        {/* Risk Config */}
-        <section className="bg-surface-container-lowest rounded-2xl shadow-card overflow-hidden">
-          <div className="p-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2"><Settings className="w-5 h-5 text-primary" /><h2 className="font-headline text-xl font-bold text-foreground">Configuración de Riesgo</h2></div>
-              <Button onClick={handleSaveRisk} size="sm"><Save className="w-4 h-4" /> Guardar</Button>
-            </div>
-            <p className="text-muted-foreground mt-1">Ajusta los caps de riesgo que controlan los límites de adelanto.</p>
-          </div>
-          <div className="px-6 pb-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-surface-container-low rounded-2xl p-5 space-y-4">
-              <SliderField label="Safety Cap" value={safetyCap} onChange={setSafetyCap} min={10} max={100} step={5} suffix="%" />
-              <div>
-                <div className="flex justify-between mb-2"><Label className="text-sm">Art. 201 Cap (fijo)</Label><span className="text-sm font-bold text-muted-foreground">30%</span></div>
-                <div className="h-2 rounded-full bg-surface-container-high"><div className="h-full w-[30%] rounded-full bg-muted-foreground/50" /></div>
-                <p className="text-xs text-muted-foreground mt-1">No modificable — Código Laboral Art. 201</p>
-              </div>
-            </div>
-            <div className="bg-surface-container-low rounded-2xl p-5 space-y-4">
-              <SliderField label="Tenure <1 año" value={tenureUnder1} onChange={setTenureUnder1} min={5} max={50} step={5} suffix="%" />
-              <SliderField label="Tenure 1-3 años" value={tenure1to3} onChange={setTenure1to3} min={10} max={80} step={5} suffix="%" />
-              <SliderField label="Tenure >3 años" value={tenureOver3} onChange={setTenureOver3} min={20} max={100} step={5} suffix="%" />
-              <SliderField label="Max Concentración por Empresa" value={maxConcentration} onChange={setMaxConcentration} min={5} max={25} step={1} suffix="%" />
-            </div>
-          </div>
-        </section>
+        <RiskConfigPanel />
 
         {/* Disbursement Queue */}
         <section className="bg-surface-container-lowest rounded-2xl shadow-card overflow-hidden">
