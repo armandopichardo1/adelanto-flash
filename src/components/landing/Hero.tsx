@@ -4,11 +4,11 @@ import { ArrowRight, Shield, Zap, Clock } from "lucide-react";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden bg-background">
+    <section className="relative overflow-hidden bg-surface">
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-1/2 -right-1/4 w-[800px] h-[800px] rounded-full bg-money-light opacity-50 blur-3xl" />
-        <div className="absolute -bottom-1/4 -left-1/4 w-[600px] h-[600px] rounded-full bg-trust-light opacity-30 blur-3xl" />
+        <div className="absolute -top-1/2 -right-1/4 w-[800px] h-[800px] rounded-full bg-accent opacity-50 blur-3xl" />
+        <div className="absolute -bottom-1/4 -left-1/4 w-[600px] h-[600px] rounded-full bg-secondary-container/20 opacity-30 blur-3xl" />
       </div>
 
       <div className="relative container mx-auto px-4 pt-20 pb-24 md:pt-32 md:pb-32">
@@ -20,7 +20,7 @@ export function Hero() {
           </div>
 
           {/* Headline */}
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground mb-6 animate-slide-up">
+          <h1 className="font-headline text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-foreground mb-6 animate-slide-up">
             Tu Salario,{" "}
             <span className="text-primary">On-Demand</span>
           </h1>
@@ -78,12 +78,12 @@ function TrustBadge({
   description: string;
 }) {
   return (
-    <div className="flex items-center gap-3 p-4 rounded-xl bg-card shadow-soft">
+    <div className="flex items-center gap-3 p-4 rounded-2xl bg-surface-container-lowest shadow-card">
       <div className="flex items-center justify-center w-10 h-10 rounded-full bg-accent text-primary">
         {icon}
       </div>
       <div className="text-left">
-        <p className="font-semibold text-foreground">{title}</p>
+        <p className="font-headline font-semibold text-foreground">{title}</p>
         <p className="text-sm text-muted-foreground">{description}</p>
       </div>
     </div>

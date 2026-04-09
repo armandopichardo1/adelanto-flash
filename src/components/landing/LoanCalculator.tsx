@@ -24,7 +24,7 @@ export function LoanCalculator() {
   const feeLabel = getFeeLabel(DEFAULT_FEE_CONFIG);
 
   return (
-    <section className="py-20 md:py-28 bg-background">
+    <section className="py-20 md:py-28 bg-surface-container-low">
       <div className="container mx-auto px-4">
         {/* Section header */}
         <div className="text-center max-w-2xl mx-auto mb-12">
@@ -32,7 +32,7 @@ export function LoanCalculator() {
             <Calculator className="w-4 h-4" />
             <span>Calculadora de Adelanto</span>
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+          <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground mb-4">
             Calcula Tu Límite
           </h2>
           <p className="text-lg text-muted-foreground">
@@ -41,7 +41,7 @@ export function LoanCalculator() {
         </div>
 
         <div className="max-w-4xl mx-auto">
-          <div className="bg-card rounded-3xl shadow-card p-8 md:p-10">
+          <div className="bg-surface-container-lowest rounded-3xl shadow-card p-8 md:p-10">
             <div className="grid md:grid-cols-2 gap-10">
               {/* Inputs */}
               <div className="space-y-8">
@@ -51,7 +51,7 @@ export function LoanCalculator() {
                     <label className="text-sm font-medium text-foreground">
                       Salario Mensual
                     </label>
-                    <span className="text-2xl font-bold text-primary">
+                    <span className="font-headline text-2xl font-bold text-primary">
                       {formatDOP(salary)}
                     </span>
                   </div>
@@ -75,7 +75,7 @@ export function LoanCalculator() {
                     <label className="text-sm font-medium text-foreground">
                       Años de Antigüedad
                     </label>
-                    <span className="text-2xl font-bold text-primary">
+                    <span className="font-headline text-2xl font-bold text-primary">
                       {tenure} {tenure === 1 ? 'año' : 'años'}
                     </span>
                   </div>
@@ -95,8 +95,8 @@ export function LoanCalculator() {
               </div>
 
               {/* Results */}
-              <div className="bg-muted/50 rounded-2xl p-6">
-                <h3 className="text-lg font-semibold text-foreground mb-6">
+              <div className="bg-surface-container-low rounded-2xl p-6">
+                <h3 className="font-headline text-lg font-semibold text-foreground mb-6">
                   Tu Resultado
                 </h3>
 
@@ -104,7 +104,7 @@ export function LoanCalculator() {
                   <p className="text-sm text-muted-foreground mb-2">
                     Límite de Adelanto Disponible
                   </p>
-                  <p className="text-5xl font-bold text-primary">
+                  <p className="font-headline text-5xl font-bold text-primary">
                     {formatDOP(advanceLimit.maxAdvanceAmount)}
                   </p>
                 </div>
@@ -153,7 +153,7 @@ function ResultRow({
   highlight?: boolean;
 }) {
   return (
-    <div className={`flex items-center justify-between p-3 rounded-lg ${highlight ? 'bg-primary/10' : ''}`}>
+    <div className={`flex items-center justify-between p-3 rounded-xl ${highlight ? 'bg-accent' : ''}`}>
       <div className="flex items-center gap-2 text-muted-foreground">
         {icon}
         <span className="text-sm">{label}</span>
