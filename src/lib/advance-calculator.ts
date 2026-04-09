@@ -8,6 +8,7 @@ export { type RiskConfig, DEFAULT_RISK_CONFIG, getRiskMultiplier, getTenureLevel
 
 import { type FeeConfig, DEFAULT_FEE_CONFIG, calculateFee } from './fee-config';
 import { type RiskConfig, DEFAULT_RISK_CONFIG, getRiskMultiplier } from './risk-config';
+import { getTenureLevel } from './risk-config';
 
 export type RiskMode = 'conservative' | 'aggressive';
 
