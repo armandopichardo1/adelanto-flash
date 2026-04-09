@@ -29,14 +29,14 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section className="py-20 md:py-28 bg-background">
+    <section className="py-20 md:py-28 bg-surface">
       <div className="container mx-auto px-4">
         {/* Section header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span className="inline-block px-4 py-2 rounded-full bg-accent text-accent-foreground text-sm font-medium mb-4">
             Proceso Simple
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+          <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground mb-4">
             ¿Cómo Funciona?
           </h2>
           <p className="text-lg text-muted-foreground">
@@ -47,7 +47,7 @@ export function HowItWorks() {
         {/* Steps */}
         <div className="relative">
           {/* Connection line (desktop) */}
-          <div className="hidden lg:block absolute top-24 left-1/2 -translate-x-1/2 w-3/4 h-0.5 bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+          <div className="hidden lg:block absolute top-24 left-1/2 -translate-x-1/2 w-3/4 h-0.5 bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-6">
             {steps.map((step, index) => (
@@ -80,15 +80,15 @@ function StepCard({
     >
       {/* Step number badge */}
       <div className="relative inline-flex mb-6">
-        <div className="w-20 h-20 rounded-2xl gradient-hero flex items-center justify-center shadow-button">
+        <div className="w-20 h-20 rounded-3xl gradient-hero flex items-center justify-center shadow-button">
           <Icon className="w-8 h-8 text-primary-foreground" />
         </div>
-        <span className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-secondary text-secondary-foreground text-sm font-bold flex items-center justify-center shadow-soft">
+        <span className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-secondary text-secondary-foreground text-sm font-bold flex items-center justify-center shadow-card">
           {step}
         </span>
       </div>
 
-      <h3 className="text-xl font-semibold text-foreground mb-2">{title}</h3>
+      <h3 className="font-headline text-xl font-semibold text-foreground mb-2">{title}</h3>
       <p className="text-muted-foreground">{description}</p>
     </div>
   );

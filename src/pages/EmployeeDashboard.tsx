@@ -14,7 +14,8 @@ import {
   History,
   RefreshCw,
   LogOut,
-  Home
+  Home,
+  User
 } from "lucide-react";
 import { 
   calculateAdvanceLimit, 
@@ -38,10 +39,9 @@ const mockEmployee = {
   tenureYears: 2.5,
   riskMode: 'conservative' as const,
   preApproved: true,
-  repaidCycles: 3, // For Dinero Score
+  repaidCycles: 3,
 };
 
-// Mock active advance for Smart Refill demo (set to null for no active advance)
 const mockActiveAdvance: ActiveAdvance | null = {
   id: "adv-001",
   amount: 5000,
@@ -52,10 +52,10 @@ const mockActiveAdvance: ActiveAdvance | null = {
 };
 
 const tenureLevelConfig = {
-  bronze: { label: "Bronce", color: "text-amber-600", bg: "bg-amber-100", progress: 25 },
-  silver: { label: "Plata", color: "text-slate-500", bg: "bg-slate-100", progress: 50 },
-  gold: { label: "Oro", color: "text-yellow-500", bg: "bg-yellow-100", progress: 75 },
-  platinum: { label: "Platino", color: "text-purple-500", bg: "bg-purple-100", progress: 100 },
+  bronze: { label: "Bronce", color: "text-amber-600", bg: "bg-amber-50", progress: 25 },
+  silver: { label: "Plata", color: "text-muted-foreground", bg: "bg-surface-container", progress: 50 },
+  gold: { label: "Oro", color: "text-yellow-500", bg: "bg-yellow-50", progress: 75 },
+  platinum: { label: "Platino", color: "text-secondary", bg: "bg-secondary-container/20", progress: 100 },
 };
 
 export default function EmployeeDashboard() {
@@ -87,13 +87,11 @@ export default function EmployeeDashboard() {
     riskMode: mockEmployee.riskMode,
   }), []);
 
-  // Smart Refill logic
   const smartRefill = useMemo(() => 
     checkSmartRefill(mockActiveAdvance, advanceLimit.maxAdvanceAmount), 
     [advanceLimit.maxAdvanceAmount]
   );
 
-  // For Smart Refill: max is remaining available, min is 1000
   const sliderMax = smartRefill.canRefill ? smartRefill.remainingAvailable : advanceLimit.maxAdvanceAmount;
   const sliderMin = 1000;
   
@@ -101,7 +99,6 @@ export default function EmployeeDashboard() {
     Math.floor(Math.min(sliderMax / 2, sliderMax))
   );
   
-  // Ensure requested amount doesn't exceed slider max
   useEffect(() => {
     if (requestedAmount > sliderMax) {
       setRequestedAmount(sliderMax);
@@ -119,17 +116,17 @@ export default function EmployeeDashboard() {
   const feeLabel = getFeeLabel(DEFAULT_FEE_CONFIG);
 
   return (
-    <div className="min-h-screen bg-muted/30">
+    <div className="min-h-screen bg-surface-container-low">
       {/* Header */}
-      <header className="bg-background border-b border-border sticky top-0 z-50">
+      <header className="bg-surface-container-lowest sticky top-0 z-50 shadow-card">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl gradient-hero flex items-center justify-center">
+              <div className="w-10 h-10 rounded-2xl gradient-hero flex items-center justify-center">
                 <Wallet className="w-5 h-5 text-primary-foreground" />
               </div>
               <div>
-                <h1 className="font-bold text-foreground">Adelanto Ya</h1>
+                <h1 className="font-headline font-bold text-foreground">Adelanto Ya</h1>
                 <p className="text-xs text-muted-foreground">{mockEmployee.company}</p>
               </div>
             </Link>
@@ -147,13 +144,13 @@ export default function EmployeeDashboard() {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-6 space-y-6 pb-24">
+      <main className="container mx-auto px-4 py-6 space-y-6 pb-28">
         {/* Welcome Card */}
-        <div className="bg-background rounded-2xl p-6 shadow-soft">
+        <div className="bg-surface-container-lowest rounded-2xl p-6 shadow-card">
           <div className="flex items-center justify-between mb-4">
             <div>
               <p className="text-muted-foreground text-sm">¡Hola!</p>
-              <h2 className="text-2xl font-bold text-foreground">{mockEmployee.name}</h2>
+              <h2 className="font-headline text-2xl font-bold text-foreground">{mockEmployee.name}</h2>
             </div>
             {mockEmployee.preApproved && (
               <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-accent text-accent-foreground text-sm font-medium">
@@ -164,7 +161,7 @@ export default function EmployeeDashboard() {
           </div>
 
           {/* Tenure Progress */}
-          <div className="bg-muted/50 rounded-xl p-4">
+          <div className="bg-surface-container-low rounded-2xl p-4">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
                 <Award className={`w-5 h-5 ${tenureConfig.color}`} />
@@ -198,9 +195,9 @@ export default function EmployeeDashboard() {
         />
 
         {/* Advance Request Card */}
-        <div className="bg-background rounded-2xl p-6 shadow-soft">
+        <div className="bg-surface-container-lowest rounded-2xl p-6 shadow-card">
           <div className="text-center mb-6">
-            <h3 className="text-lg font-semibold text-foreground mb-1">
+            <h3 className="font-headline text-lg font-semibold text-foreground mb-1">
               {smartRefill.canRefill ? 'Recargar Adelanto' : 'Solicitar Adelanto Flash'}
             </h3>
             <p className="text-sm text-muted-foreground">
@@ -213,7 +210,7 @@ export default function EmployeeDashboard() {
 
           {/* Amount Display */}
           <div className="text-center mb-4">
-            <p className="text-5xl font-bold text-primary mb-2 tabular-nums">
+            <p className="font-headline text-5xl font-bold text-primary mb-2 tabular-nums">
               {formatDOP(requestedAmount)}
             </p>
             <p className="text-muted-foreground">
@@ -246,7 +243,7 @@ export default function EmployeeDashboard() {
           </div>
 
           {/* Fee Breakdown */}
-          <div className="bg-muted/50 rounded-xl p-4 mb-6 space-y-3">
+          <div className="bg-surface-container-low rounded-2xl p-4 mb-6 space-y-3">
             <div className="flex justify-between items-center">
               <span className="text-muted-foreground">
                 {smartRefill.canRefill ? 'Monto adicional' : 'Monto solicitado'}
@@ -267,11 +264,11 @@ export default function EmployeeDashboard() {
                 <span>* Comisión solo sobre el monto adicional</span>
               </div>
             )}
-            <div className="border-t border-border pt-3 flex justify-between items-center">
+            <div className="pt-3 flex justify-between items-center">
               <span className="font-semibold text-foreground">
                 {smartRefill.canRefill ? 'Total adicional a descontar' : 'Total a Descontar'}
               </span>
-              <span className="font-bold text-xl text-foreground">
+              <span className="font-headline font-bold text-xl text-foreground">
                 {formatDOP('incrementalTotalToDeduct' in advanceDetails 
                   ? advanceDetails.incrementalTotalToDeduct
                   : advanceDetails.totalToDeduct
@@ -317,7 +314,7 @@ export default function EmployeeDashboard() {
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-background rounded-2xl shadow-soft divide-y divide-border">
+        <div className="bg-surface-container-lowest rounded-2xl shadow-card overflow-hidden">
           <QuickAction
             icon={<History className="w-5 h-5" />}
             label="Historial de Adelantos"
@@ -330,7 +327,24 @@ export default function EmployeeDashboard() {
           />
         </div>
       </main>
+
+      {/* Bottom Navigation (Mobile) */}
+      <nav className="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pt-2 pb-6 bg-surface-container-lowest/80 backdrop-blur-xl rounded-t-3xl shadow-[0_-10px_30px_rgba(0,110,42,0.04)] md:hidden">
+        <BottomNavItem icon="home" label="Inicio" active />
+        <BottomNavItem icon="payments" label="Adelantos" />
+        <BottomNavItem icon="receipt_long" label="Historial" />
+        <BottomNavItem icon="person" label="Perfil" />
+      </nav>
     </div>
+  );
+}
+
+function BottomNavItem({ icon, label, active = false }: { icon: string; label: string; active?: boolean }) {
+  return (
+    <button className={`flex flex-col items-center gap-1 px-3 py-1 rounded-xl transition-colors ${active ? 'text-primary' : 'text-muted-foreground'}`}>
+      <span className="material-symbols-outlined text-[22px]">{icon}</span>
+      <span className="text-[11px] font-medium">{label}</span>
+    </button>
   );
 }
 
@@ -346,12 +360,12 @@ function QuickStat({
   sublabel: string;
 }) {
   return (
-    <div className="bg-background rounded-xl p-4 shadow-soft">
+    <div className="bg-surface-container-lowest rounded-2xl p-4 shadow-card">
       <div className="flex items-center gap-2 text-primary mb-2">
         {icon}
         <span className="text-sm font-medium text-muted-foreground">{label}</span>
       </div>
-      <p className="text-xl font-bold text-foreground">{value}</p>
+      <p className="font-headline text-xl font-bold text-foreground">{value}</p>
       <p className="text-xs text-muted-foreground">{sublabel}</p>
     </div>
   );
@@ -367,9 +381,9 @@ function QuickAction({
   sublabel: string;
 }) {
   return (
-    <button className="w-full flex items-center justify-between p-4 hover:bg-muted/50 transition-colors text-left">
+    <button className="w-full flex items-center justify-between p-4 hover:bg-surface-container-low transition-colors text-left">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center text-primary">
+        <div className="w-10 h-10 rounded-2xl bg-accent flex items-center justify-center text-primary">
           {icon}
         </div>
         <div>

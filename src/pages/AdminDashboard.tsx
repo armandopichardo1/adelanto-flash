@@ -38,7 +38,6 @@ import {
 } from "recharts";
 import { toast } from "sonner";
 
-// Mock KPI Data
 const kpiData = {
   collateralCoverage: 2.4,
   defaultRate: 0.028,
@@ -94,32 +93,32 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-muted/30">
+    <div className="min-h-screen bg-surface-container-low">
       {/* Header */}
-      <header className="bg-secondary text-secondary-foreground">
+      <header className="bg-gradient-to-r from-primary to-primary-container text-primary-foreground">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Link to="/" className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
+              <Link to="/" className="w-10 h-10 rounded-2xl bg-primary-foreground/20 flex items-center justify-center">
                 <Wallet className="w-5 h-5 text-primary-foreground" />
               </Link>
               <div>
-                <h1 className="font-bold">Adelanto Ya</h1>
-                <p className="text-xs text-secondary-foreground/70">Panel de Administración</p>
+                <h1 className="font-headline font-bold">Adelanto Ya</h1>
+                <p className="text-xs text-primary-foreground/70">Panel de Administración</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <Button variant="ghost" size="sm" asChild className="text-secondary-foreground">
+              <Button variant="ghost" size="sm" asChild className="text-primary-foreground hover:bg-primary-foreground/10">
                 <Link to="/">
                   <Home className="w-4 h-4 mr-2" />
                   <span className="hidden sm:inline">Inicio</span>
                 </Link>
               </Button>
-              <Button variant="ghost" size="sm" className="text-secondary-foreground">
+              <Button variant="ghost" size="sm" className="text-primary-foreground hover:bg-primary-foreground/10">
                 <Settings className="w-4 h-4 mr-2" />
                 <span className="hidden sm:inline">Configuración</span>
               </Button>
-              <Button variant="ghost" size="sm" onClick={handleLogout} className="text-secondary-foreground">
+              <Button variant="ghost" size="sm" onClick={handleLogout} className="text-primary-foreground hover:bg-primary-foreground/10">
                 <LogOut className="w-4 h-4 mr-2" />
                 <span className="hidden sm:inline">Salir</span>
               </Button>
@@ -128,10 +127,10 @@ export default function AdminDashboard() {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-6 space-y-6">
+      <main className="container mx-auto px-4 py-8 space-y-8">
         {/* Critical KPIs */}
         <section>
-          <h2 className="text-xl font-bold text-foreground mb-4">Indicadores Críticos</h2>
+          <h2 className="font-headline text-xl font-bold text-foreground mb-4">Indicadores Críticos</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
             <KPICard
               icon={<BarChart3 className="w-5 h-5" />}
@@ -176,22 +175,22 @@ export default function AdminDashboard() {
           </div>
         </section>
 
-        {/* Charts Row */}
+        {/* Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Monthly Trend Chart */}
-          <section className="bg-background rounded-2xl shadow-soft p-6">
-            <h3 className="text-lg font-bold text-foreground mb-4">Tendencia Mensual</h3>
+          <section className="bg-surface-container-lowest rounded-2xl shadow-card p-6">
+            <h3 className="font-headline text-lg font-bold text-foreground mb-4">Tendencia Mensual</h3>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={monthlyTrendData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--outline-variant))" strokeOpacity={0.3} />
                   <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" fontSize={12} />
                   <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickFormatter={(v) => `${v/1000}k`} />
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: "hsl(var(--background))",
-                      border: "1px solid hsl(var(--border))",
-                      borderRadius: "8px",
+                      backgroundColor: "hsl(var(--card))",
+                      border: "none",
+                      borderRadius: "12px",
+                      boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
                     }}
                     formatter={(value: number) => formatDOP(value)}
                   />
@@ -216,25 +215,25 @@ export default function AdminDashboard() {
             </div>
           </section>
 
-          {/* Profit by Company Chart */}
-          <section className="bg-background rounded-2xl shadow-soft p-6">
-            <h3 className="text-lg font-bold text-foreground mb-4">Rentabilidad por Empresa</h3>
+          <section className="bg-surface-container-lowest rounded-2xl shadow-card p-6">
+            <h3 className="font-headline text-lg font-bold text-foreground mb-4">Rentabilidad por Empresa</h3>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={companyProfitData} layout="vertical">
-                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--outline-variant))" strokeOpacity={0.3} />
                   <XAxis type="number" stroke="hsl(var(--muted-foreground))" fontSize={12} tickFormatter={(v) => `${v/1000}k`} />
                   <YAxis type="category" dataKey="name" stroke="hsl(var(--muted-foreground))" fontSize={12} width={100} />
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: "hsl(var(--background))",
-                      border: "1px solid hsl(var(--border))",
-                      borderRadius: "8px",
+                      backgroundColor: "hsl(var(--card))",
+                      border: "none",
+                      borderRadius: "12px",
+                      boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
                     }}
                     formatter={(value: number) => formatDOP(value)}
                   />
-                  <Bar dataKey="profit" fill="hsl(var(--primary))" name="Ganancia" radius={[0, 4, 4, 0]} />
-                  <Bar dataKey="default" fill="hsl(var(--destructive))" name="Morosidad" radius={[0, 4, 4, 0]} />
+                  <Bar dataKey="profit" fill="hsl(var(--primary))" name="Ganancia" radius={[0, 8, 8, 0]} />
+                  <Bar dataKey="default" fill="hsl(var(--destructive))" name="Morosidad" radius={[0, 8, 8, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -242,11 +241,11 @@ export default function AdminDashboard() {
         </div>
 
         {/* Manual Disbursement Queue */}
-        <section className="bg-background rounded-2xl shadow-soft overflow-hidden">
-          <div className="p-6 border-b border-border">
+        <section className="bg-surface-container-lowest rounded-2xl shadow-card overflow-hidden">
+          <div className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-xl font-bold text-foreground">Cola de Desembolso Manual</h2>
+                <h2 className="font-headline text-xl font-bold text-foreground">Cola de Desembolso Manual</h2>
                 <p className="text-muted-foreground">Transferencias pendientes de ejecución</p>
               </div>
               <Badge variant="outline" className="text-primary border-primary">
@@ -257,7 +256,7 @@ export default function AdminDashboard() {
 
           <Table>
             <TableHeader>
-              <TableRow>
+              <TableRow className="bg-surface-container-low hover:bg-surface-container-low">
                 <TableHead>Empleado</TableHead>
                 <TableHead>Empresa</TableHead>
                 <TableHead>Monto</TableHead>
@@ -268,7 +267,7 @@ export default function AdminDashboard() {
             </TableHeader>
             <TableBody>
               {pendingDisbursements.map((item) => (
-                <TableRow key={item.id}>
+                <TableRow key={item.id} className="border-outline-variant/15">
                   <TableCell className="font-medium">{item.employee}</TableCell>
                   <TableCell>{item.company}</TableCell>
                   <TableCell className="font-semibold">{formatDOP(item.amount)}</TableCell>
@@ -291,16 +290,16 @@ export default function AdminDashboard() {
           </Table>
         </section>
 
-        {/* Company Health Table */}
-        <section className="bg-background rounded-2xl shadow-soft overflow-hidden">
-          <div className="p-6 border-b border-border">
-            <h2 className="text-xl font-bold text-foreground">Salud de Empresas</h2>
+        {/* Company Health */}
+        <section className="bg-surface-container-lowest rounded-2xl shadow-card overflow-hidden">
+          <div className="p-6">
+            <h2 className="font-headline text-xl font-bold text-foreground">Salud de Empresas</h2>
             <p className="text-muted-foreground">Rentabilidad neta y alertas por cliente</p>
           </div>
 
           <Table>
             <TableHeader>
-              <TableRow>
+              <TableRow className="bg-surface-container-low hover:bg-surface-container-low">
                 <TableHead>Empresa</TableHead>
                 <TableHead>Ganancia Neta</TableHead>
                 <TableHead>Morosidad</TableHead>
@@ -309,7 +308,7 @@ export default function AdminDashboard() {
             </TableHeader>
             <TableBody>
               {companyProfitData.map((company) => (
-                <TableRow key={company.name}>
+                <TableRow key={company.name} className="border-outline-variant/15">
                   <TableCell className="font-medium">{company.name}</TableCell>
                   <TableCell className="font-semibold text-primary">{formatDOP(company.profit)}</TableCell>
                   <TableCell className={company.default > 0 ? "text-destructive font-semibold" : "text-muted-foreground"}>
@@ -351,12 +350,12 @@ function KPICard({
   };
 
   return (
-    <div className={`bg-background rounded-xl p-5 shadow-soft border-l-4 ${statusColors[status]}`}>
+    <div className={`bg-surface-container-lowest rounded-2xl p-5 shadow-card border-l-4 ${statusColors[status]}`}>
       <div className="flex items-center gap-2 text-muted-foreground mb-2">
         {icon}
         <span className="text-sm font-medium">{label}</span>
       </div>
-      <p className="text-2xl font-bold text-foreground mb-1">{value}</p>
+      <p className="font-headline text-2xl font-bold text-foreground mb-1">{value}</p>
       <p className="text-xs text-muted-foreground mb-1">{description}</p>
       <p className="text-xs font-medium text-primary">{target}</p>
     </div>
@@ -365,7 +364,7 @@ function KPICard({
 
 function StatusBadge({ status }: { status: "healthy" | "warning" | "toxic" }) {
   const config = {
-    healthy: { label: "Saludable", className: "bg-primary/10 text-primary" },
+    healthy: { label: "Saludable", className: "bg-accent text-accent-foreground" },
     warning: { label: "Precaución", className: "bg-warning/10 text-warning" },
     toxic: { label: "Tóxico", className: "bg-destructive/10 text-destructive" },
   };

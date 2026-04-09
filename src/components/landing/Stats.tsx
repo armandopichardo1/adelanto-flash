@@ -7,7 +7,7 @@ const stats = [
 
 export function Stats() {
   return (
-    <section className="py-16 md:py-20 gradient-trust">
+    <section className="py-16 md:py-20 bg-gradient-to-br from-primary to-primary-container">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
           {stats.map((stat, index) => (
@@ -16,7 +16,7 @@ export function Stats() {
               className="text-center animate-fade-in"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <p className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-2">
+              <p className="font-headline text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-2">
                 {stat.value}
               </p>
               <p className="text-primary-foreground/80 text-sm md:text-base">

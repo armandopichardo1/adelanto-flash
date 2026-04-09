@@ -14,7 +14,10 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        headline: ['Plus Jakarta Sans', 'sans-serif'],
+        body: ['Manrope', 'sans-serif'],
+        label: ['Manrope', 'sans-serif'],
+        sans: ['Manrope', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -25,10 +28,12 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          container: "hsl(var(--primary-container))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
+          container: "hsl(var(--secondary-container))",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -50,6 +55,21 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        surface: {
+          DEFAULT: "hsl(var(--surface))",
+          container: "hsl(var(--surface-container))",
+          "container-low": "hsl(var(--surface-container-low))",
+          "container-lowest": "hsl(var(--surface-container-lowest))",
+          "container-high": "hsl(var(--surface-container-high))",
+        },
+        "on-surface": {
+          DEFAULT: "hsl(var(--on-surface))",
+          variant: "hsl(var(--on-surface-variant))",
+        },
+        outline: {
+          DEFAULT: "hsl(var(--outline))",
+          variant: "hsl(var(--outline-variant))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -60,7 +80,6 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        // Dinero Ya Custom Colors
         money: {
           DEFAULT: "hsl(var(--money-green))",
           light: "hsl(var(--money-green-light))",
@@ -72,6 +91,10 @@ export default {
         },
         warning: "hsl(var(--warning))",
         success: "hsl(var(--success))",
+        error: {
+          DEFAULT: "hsl(var(--error))",
+          container: "hsl(var(--error-container))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -79,6 +102,7 @@ export default {
         sm: "calc(var(--radius) - 4px)",
         xl: "calc(var(--radius) + 4px)",
         "2xl": "calc(var(--radius) + 8px)",
+        "3xl": "1.5rem",
       },
       keyframes: {
         "accordion-down": {

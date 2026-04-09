@@ -9,7 +9,7 @@ import { LoanCalculator } from "@/components/landing/LoanCalculator";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-surface">
       <Header />
       <main className="pt-16 md:pt-20">
         <Hero />

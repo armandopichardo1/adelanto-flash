@@ -3,8 +3,8 @@ import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Cell, LabelList } fro
 import { formatDOP } from "@/lib/advance-calculator";
 
 interface CollateralCoverageChartProps {
-  totalCollateral: number; // Internal: Total Employee Severance Held
-  totalActiveAdvances: number; // Total Active Advances (Risk)
+  totalCollateral: number;
+  totalActiveAdvances: number;
 }
 
 export function CollateralCoverageChart({ 
@@ -31,15 +31,15 @@ export function CollateralCoverageChart({
   ];
 
   return (
-    <div className="bg-background rounded-2xl p-6 shadow-soft">
+    <div className="bg-surface-container-lowest rounded-2xl p-6 shadow-card">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Shield className="w-5 h-5 text-primary" />
-          <h3 className="text-lg font-semibold text-foreground">Cobertura de Garantía</h3>
+          <h3 className="font-headline text-lg font-semibold text-foreground">Cobertura de Garantía</h3>
         </div>
         <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium ${
           isFullyCovered 
-            ? "bg-primary/10 text-primary" 
+            ? "bg-accent text-accent-foreground" 
             : "bg-destructive/10 text-destructive"
         }`}>
           <ShieldCheck className="w-4 h-4" />
@@ -92,7 +92,7 @@ export function CollateralCoverageChart({
       </div>
 
       {/* Legend */}
-      <div className="flex items-center justify-center gap-6 mt-4 pt-4 border-t border-border">
+      <div className="flex items-center justify-center gap-6 mt-4 pt-4">
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-primary" />
           <span className="text-sm text-muted-foreground">Valor Laboral Acumulado</span>

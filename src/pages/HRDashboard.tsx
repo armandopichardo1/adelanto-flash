@@ -28,13 +28,12 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { CollateralCoverageChart } from "@/components/hr/CollateralCoverageChart";
 
-// Mock data
 const mockCompany = {
   name: "Tech Solutions SRL",
   rnc: "1-23-45678-9",
   totalEmployees: 45,
   activeUsers: 32,
-  totalCollateral: 2500000, // Internal: Total Employee Severance Held
+  totalCollateral: 2500000,
 };
 
 const mockPendingRequests = [
@@ -78,14 +77,12 @@ export default function HRDashboard() {
     req.cedula.includes(searchTerm)
   );
 
-  // Calculate total active advances for collateral coverage
   const totalActiveAdvances = useMemo(() => 
     mockActiveAdvances.reduce((sum, adv) => sum + adv.amount, 0),
     []
   );
 
   const handleExportPayroll = () => {
-    // Generate CSV content
     const csvContent = [
       ["Cédula", "Concepto", "Monto"].join(","),
       ...mockActiveAdvances.map(adv => 
@@ -93,7 +90,6 @@ export default function HRDashboard() {
       )
     ].join("\n");
 
-    // Download
     const blob = new Blob([csvContent], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -103,18 +99,18 @@ export default function HRDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-muted/30">
+    <div className="min-h-screen bg-surface-container-low">
       {/* Header */}
-      <header className="bg-secondary text-secondary-foreground">
+      <header className="bg-gradient-to-r from-primary to-primary-container text-primary-foreground">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Link to="/" className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
+              <Link to="/" className="w-10 h-10 rounded-2xl bg-primary-foreground/20 flex items-center justify-center">
                 <Wallet className="w-5 h-5 text-primary-foreground" />
               </Link>
               <div>
-                <h1 className="font-bold">Adelanto Ya</h1>
-                <p className="text-xs text-secondary-foreground/70">Panel de RRHH</p>
+                <h1 className="font-headline font-bold">Adelanto Ya</h1>
+                <p className="text-xs text-primary-foreground/70">Panel de RRHH</p>
               </div>
             </div>
             <div className="flex items-center gap-4">
@@ -123,13 +119,13 @@ export default function HRDashboard() {
                 <span className="font-medium hidden sm:inline">{mockCompany.name}</span>
               </div>
               <div className="flex items-center gap-2">
-                <Button variant="ghost" size="sm" asChild className="text-secondary-foreground">
+                <Button variant="ghost" size="sm" asChild className="text-primary-foreground hover:bg-primary-foreground/10">
                   <Link to="/">
                     <Home className="w-4 h-4 mr-2" />
                     <span className="hidden sm:inline">Inicio</span>
                   </Link>
                 </Button>
-                <Button variant="ghost" size="sm" onClick={handleLogout} className="text-secondary-foreground">
+                <Button variant="ghost" size="sm" onClick={handleLogout} className="text-primary-foreground hover:bg-primary-foreground/10">
                   <LogOut className="w-4 h-4 mr-2" />
                   <span className="hidden sm:inline">Salir</span>
                 </Button>
@@ -139,7 +135,7 @@ export default function HRDashboard() {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-6 space-y-6">
+      <main className="container mx-auto px-4 py-8 space-y-8">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <StatCard
@@ -172,18 +168,18 @@ export default function HRDashboard() {
           />
         </div>
 
-        {/* Collateral Coverage Chart - "Sleep Easy" Widget */}
+        {/* Collateral Coverage Chart */}
         <CollateralCoverageChart 
           totalCollateral={mockCompany.totalCollateral}
           totalActiveAdvances={totalActiveAdvances}
         />
 
-        {/* Pending Requests Section */}
-        <section className="bg-background rounded-2xl shadow-soft overflow-hidden">
-          <div className="p-6 border-b border-border">
+        {/* Pending Requests */}
+        <section className="bg-surface-container-lowest rounded-2xl shadow-card overflow-hidden">
+          <div className="p-6">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
-                <h2 className="text-xl font-bold text-foreground">Solicitudes Pendientes</h2>
+                <h2 className="font-headline text-xl font-bold text-foreground">Solicitudes Pendientes</h2>
                 <p className="text-muted-foreground">Adelantos que requieren validación de RRHH</p>
               </div>
               <div className="flex items-center gap-2">
@@ -205,7 +201,7 @@ export default function HRDashboard() {
 
           <Table>
             <TableHeader>
-              <TableRow>
+              <TableRow className="bg-surface-container-low hover:bg-surface-container-low">
                 <TableHead>Empleado</TableHead>
                 <TableHead>Cédula</TableHead>
                 <TableHead>Antigüedad</TableHead>
@@ -216,7 +212,7 @@ export default function HRDashboard() {
             </TableHeader>
             <TableBody>
               {filteredRequests.map((request) => (
-                <TableRow key={request.id}>
+                <TableRow key={request.id} className="border-outline-variant/15">
                   <TableCell className="font-medium">{request.employee}</TableCell>
                   <TableCell className="font-mono text-sm">{request.cedula}</TableCell>
                   <TableCell>{request.tenure} años</TableCell>
@@ -247,12 +243,12 @@ export default function HRDashboard() {
           )}
         </section>
 
-        {/* Active Advances Section */}
-        <section className="bg-background rounded-2xl shadow-soft overflow-hidden">
-          <div className="p-6 border-b border-border">
+        {/* Active Advances */}
+        <section className="bg-surface-container-lowest rounded-2xl shadow-card overflow-hidden">
+          <div className="p-6">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
-                <h2 className="text-xl font-bold text-foreground">Adelantos Activos</h2>
+                <h2 className="font-headline text-xl font-bold text-foreground">Adelantos Activos</h2>
                 <p className="text-muted-foreground">Descuentos programados para próxima nómina</p>
               </div>
               <Button variant="default" onClick={handleExportPayroll}>
@@ -264,7 +260,7 @@ export default function HRDashboard() {
 
           <Table>
             <TableHeader>
-              <TableRow>
+              <TableRow className="bg-surface-container-low hover:bg-surface-container-low">
                 <TableHead>Empleado</TableHead>
                 <TableHead>Cédula</TableHead>
                 <TableHead>Monto Adelantado</TableHead>
@@ -275,14 +271,14 @@ export default function HRDashboard() {
             </TableHeader>
             <TableBody>
               {mockActiveAdvances.map((adv) => (
-                <TableRow key={adv.id}>
+                <TableRow key={adv.id} className="border-outline-variant/15">
                   <TableCell className="font-medium">{adv.employee}</TableCell>
                   <TableCell className="font-mono text-sm">{adv.cedula}</TableCell>
                   <TableCell>{formatDOP(adv.amount)}</TableCell>
                   <TableCell className="font-semibold">{formatDOP(adv.totalToDeduct)}</TableCell>
                   <TableCell className="text-muted-foreground">{adv.disbursedDate}</TableCell>
                   <TableCell>
-                    <Badge variant="default" className="bg-primary/10 text-primary hover:bg-primary/20">
+                    <Badge variant="default" className="bg-accent text-accent-foreground hover:bg-accent/80">
                       Activo
                     </Badge>
                   </TableCell>
@@ -310,11 +306,11 @@ function StatCard({
   color: string;
 }) {
   return (
-    <div className="bg-background rounded-xl p-5 shadow-soft">
-      <div className={`inline-flex items-center justify-center w-10 h-10 rounded-lg ${color} text-primary-foreground mb-3`}>
+    <div className="bg-surface-container-lowest rounded-2xl p-5 shadow-card">
+      <div className={`inline-flex items-center justify-center w-10 h-10 rounded-2xl ${color} text-primary-foreground mb-3`}>
         {icon}
       </div>
-      <p className="text-2xl font-bold text-foreground mb-1">{value}</p>
+      <p className="font-headline text-2xl font-bold text-foreground mb-1">{value}</p>
       <p className="text-sm font-medium text-foreground">{label}</p>
       <p className="text-xs text-muted-foreground">{sublabel}</p>
     </div>

@@ -7,8 +7,7 @@ interface SavingsComparisonProps {
   feeConfig?: FeeConfig;
 }
 
-// Street loan rate (typical informal lending in DR)
-const STREET_LOAN_RATE = 0.20; // 20%
+const STREET_LOAN_RATE = 0.20;
 
 export function SavingsComparison({ 
   requestedAmount, 
@@ -22,7 +21,7 @@ export function SavingsComparison({
   if (savings <= 0) return null;
 
   return (
-    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
+    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent">
       <div className="flex items-center gap-1 text-primary">
         <TrendingDown className="w-4 h-4" />
         <Sparkles className="w-3 h-3" />
