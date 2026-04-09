@@ -95,7 +95,7 @@ export function calculateAdvanceLimit(employee: EmployeeData): AdvanceCalculatio
     salaryCapLimit: Math.floor(legalHardCap),
     safetyCapLimit: Math.floor(safetyCapLimit),
     appliedLimit: binding.name,
-    tenureLevel: getTenureLevel(tenureYears),
+    tenureLevel: tenLevel,
     fee,
     totalToDeduct,
     netDisbursement: maxAdvanceAmount,
