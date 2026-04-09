@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import logoImg from "@/assets/adelanto-ya-logo-transparent.png";
+import logoImg from "@/assets/logo-adelanto-ya-transparent.png";
 
 export default function SplashPage() {
   return (

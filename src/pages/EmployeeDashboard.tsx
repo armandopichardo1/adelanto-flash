@@ -172,7 +172,7 @@ export default function EmployeeDashboard() {
         <div className="bg-surface-container-lowest rounded-2xl shadow-card overflow-hidden">
           <div className="p-4 flex items-center justify-between">
             <h3 className="font-headline font-semibold text-foreground">Actividad Reciente</h3>
-            <button className="text-sm text-primary font-medium">Ver todo</button>
+            <Link to="/history" className="text-sm text-primary font-medium">Ver todo</Link>
           </div>
           <div className="divide-y divide-outline-variant/10">
             {mockActivity.map((item) => (
