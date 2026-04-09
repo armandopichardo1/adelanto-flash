@@ -23,7 +23,6 @@ export default function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
 
-    // Mock authentication - simulate login
     setTimeout(() => {
       if (loginType === "employee") {
         localStorage.setItem("adelantoYaSession", JSON.stringify({
@@ -56,9 +55,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-muted/30 flex flex-col">
+    <div className="min-h-screen bg-surface-container-low flex flex-col">
       {/* Header */}
-      <header className="bg-background border-b border-border">
+      <header className="bg-surface-container-lowest shadow-card">
         <div className="container mx-auto px-4 py-4">
           <Link to="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
             <ArrowLeft className="w-4 h-4" />
@@ -73,25 +72,25 @@ export default function LoginPage() {
           {/* Logo */}
           <div className="text-center mb-8">
             <Link to="/" className="inline-flex items-center gap-2 mb-4">
-              <div className="w-12 h-12 rounded-xl gradient-hero flex items-center justify-center shadow-soft">
+              <div className="w-12 h-12 rounded-2xl gradient-hero flex items-center justify-center shadow-button">
                 <Wallet className="w-6 h-6 text-primary-foreground" />
               </div>
-              <span className="text-2xl font-bold text-foreground">Adelanto Ya</span>
+              <span className="font-headline text-2xl font-bold text-foreground">Adelanto Ya</span>
             </Link>
-            <h1 className="text-2xl font-bold text-foreground mb-2">Iniciar Sesión</h1>
+            <h1 className="font-headline text-2xl font-bold text-foreground mb-2">Iniciar Sesión</h1>
             <p className="text-muted-foreground">Accede a tu cuenta para solicitar adelantos</p>
           </div>
 
           {/* Login Type Tabs */}
-          <div className="bg-background rounded-2xl shadow-card p-2 mb-4">
+          <div className="bg-surface-container rounded-2xl p-2 mb-4">
             <div className="grid grid-cols-3 gap-2">
               <button
                 type="button"
                 onClick={() => setLoginType("employee")}
                 className={`py-3 px-4 rounded-xl text-sm font-medium transition-colors ${
                   loginType === "employee"
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:bg-muted"
+                    ? "bg-primary text-primary-foreground shadow-button"
+                    : "text-muted-foreground hover:bg-surface-container-low"
                 }`}
               >
                 <User className="w-4 h-4 mx-auto mb-1" />
@@ -102,8 +101,8 @@ export default function LoginPage() {
                 onClick={() => setLoginType("hr")}
                 className={`py-3 px-4 rounded-xl text-sm font-medium transition-colors ${
                   loginType === "hr"
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:bg-muted"
+                    ? "bg-primary text-primary-foreground shadow-button"
+                    : "text-muted-foreground hover:bg-surface-container-low"
                 }`}
               >
                 <Building2 className="w-4 h-4 mx-auto mb-1" />
@@ -114,8 +113,8 @@ export default function LoginPage() {
                 onClick={() => setLoginType("admin")}
                 className={`py-3 px-4 rounded-xl text-sm font-medium transition-colors ${
                   loginType === "admin"
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:bg-muted"
+                    ? "bg-primary text-primary-foreground shadow-button"
+                    : "text-muted-foreground hover:bg-surface-container-low"
                 }`}
               >
                 <Wallet className="w-4 h-4 mx-auto mb-1" />
@@ -125,11 +124,10 @@ export default function LoginPage() {
           </div>
 
           {/* Login Form */}
-          <div className="bg-background rounded-2xl shadow-card p-8">
+          <div className="bg-surface-container-lowest rounded-2xl shadow-card p-8">
             <form onSubmit={handleSubmit} className="space-y-6">
               {loginType === "employee" ? (
                 <>
-                  {/* Company Code */}
                   <div className="space-y-2">
                     <Label htmlFor="companyCode">Código de Empresa</Label>
                     <div className="relative">
@@ -149,7 +147,6 @@ export default function LoginPage() {
                     </p>
                   </div>
 
-                  {/* Cedula */}
                   <div className="space-y-2">
                     <Label htmlFor="cedula">Cédula</Label>
                     <div className="relative">
@@ -168,7 +165,6 @@ export default function LoginPage() {
                 </>
               ) : (
                 <>
-                  {/* Email */}
                   <div className="space-y-2">
                     <Label htmlFor="email">Correo electrónico</Label>
                     <div className="relative">
@@ -187,7 +183,6 @@ export default function LoginPage() {
                 </>
               )}
 
-              {/* Password */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="password">Contraseña</Label>
