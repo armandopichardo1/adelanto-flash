@@ -29,7 +29,6 @@ export default function AdvanceRequestFlow() {
       navigate("/employee");
     }
   }, [navigate]);
-  const [termsAccepted, setTermsAccepted] = useState(false);
 
   const advanceLimit = useMemo(() => calculateAdvanceLimit({
     monthlySalary: currentEmployee.monthlySalary,
