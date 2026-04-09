@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { FeeConfigPanel } from "@/components/admin/FeeConfigPanel";
+import { RiskConfigPanel } from "@/components/admin/RiskConfigPanel";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
 import {
   Wallet,
   Settings,
