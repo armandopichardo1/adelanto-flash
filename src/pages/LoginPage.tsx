@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,7 +10,8 @@ type LoginType = "employee" | "hr" | "admin";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const [loginType, setLoginType] = useState<LoginType>("employee");
+  const [searchParams] = useSearchParams();
+  const [loginType, setLoginType] = useState<LoginType>((searchParams.get("type") as LoginType) || "employee");
   const [companyCode, setCompanyCode] = useState("");
   const [cedula, setCedula] = useState("");
   const [email, setEmail] = useState("");
