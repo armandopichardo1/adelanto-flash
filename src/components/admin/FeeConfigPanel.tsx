@@ -60,7 +60,7 @@ export function FeeConfigPanel() {
         mode,
         flat_amount: flatAmount,
         percentage_rate: percentageRate / 100,
-        tiers: tiers as unknown as Record<string, unknown>[],
+        tiers: JSON.parse(JSON.stringify(tiers)),
       })
       .eq("id", FEE_CONFIG_ID);
 
