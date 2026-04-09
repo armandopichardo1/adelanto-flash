@@ -1,4 +1,5 @@
-import { Wallet, Home, LogOut } from "lucide-react";
+import { Home, LogOut } from "lucide-react";
+import logoImage from "@/assets/logo-adelanto-ya.png";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -24,8 +25,8 @@ export function TopBar({ subtitle, variant = "employee", companyName, children }
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link to="/" className="w-10 h-10 rounded-2xl gradient-hero flex items-center justify-center">
-              <Wallet className="w-5 h-5 text-primary-foreground" />
+            <Link to="/" className="flex items-center">
+              <img src={logoImage} alt="Adelanto Ya" className="h-8 w-auto" />
             </Link>
             <div>
               <h1 className="font-headline font-bold text-foreground">Adelanto Ya</h1>
