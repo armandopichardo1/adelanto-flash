@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-// Table imports removed - using card layout for mobile
-import { FileText, Plus, CheckCircle2, Clock, Eye, PenLine } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { FileText, Plus, Eye, PenLine, Download } from "lucide-react";
 import { toast } from "sonner";
+import { SignatureCanvas } from "@/components/shared/SignatureCanvas";
 import {
   getContracts,
   createContract,
@@ -13,6 +13,7 @@ import {
   type ContractRecord,
   type ContractData,
 } from "@/lib/contract-template";
+import { generateContractPDF } from "@/lib/contract-pdf";
 
 interface ContractManagementProps {
   employees: Array<{
@@ -30,6 +31,11 @@ export function ContractManagement({ employees, companyName, companyRNC }: Contr
   const [contracts, setContracts] = useState<ContractRecord[]>([]);
   const [previewContractData, setPreviewContractData] = useState<ContractData | null>(null);
   const [previewOpen, setPreviewOpen] = useState(false);
+  const [signingContract, setSigningContract] = useState<ContractRecord | null>(null);
+  const [signingEmp, setSigningEmp] = useState<typeof employees[0] | null>(null);
+  const [signDialogOpen, setSignDialogOpen] = useState(false);
+  const [employerSigDataUrl, setEmployerSigDataUrl] = useState<string | null>(null);
+  const [hasEmployerSig, setHasEmployerSig] = useState(false);
 
   const refreshContracts = () => setContracts(getContracts());
   useEffect(refreshContracts, []);
@@ -40,10 +46,39 @@ export function ContractManagement({ employees, companyName, companyRNC }: Contr
     toast.success(`Contrato creado para ${emp.name}`);
   };
 
-  const handleSignAsEmployer = (contractId: string) => {
-    signContractAsEmployer(contractId);
+  const openEmployerSign = (contract: ContractRecord, emp: typeof employees[0]) => {
+    setSigningContract(contract);
+    setSigningEmp(emp);
+    setEmployerSigDataUrl(null);
+    setHasEmployerSig(false);
+    setSignDialogOpen(true);
+  };
+
+  const handleSignAsEmployer = () => {
+    if (!signingContract) return;
+    signContractAsEmployer(signingContract.id, employerSigDataUrl || undefined);
     refreshContracts();
+    setSignDialogOpen(false);
     toast.success("Contrato firmado por el empleador");
+  };
+
+  const handleDownloadPDF = (emp: typeof employees[0], contract: ContractRecord) => {
+    const contractData: ContractData = {
+      employerName: companyName,
+      employerRNC: companyRNC,
+      employeeName: emp.name,
+      employeeCedula: emp.cedula,
+      employeeDepartment: emp.department,
+      employeeSalary: emp.salary,
+      maxAdvancePercent: 30,
+      date: contract.createdAt
+        ? new Date(contract.createdAt).toLocaleDateString("es-DO", { day: "numeric", month: "long", year: "numeric" })
+        : new Date().toLocaleDateString("es-DO", { day: "numeric", month: "long", year: "numeric" }),
+    };
+    // Re-fetch contract to get latest signatures
+    const freshContract = getContracts().find(c => c.id === contract.id);
+    generateContractPDF(contractData, freshContract || contract);
+    toast.success("PDF descargado");
   };
 
   const handlePreview = (emp: typeof employees[0]) => {
@@ -114,8 +149,13 @@ export function ContractManagement({ employees, companyName, companyRNC }: Contr
                   </Button>
                 )}
                 {contract?.status === "pending_employer" && (
-                  <Button variant="default" size="sm" onClick={() => handleSignAsEmployer(contract.id)}>
+                  <Button variant="default" size="sm" onClick={() => openEmployerSign(contract, emp)}>
                     <PenLine className="w-4 h-4" /> Firmar
+                  </Button>
+                )}
+                {contract && (contract.status === "active" || contract.status === "pending_employee") && (
+                  <Button variant="outline" size="sm" onClick={() => handleDownloadPDF(emp, contract)}>
+                    <Download className="w-4 h-4" /> PDF
                   </Button>
                 )}
               </div>
@@ -136,6 +176,36 @@ export function ContractManagement({ employees, companyName, companyRNC }: Contr
               dangerouslySetInnerHTML={{ __html: generateContractHTML(previewContractData) }}
             />
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Employer Signing Dialog */}
+      <Dialog open={signDialogOpen} onOpenChange={setSignDialogOpen}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="font-headline flex items-center gap-2">
+              <PenLine className="w-5 h-5 text-primary" />
+              Firmar como Empleador
+            </DialogTitle>
+          </DialogHeader>
+          <p className="text-sm text-muted-foreground">
+            Firmar contrato para <strong className="text-foreground">{signingEmp?.name}</strong> ({signingEmp?.cedula})
+          </p>
+          <SignatureCanvas
+            onSignatureChange={(has, dataUrl) => {
+              setHasEmployerSig(has);
+              setEmployerSigDataUrl(dataUrl);
+            }}
+          />
+          <Button
+            variant="flash"
+            size="xl"
+            className="w-full"
+            onClick={handleSignAsEmployer}
+            disabled={!hasEmployerSig}
+          >
+            <PenLine className="w-5 h-5" /> Firmar Contrato
+          </Button>
         </DialogContent>
       </Dialog>
     </div>

@@ -1,4 +1,4 @@
-// Mock contract template based on Dominican Republic labor law
+// Contract template based on Dominican Republic labor law
 // Código de Trabajo de la República Dominicana (Ley 16-92)
 
 export interface ContractData {
@@ -75,7 +75,7 @@ export function generateContractHTML(data: ContractData): string {
 </div>`;
 }
 
-// Mock contract store (localStorage-based for demo)
+// Contract store (localStorage-based for demo)
 export interface ContractRecord {
   id: string;
   employeeId: string;
@@ -83,8 +83,10 @@ export interface ContractRecord {
   employeeCedula: string;
   employerSigned: boolean;
   employerSignedAt?: string;
+  employerSignatureDataUrl?: string;
   employeeSigned: boolean;
   employeeSignedAt?: string;
+  employeeSignatureDataUrl?: string;
   createdAt: string;
   status: "pending_employer" | "pending_employee" | "active" | "revoked";
 }
@@ -112,7 +114,6 @@ export function isEmployeeContractFullySigned(employeeId: string): boolean {
 
 export function createContract(employeeId: string, employeeName: string, employeeCedula: string): ContractRecord {
   const contracts = getContracts();
-  // Revoke any existing contract for this employee
   contracts.forEach(c => {
     if (c.employeeId === employeeId && c.status !== "revoked") c.status = "revoked";
   });
@@ -131,23 +132,25 @@ export function createContract(employeeId: string, employeeName: string, employe
   return newContract;
 }
 
-export function signContractAsEmployer(contractId: string): ContractRecord | undefined {
+export function signContractAsEmployer(contractId: string, signatureDataUrl?: string): ContractRecord | undefined {
   const contracts = getContracts();
   const c = contracts.find(x => x.id === contractId);
   if (!c) return undefined;
   c.employerSigned = true;
   c.employerSignedAt = new Date().toISOString();
+  if (signatureDataUrl) c.employerSignatureDataUrl = signatureDataUrl;
   c.status = c.employeeSigned ? "active" : "pending_employee";
   saveContracts(contracts);
   return c;
 }
 
-export function signContractAsEmployee(contractId: string): ContractRecord | undefined {
+export function signContractAsEmployee(contractId: string, signatureDataUrl?: string): ContractRecord | undefined {
   const contracts = getContracts();
   const c = contracts.find(x => x.id === contractId);
   if (!c) return undefined;
   c.employeeSigned = true;
   c.employeeSignedAt = new Date().toISOString();
+  if (signatureDataUrl) c.employeeSignatureDataUrl = signatureDataUrl;
   c.status = c.employerSigned ? "active" : "pending_employer";
   saveContracts(contracts);
   return c;

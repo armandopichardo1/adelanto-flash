@@ -2,15 +2,17 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
-import { FileText, PenLine, Check } from "lucide-react";
+import { FileText, PenLine, Check, Download } from "lucide-react";
 import { toast } from "sonner";
 import { SignatureCanvas } from "@/components/shared/SignatureCanvas";
 import {
   generateContractHTML,
   signContractAsEmployee,
+  getContracts,
   type ContractRecord,
   type ContractData,
 } from "@/lib/contract-template";
+import { generateContractPDF } from "@/lib/contract-pdf";
 
 interface ContractSigningModalProps {
   open: boolean;
@@ -24,15 +26,22 @@ export function ContractSigningModal({ open, onOpenChange, contract, contractDat
   const [accepted, setAccepted] = useState(false);
   const [signed, setSigned] = useState(false);
   const [hasSig, setHasSig] = useState(false);
+  const [sigDataUrl, setSigDataUrl] = useState<string | null>(null);
 
   const handleSign = () => {
-    signContractAsEmployee(contract.id);
+    signContractAsEmployee(contract.id, sigDataUrl || undefined);
     setSigned(true);
     toast.success("¡Contrato firmado exitosamente!");
     setTimeout(() => {
       onOpenChange(false);
       onSigned();
     }, 1500);
+  };
+
+  const handleDownloadPDF = () => {
+    const freshContract = getContracts().find(c => c.id === contract.id);
+    generateContractPDF(contractData, freshContract || contract);
+    toast.success("PDF descargado");
   };
 
   return (
@@ -46,12 +55,15 @@ export function ContractSigningModal({ open, onOpenChange, contract, contractDat
         </DialogHeader>
 
         {signed ? (
-          <div className="text-center py-12">
+          <div className="text-center py-12 space-y-4">
             <div className="w-20 h-20 rounded-full bg-primary mx-auto flex items-center justify-center mb-4">
               <Check className="w-10 h-10 text-primary-foreground" />
             </div>
             <h3 className="font-headline text-xl font-bold text-foreground">¡Contrato Firmado!</h3>
-            <p className="text-muted-foreground mt-2">Ya puedes solicitar adelantos de nómina.</p>
+            <p className="text-muted-foreground">Ya puedes solicitar adelantos de nómina.</p>
+            <Button variant="outline" onClick={handleDownloadPDF}>
+              <Download className="w-4 h-4" /> Descargar PDF
+            </Button>
           </div>
         ) : (
           <>
@@ -62,7 +74,10 @@ export function ContractSigningModal({ open, onOpenChange, contract, contractDat
 
             <div className="space-y-4 mt-4">
               <SignatureCanvas
-                onSignatureChange={(has) => setHasSig(has)}
+                onSignatureChange={(has, dataUrl) => {
+                  setHasSig(has);
+                  setSigDataUrl(dataUrl);
+                }}
               />
 
               <div className="flex items-start gap-3">
