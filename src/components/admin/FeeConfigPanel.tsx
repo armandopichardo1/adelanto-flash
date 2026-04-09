@@ -71,6 +71,7 @@ export function FeeConfigPanel() {
       toast.error("Error guardando configuración");
     } else {
       toast.success("Configuración de comisiones actualizada");
+      queryClient.invalidateQueries({ queryKey: ["fee-config"] });
     }
     setSaving(false);
   }
