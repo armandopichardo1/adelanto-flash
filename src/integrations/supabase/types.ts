@@ -14,7 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      fee_config: {
+        Row: {
+          flat_amount: number
+          id: string
+          mode: string
+          percentage_rate: number
+          tiers: Json
+          updated_at: string
+        }
+        Insert: {
+          flat_amount?: number
+          id?: string
+          mode?: string
+          percentage_rate?: number
+          tiers?: Json
+          updated_at?: string
+        }
+        Update: {
+          flat_amount?: number
+          id?: string
+          mode?: string
+          percentage_rate?: number
+          tiers?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
