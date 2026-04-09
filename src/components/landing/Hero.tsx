@@ -64,14 +64,14 @@ export function Hero() {
           </div>
 
           {/* Right — Photo */}
-          <div className="relative hidden lg:block">
+          <div className="relative">
             <div className="relative rounded-3xl overflow-hidden shadow-elevated">
               <img
                 src={heroImage}
                 alt="Trabajadora dominicana accediendo a su adelanto de salario desde su celular"
                 width={1280}
                 height={960}
-                className="w-full h-[540px] object-cover object-top"
+                className="w-full h-[280px] md:h-[400px] lg:h-[540px] object-cover object-top"
               />
               {/* Floating stat card */}
               <div className="absolute bottom-6 left-6 bg-surface-container-lowest/90 backdrop-blur-xl rounded-2xl p-4 shadow-elevated">
