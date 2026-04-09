@@ -22,6 +22,15 @@ export default function AdvanceRequestFlow() {
   const [step, setStep] = useState(1);
   const [termsAccepted, setTermsAccepted] = useState(false);
 
+  // Block access if contract is not fully signed
+  useEffect(() => {
+    if (!isEmployeeContractFullySigned("e-01")) {
+      toast.error("Debes firmar tu contrato antes de solicitar un adelanto");
+      navigate("/employee");
+    }
+  }, [navigate]);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+
   const advanceLimit = useMemo(() => calculateAdvanceLimit({
     monthlySalary: currentEmployee.monthlySalary,
     tenureYears: currentEmployee.tenureYears,
