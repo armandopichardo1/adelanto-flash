@@ -1,4 +1,5 @@
 import { UserPlus, Sliders, CheckCircle2, Banknote } from "lucide-react";
+import { motion } from "framer-motion";
 
 const steps = [
   {
@@ -31,7 +32,13 @@ export function HowItWorks() {
   return (
     <section className="py-16 md:py-32 bg-surface">
       <div className="container mx-auto px-4">
-        <div className="max-w-xl mb-10 md:mb-16">
+        <motion.div
+          className="max-w-xl mb-10 md:mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.5 }}
+        >
           <p className="text-primary font-semibold text-sm tracking-wide uppercase mb-3">Proceso simple</p>
           <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground mb-4">
             4 pasos para acceder a tu salario
@@ -39,11 +46,18 @@ export function HowItWorks() {
           <p className="text-lg text-muted-foreground">
             Diseñado para ser tan fácil como enviar un mensaje. Sin complicaciones bancarias.
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-6">
           {steps.map((step, index) => (
-            <div key={step.step} className="relative group">
+            <motion.div
+              key={step.step}
+              className="relative group"
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ delay: index * 0.12, duration: 0.45, ease: "easeOut" }}
+            >
               {/* Connector line (desktop) */}
               {index < steps.length - 1 && (
                 <div className="hidden lg:block absolute top-10 left-[calc(50%+32px)] w-[calc(100%-64px)] h-px bg-outline-variant/30" />
@@ -65,7 +79,7 @@ export function HowItWorks() {
                 <h3 className="font-headline text-lg font-bold text-foreground mb-2">{step.title}</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">{step.description}</p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

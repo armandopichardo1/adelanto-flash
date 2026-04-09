@@ -10,6 +10,7 @@ import {
 import { Shield, TrendingUp, Clock, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 export function AdvanceCalculator() {
   const [salary, setSalary] = useState(45000);
@@ -28,7 +29,13 @@ export function AdvanceCalculator() {
   return (
     <section className="py-16 md:py-32 bg-surface-container-low">
       <div className="container mx-auto px-4">
-        <div className="max-w-xl mb-8 md:mb-12">
+        <motion.div
+          className="max-w-xl mb-8 md:mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.5 }}
+        >
           <p className="text-primary font-semibold text-sm tracking-wide uppercase mb-3">Calculadora</p>
           <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground mb-4">
             ¿Cuánto puedes solicitar?
@@ -36,9 +43,15 @@ export function AdvanceCalculator() {
           <p className="text-lg text-muted-foreground">
             Mueve los controles para ver tu límite estimado basado en salario y antigüedad.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="max-w-4xl">
+        <motion.div
+          className="max-w-4xl"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ delay: 0.15, duration: 0.5, ease: "easeOut" }}
+        >
           <div className="bg-surface-container-lowest rounded-3xl shadow-card overflow-hidden">
             <div className="grid md:grid-cols-5 gap-0">
               {/* Inputs — 3 cols */}
@@ -129,7 +142,7 @@ export function AdvanceCalculator() {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

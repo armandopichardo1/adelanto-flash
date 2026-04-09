@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight, Building2, Users, ShieldCheck } from "lucide-react";
+import { motion } from "framer-motion";
 
 const benefits = [
   { icon: Users, text: "Reduce rotación hasta un 32%" },
@@ -12,7 +13,13 @@ export function CTA() {
   return (
     <section className="py-16 md:py-32 bg-surface-container-low">
       <div className="container mx-auto px-4">
-        <div className="relative rounded-3xl overflow-hidden">
+        <motion.div
+          className="relative rounded-3xl overflow-hidden"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.55, ease: "easeOut" }}
+        >
           {/* Background */}
           <div className="absolute inset-0 bg-foreground" />
           <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent" />
@@ -21,7 +28,12 @@ export function CTA() {
           <div className="relative px-8 py-16 md:px-16 md:py-20">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               {/* Left */}
-              <div>
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ delay: 0.2, duration: 0.5 }}
+              >
                 <p className="text-primary font-semibold text-sm tracking-wide uppercase mb-3">Para empresas</p>
                 <h2 className="font-headline text-3xl md:text-4xl font-bold text-background mb-4">
                   Ofrece bienestar financiero real a tu equipo
@@ -40,22 +52,29 @@ export function CTA() {
                     <Link to="/login">Solicitar Demo</Link>
                   </Button>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Right — Benefits */}
               <div className="space-y-5">
-                {benefits.map((b) => (
-                  <div key={b.text} className="flex items-center gap-4 p-5 rounded-2xl bg-background/5 backdrop-blur-sm">
+                {benefits.map((b, i) => (
+                  <motion.div
+                    key={b.text}
+                    className="flex items-center gap-4 p-5 rounded-2xl bg-background/5 backdrop-blur-sm"
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: "-60px" }}
+                    transition={{ delay: 0.3 + i * 0.1, duration: 0.45, ease: "easeOut" }}
+                  >
                     <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center flex-shrink-0">
                       <b.icon className="w-6 h-6 text-primary" />
                     </div>
                     <p className="text-background font-medium text-lg">{b.text}</p>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
