@@ -17,11 +17,13 @@ import {
   Home
 } from "lucide-react";
 import { 
-  calculateLoanLimit, 
-  calculateLoanDetails, 
+  calculateAdvanceLimit, 
+  calculateAdvanceDetails, 
   formatDOP, 
-  getTenureLevel 
-} from "@/lib/loan-calculator";
+  getTenureLevel,
+  getFeeLabel,
+  DEFAULT_FEE_CONFIG,
+} from "@/lib/advance-calculator";
 import { checkSmartRefill, calculateRefillDetails, type ActiveAdvance } from "@/lib/smart-refill";
 import { PatrimonioCard } from "@/components/employee/PatrimonioCard";
 import { DineroScoreGauge } from "@/components/employee/DineroScoreGauge";
@@ -43,8 +45,8 @@ const mockEmployee = {
 const mockActiveAdvance: ActiveAdvance | null = {
   id: "adv-001",
   amount: 5000,
-  fee: 350,
-  totalDebt: 5350,
+  fee: 200,
+  totalToDeduct: 5200,
   disbursedDate: "2024-01-10",
   status: 'active',
 };
@@ -60,7 +62,7 @@ export default function EmployeeDashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const session = localStorage.getItem("dineroYaSession");
+    const session = localStorage.getItem("adelantoYaSession");
     if (!session) {
       toast.error("Por favor inicia sesión para continuar");
       navigate("/login");
@@ -74,12 +76,12 @@ export default function EmployeeDashboard() {
   }, [navigate]);
 
   const handleLogout = () => {
-    localStorage.removeItem("dineroYaSession");
+    localStorage.removeItem("adelantoYaSession");
     toast.success("Sesión cerrada");
     navigate("/");
   };
 
-  const loanLimit = useMemo(() => calculateLoanLimit({
+  const advanceLimit = useMemo(() => calculateAdvanceLimit({
     monthlySalary: mockEmployee.monthlySalary,
     tenureYears: mockEmployee.tenureYears,
     riskMode: mockEmployee.riskMode,
@@ -87,12 +89,12 @@ export default function EmployeeDashboard() {
 
   // Smart Refill logic
   const smartRefill = useMemo(() => 
-    checkSmartRefill(mockActiveAdvance, loanLimit.maxLoanAmount), 
-    [loanLimit.maxLoanAmount]
+    checkSmartRefill(mockActiveAdvance, advanceLimit.maxAdvanceAmount), 
+    [advanceLimit.maxAdvanceAmount]
   );
 
   // For Smart Refill: max is remaining available, min is 1000
-  const sliderMax = smartRefill.canRefill ? smartRefill.remainingAvailable : loanLimit.maxLoanAmount;
+  const sliderMax = smartRefill.canRefill ? smartRefill.remainingAvailable : advanceLimit.maxAdvanceAmount;
   const sliderMin = 1000;
   
   const [requestedAmount, setRequestedAmount] = useState(
@@ -106,15 +108,15 @@ export default function EmployeeDashboard() {
     }
   }, [sliderMax, requestedAmount]);
 
-  const loanDetails = useMemo(() => {
+  const advanceDetails = useMemo(() => {
     if (smartRefill.canRefill) {
-      // For refill, use incremental calculation
-      return calculateRefillDetails(requestedAmount);
+      return calculateRefillDetails(requestedAmount, mockEmployee.monthlySalary);
     }
-    return calculateLoanDetails(requestedAmount);
+    return calculateAdvanceDetails(requestedAmount, mockEmployee.monthlySalary);
   }, [requestedAmount, smartRefill.canRefill]);
 
-  const tenureConfig = tenureLevelConfig[loanLimit.tenureLevel];
+  const tenureConfig = tenureLevelConfig[advanceLimit.tenureLevel];
+  const feeLabel = getFeeLabel(DEFAULT_FEE_CONFIG);
 
   return (
     <div className="min-h-screen bg-muted/30">
@@ -127,7 +129,7 @@ export default function EmployeeDashboard() {
                 <Wallet className="w-5 h-5 text-primary-foreground" />
               </div>
               <div>
-                <h1 className="font-bold text-foreground">Dinero Ya</h1>
+                <h1 className="font-bold text-foreground">Adelanto Ya</h1>
                 <p className="text-xs text-muted-foreground">{mockEmployee.company}</p>
               </div>
             </Link>
@@ -174,7 +176,7 @@ export default function EmployeeDashboard() {
             </div>
             <Progress value={tenureConfig.progress} className="h-2" />
             <p className="text-xs text-muted-foreground mt-2">
-              {loanLimit.tenureLevel === 'platinum' 
+              {advanceLimit.tenureLevel === 'platinum' 
                 ? '¡Máximo nivel alcanzado! Disfruta de los mejores límites.'
                 : `Continúa construyendo tu historial para desbloquear mejores beneficios.`
               }
@@ -184,8 +186,8 @@ export default function EmployeeDashboard() {
 
         {/* Patrimonio Disponible Card (Anti-Debt UI) */}
         <PatrimonioCard 
-          collateralBase={loanLimit.collateralBase}
-          availableToday={loanLimit.maxLoanAmount}
+          collateralBase={advanceLimit.collateralBase}
+          availableToday={advanceLimit.maxAdvanceAmount}
           tenureYears={mockEmployee.tenureYears}
         />
 
@@ -195,7 +197,7 @@ export default function EmployeeDashboard() {
           repaidCycles={mockEmployee.repaidCycles}
         />
 
-        {/* Loan Request Card */}
+        {/* Advance Request Card */}
         <div className="bg-background rounded-2xl p-6 shadow-soft">
           <div className="text-center mb-6">
             <h3 className="text-lg font-semibold text-foreground mb-1">
@@ -217,14 +219,14 @@ export default function EmployeeDashboard() {
             <p className="text-muted-foreground">
               {smartRefill.canRefill 
                 ? `Recarga disponible: ${formatDOP(smartRefill.remainingAvailable)}`
-                : `Límite disponible: ${formatDOP(loanLimit.maxLoanAmount)}`
+                : `Límite disponible: ${formatDOP(advanceLimit.maxAdvanceAmount)}`
               }
             </p>
           </div>
 
           {/* Savings Comparison Pill */}
           <div className="flex justify-center mb-6">
-            <SavingsComparison requestedAmount={requestedAmount} />
+            <SavingsComparison requestedAmount={requestedAmount} monthlySalary={mockEmployee.monthlySalary} />
           </div>
 
           {/* Slider */}
@@ -252,11 +254,11 @@ export default function EmployeeDashboard() {
               <span className="font-semibold text-foreground">{formatDOP(requestedAmount)}</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-muted-foreground">Comisión de servicio (7%)</span>
+              <span className="text-muted-foreground">Comisión de servicio ({feeLabel})</span>
               <span className="font-semibold text-foreground">
-                {formatDOP('incrementalFee' in loanDetails 
-                  ? loanDetails.incrementalFee
-                  : loanDetails.fee
+                {formatDOP('incrementalFee' in advanceDetails 
+                  ? advanceDetails.incrementalFee
+                  : advanceDetails.fee
                 )}
               </span>
             </div>
@@ -267,12 +269,12 @@ export default function EmployeeDashboard() {
             )}
             <div className="border-t border-border pt-3 flex justify-between items-center">
               <span className="font-semibold text-foreground">
-                {smartRefill.canRefill ? 'Total adicional a descontar' : 'Total a descontar'}
+                {smartRefill.canRefill ? 'Total adicional a descontar' : 'Total a Descontar'}
               </span>
               <span className="font-bold text-xl text-foreground">
-                {formatDOP('incrementalTotalDebt' in loanDetails 
-                  ? loanDetails.incrementalTotalDebt
-                  : loanDetails.totalDebt
+                {formatDOP('incrementalTotalToDeduct' in advanceDetails 
+                  ? advanceDetails.incrementalTotalToDeduct
+                  : advanceDetails.totalToDeduct
                 )}
               </span>
             </div>
@@ -302,14 +304,14 @@ export default function EmployeeDashboard() {
         <div className="grid grid-cols-2 gap-4">
           <QuickStat
             icon={<Shield className="w-5 h-5" />}
-            label="Respaldo"
-            value={formatDOP(loanLimit.collateralBase)}
-            sublabel="Tu cesantía"
+            label="Tu Respaldo"
+            value={formatDOP(advanceLimit.collateralBase)}
+            sublabel="Valor laboral acumulado"
           />
           <QuickStat
             icon={<TrendingUp className="w-5 h-5" />}
             label="Límite mensual"
-            value={formatDOP(loanLimit.salaryCapLimit)}
+            value={formatDOP(advanceLimit.salaryCapLimit)}
             sublabel="30% de tu salario"
           />
         </div>

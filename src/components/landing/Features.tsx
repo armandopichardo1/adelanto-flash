@@ -17,7 +17,7 @@ const features = [
   },
   {
     icon: Shield,
-    title: "Respaldado por tu Cesantía",
+    title: "Respaldado por tu Trabajo",
     description: "Tu adelanto está respaldado por tus prestaciones laborales. Cero riesgo.",
     color: "text-secondary",
     bg: "bg-trust-light",
@@ -38,7 +38,7 @@ const features = [
   },
   {
     icon: Users,
-    title: "Comunidad Dinero Ya",
+    title: "Comunidad Adelanto Ya",
     description: "Únete a miles de dominicanos que ya disfrutan de libertad financiera.",
     color: "text-primary",
     bg: "bg-accent",

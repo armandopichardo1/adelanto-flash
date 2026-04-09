@@ -30,13 +30,13 @@ export function Footer() {
               <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
                 <Wallet className="w-5 h-5 text-primary-foreground" />
               </div>
-              <span className="text-xl font-bold">Dinero Ya</span>
+              <span className="text-xl font-bold">Adelanto Ya</span>
             </div>
             <p className="text-secondary-foreground/70 text-sm mb-4">
               Tu salario, cuando lo necesites. Libertad financiera para trabajadores dominicanos.
             </p>
             <p className="text-secondary-foreground/50 text-xs">
-              © 2024 Dinero Ya SRL. Todos los derechos reservados.
+              © 2024 Adelanto Ya SRL. Todos los derechos reservados.
             </p>
           </div>
 
@@ -93,7 +93,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="pt-8 border-t border-secondary-foreground/10">
           <p className="text-center text-secondary-foreground/50 text-xs">
-            Dinero Ya no es un préstamo. Es un adelanto de tu salario ganado, respaldado por tus prestaciones laborales según el Código Laboral de la República Dominicana.
+            Adelanto Ya no es un préstamo. Es un adelanto de tu salario ganado, respaldado por tus prestaciones laborales según el Código Laboral de la República Dominicana.
           </p>
         </div>
       </div>

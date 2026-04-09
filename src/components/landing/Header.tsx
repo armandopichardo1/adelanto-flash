@@ -13,7 +13,6 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    // Only handle hash links on the same page
     if (href.startsWith("/#")) {
       const sectionId = href.replace("/#", "");
       const element = document.getElementById(sectionId);
@@ -34,7 +33,7 @@ export function Header() {
             <div className="w-10 h-10 rounded-xl gradient-hero flex items-center justify-center shadow-soft">
               <Wallet className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span className="text-xl font-bold text-foreground">Dinero Ya</span>
+            <span className="text-xl font-bold text-foreground">Adelanto Ya</span>
           </Link>
 
           {/* Desktop Navigation */}

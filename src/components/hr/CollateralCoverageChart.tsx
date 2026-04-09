@@ -1,9 +1,9 @@
 import { Shield, ShieldCheck } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Cell, LabelList } from "recharts";
-import { formatDOP } from "@/lib/loan-calculator";
+import { formatDOP } from "@/lib/advance-calculator";
 
 interface CollateralCoverageChartProps {
-  totalCollateral: number; // Total Employee Severance Held
+  totalCollateral: number; // Internal: Total Employee Severance Held
   totalActiveAdvances: number; // Total Active Advances (Risk)
 }
 
@@ -19,7 +19,7 @@ export function CollateralCoverageChart({
 
   const data = [
     {
-      name: "Garantía (Cesantía)",
+      name: "Prestaciones Laborales",
       value: totalCollateral,
       fill: "hsl(var(--primary))",
     },
@@ -48,7 +48,7 @@ export function CollateralCoverageChart({
       </div>
 
       <p className="text-sm text-muted-foreground mb-6">
-        El respaldo total de cesantía cubre {coverageRatio}x los adelantos activos
+        El respaldo laboral total cubre {coverageRatio}x los adelantos activos
       </p>
 
       {/* Chart */}
@@ -95,7 +95,7 @@ export function CollateralCoverageChart({
       <div className="flex items-center justify-center gap-6 mt-4 pt-4 border-t border-border">
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-primary" />
-          <span className="text-sm text-muted-foreground">Cesantía Total (Garantía)</span>
+          <span className="text-sm text-muted-foreground">Valor Laboral Acumulado</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-secondary" />

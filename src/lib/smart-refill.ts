@@ -1,13 +1,13 @@
 // Smart Refill (Retiros Flexibles) Logic
 // Allows users to "top up" their advance if they haven't reached their limit
 
-import { calculateLoanDetails } from "./loan-calculator";
+import { calculateAdvanceDetails, type FeeConfig, DEFAULT_FEE_CONFIG } from "./advance-calculator";
 
 export interface ActiveAdvance {
   id: string;
   amount: number;
   fee: number;
-  totalDebt: number;
+  totalToDeduct: number;
   disbursedDate: string;
   status: 'active' | 'paid';
 }
@@ -25,27 +25,27 @@ export interface SmartRefillResult {
  */
 export function checkSmartRefill(
   activeAdvance: ActiveAdvance | null,
-  maxLoanLimit: number
+  maxAdvanceLimit: number
 ): SmartRefillResult {
   // No active advance - full limit available
   if (!activeAdvance || activeAdvance.status === 'paid') {
     return {
       canRefill: false,
       currentlyUsed: 0,
-      maxLimit: maxLoanLimit,
-      remainingAvailable: maxLoanLimit,
+      maxLimit: maxAdvanceLimit,
+      remainingAvailable: maxAdvanceLimit,
       buttonLabel: 'Solicitar',
     };
   }
 
   // Has active advance - check remaining
   const currentlyUsed = activeAdvance.amount;
-  const remainingAvailable = maxLoanLimit - currentlyUsed;
+  const remainingAvailable = maxAdvanceLimit - currentlyUsed;
 
   return {
     canRefill: remainingAvailable > 0,
     currentlyUsed,
-    maxLimit: maxLoanLimit,
+    maxLimit: maxAdvanceLimit,
     remainingAvailable: Math.max(0, remainingAvailable),
     buttonLabel: remainingAvailable > 0 ? 'Recargar' : 'Solicitar',
   };
@@ -55,16 +55,20 @@ export function checkSmartRefill(
  * Calculate fee for incremental refill amount
  * Fee is ONLY applied to the new incremental amount, not the total
  */
-export function calculateRefillDetails(incrementalAmount: number): {
+export function calculateRefillDetails(
+  incrementalAmount: number,
+  monthlySalary: number = 45000,
+  feeConfig: FeeConfig = DEFAULT_FEE_CONFIG
+): {
   incrementalAmount: number;
   incrementalFee: number;
-  incrementalTotalDebt: number;
+  incrementalTotalToDeduct: number;
 } {
-  const details = calculateLoanDetails(incrementalAmount);
+  const details = calculateAdvanceDetails(incrementalAmount, monthlySalary, feeConfig);
   return {
     incrementalAmount,
     incrementalFee: details.fee,
-    incrementalTotalDebt: details.totalDebt,
+    incrementalTotalToDeduct: details.totalToDeduct,
   };
 }
 
