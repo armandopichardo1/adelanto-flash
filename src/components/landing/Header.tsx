@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { Wallet, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import logoImage from "@/assets/logo-adelanto-ya.png";
 
 const navLinks = [
   { label: "¿Cómo funciona?", href: "/#como-funciona" },
@@ -30,11 +31,8 @@ export function Header() {
         <div className="px-6">
           <div className="flex items-center justify-between h-14 md:h-16">
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl gradient-hero flex items-center justify-center">
-                <Wallet className="w-4.5 h-4.5 text-primary-foreground" />
-              </div>
-              <span className="font-headline text-lg font-bold text-foreground tracking-tight">Adelanto Ya</span>
+            <Link to="/" className="flex items-center">
+              <img src={logoImage} alt="Adelanto Ya" className="h-8 md:h-9 w-auto" />
             </Link>
 
             {/* Desktop Navigation */}

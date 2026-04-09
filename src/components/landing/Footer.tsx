@@ -1,5 +1,5 @@
-import { Wallet } from "lucide-react";
 import { Link } from "react-router-dom";
+import logoImage from "@/assets/logo-adelanto-ya.png";
 
 const footerLinks = {
   producto: [
@@ -27,11 +27,8 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-14">
           {/* Brand column */}
           <div className="col-span-2 md:col-span-1">
-            <Link to="/" className="flex items-center gap-2.5 mb-5">
-              <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
-                <Wallet className="w-4.5 h-4.5 text-primary-foreground" />
-              </div>
-              <span className="font-headline text-lg font-bold text-background">Adelanto Ya</span>
+            <Link to="/" className="flex items-center mb-5">
+              <img src={logoImage} alt="Adelanto Ya" className="h-8 w-auto brightness-0 invert" />
             </Link>
             <p className="text-background/50 text-sm leading-relaxed mb-6">
               Tu salario ganado, cuando lo necesites. Libertad financiera para los trabajadores dominicanos.
