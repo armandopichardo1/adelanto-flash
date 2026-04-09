@@ -87,9 +87,7 @@ export function calculateAdvanceLimit(employee: EmployeeData): AdvanceCalculatio
   const fee = calculateFee(maxAdvanceAmount, monthlySalary, feeConfig);
   const totalToDeduct = maxAdvanceAmount + fee;
 
-  // Import getTenureLevel locally to avoid circular
-  const { getTenureLevel } = require('./risk-config');
-
+  const tenLevel = getTenureLevel(tenureYears);
   return {
     maxAdvanceAmount,
     collateralBase: Math.floor(collateralBase),
