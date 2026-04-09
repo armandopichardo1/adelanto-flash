@@ -93,7 +93,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="pt-8">
           <p className="text-center text-surface-container text-xs">
-            Adelanto Ya no es un préstamo. Es un adelanto de tu salario ganado, respaldado por tus prestaciones laborales según el Código Laboral de la República Dominicana.
+            Adelanto Ya es un servicio de adelanto de nómina. Tu salario ganado, respaldado por tu valor laboral acumulado según el Código Laboral de la República Dominicana.
           </p>
         </div>
       </div>

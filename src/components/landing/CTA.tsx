@@ -16,7 +16,7 @@ export function CTA() {
               ¿Listo para acceder a tu salario?
             </h2>
             <p className="text-primary-foreground/90 text-lg mb-8">
-              Únete a miles de trabajadores dominicanos que ya disfrutan de libertad financiera. Sin préstamos, sin deudas — solo tu dinero, cuando lo necesites.
+              Únete a miles de trabajadores dominicanos que ya disfrutan de libertad financiera. Tu dinero ganado, cuando lo necesites.
             </p>
             <Button variant="white" size="xl" asChild>
               <Link to="/login">
