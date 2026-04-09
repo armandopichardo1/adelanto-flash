@@ -247,6 +247,11 @@ export default function AdminDashboard() {
             </TableBody>
           </Table>
         </section>
+
+        {/* HR User Management */}
+        <HRUserManagement onViewCompany={(company) => setViewingCompany(company)} />
+        </>
+        )}
       </main>
     </div>
   );
