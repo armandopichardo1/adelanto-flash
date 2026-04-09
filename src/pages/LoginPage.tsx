@@ -10,7 +10,8 @@ type LoginType = "employee" | "hr" | "admin";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const [loginType, setLoginType] = useState<LoginType>("employee");
+  const [searchParams] = useSearchParams();
+  const [loginType, setLoginType] = useState<LoginType>((searchParams.get("type") as LoginType) || "employee");
   const [companyCode, setCompanyCode] = useState("");
   const [cedula, setCedula] = useState("");
   const [email, setEmail] = useState("");
