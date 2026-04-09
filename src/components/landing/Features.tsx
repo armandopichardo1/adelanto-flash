@@ -1,4 +1,5 @@
 import { Wallet, TrendingUp, Building2, Shield, Clock, Heart } from "lucide-react";
+import { motion } from "framer-motion";
 
 const features = [
   {
@@ -44,7 +45,13 @@ export function Features() {
     <section className="py-16 md:py-32 bg-surface-container-low">
       <div className="container mx-auto px-4">
         {/* Section header */}
-        <div className="max-w-2xl mx-auto text-center mb-10 md:mb-16">
+        <motion.div
+          className="max-w-2xl mx-auto text-center mb-10 md:mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.5 }}
+        >
           <p className="text-primary font-semibold text-sm tracking-wide uppercase mb-3">¿Por qué Adelanto Ya?</p>
           <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground mb-4">
             Libertad financiera diseñada para ti
@@ -52,21 +59,25 @@ export function Features() {
           <p className="text-lg text-muted-foreground">
             No somos un banco, no somos un prestamista. Somos el puente entre tu trabajo y tu dinero.
           </p>
-        </div>
+        </motion.div>
 
-        {/* Features grid — asymmetric layout */}
+        {/* Features grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {features.map((feature) => (
-            <div
+          {features.map((feature, i) => (
+            <motion.div
               key={feature.title}
               className="group p-7 rounded-2xl bg-surface-container-lowest hover:shadow-elevated transition-all duration-300 hover:-translate-y-0.5"
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ delay: i * 0.08, duration: 0.45, ease: "easeOut" }}
             >
               <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl ${feature.accent} mb-5 group-hover:scale-105 transition-transform`}>
                 <feature.icon className="w-6 h-6" />
               </div>
               <h3 className="font-headline text-lg font-bold text-foreground mb-2">{feature.title}</h3>
               <p className="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

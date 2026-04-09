@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { motion } from "framer-motion";
 import heroImage from "@/assets/hero-worker.jpg";
 
 const trustPoints = [
@@ -12,7 +13,6 @@ const trustPoints = [
 export function Hero() {
   return (
     <section className="relative overflow-hidden bg-surface min-h-[70vh] lg:min-h-[90vh] flex items-center">
-      {/* Subtle organic background shapes */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 right-0 w-[60%] h-full bg-accent/30 rounded-bl-[120px]" />
         <div className="absolute -bottom-20 -left-20 w-80 h-80 rounded-full bg-secondary-container/10 blur-3xl" />
@@ -21,17 +21,36 @@ export function Hero() {
       <div className="relative container mx-auto px-4 py-10 md:py-0">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           {/* Left — Copy */}
-          <div className="max-w-xl">
-            <p className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent text-accent-foreground text-xs font-semibold tracking-wide uppercase mb-4">
+          <motion.div
+            className="max-w-xl"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
+            <motion.p
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent text-accent-foreground text-xs font-semibold tracking-wide uppercase mb-4"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2, duration: 0.4 }}
+            >
               Bienestar financiero para tu equipo
-            </p>
+            </motion.p>
 
             <h1 className="font-headline text-3xl md:text-5xl lg:text-[3.5rem] font-extrabold leading-[1.1] text-foreground mb-4">
               Accede a tu salario{" "}
               <span className="relative">
                 <span className="text-primary">cuando lo necesites</span>
                 <svg className="absolute -bottom-1 left-0 w-full" viewBox="0 0 300 12" fill="none">
-                  <path d="M2 8C50 3 150 2 298 8" stroke="hsl(145 100% 22%)" strokeWidth="3" strokeLinecap="round" opacity="0.3" />
+                  <motion.path
+                    d="M2 8C50 3 150 2 298 8"
+                    stroke="hsl(145 100% 22%)"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    opacity="0.3"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ delay: 0.8, duration: 0.8, ease: "easeOut" }}
+                  />
                 </svg>
               </span>
             </h1>
@@ -40,17 +59,27 @@ export function Hero() {
               Adelanto Ya permite a los trabajadores dominicanos acceder a su dinero ganado antes del día de pago. Sin trámites, sin esperas — solo tu esfuerzo convertido en liquidez inmediata.
             </p>
 
-            {/* Trust checklist */}
             <ul className="space-y-2 mb-8">
-              {trustPoints.map((point) => (
-                <li key={point} className="flex items-center gap-3 text-foreground">
+              {trustPoints.map((point, i) => (
+                <motion.li
+                  key={point}
+                  className="flex items-center gap-3 text-foreground"
+                  initial={{ opacity: 0, x: -15 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4 + i * 0.1, duration: 0.4 }}
+                >
                   <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0" />
                   <span className="font-medium">{point}</span>
-                </li>
+                </motion.li>
               ))}
             </ul>
 
-            <div className="flex flex-col sm:flex-row gap-3">
+            <motion.div
+              className="flex flex-col sm:flex-row gap-3"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7, duration: 0.5 }}
+            >
               <Button variant="hero" size="xl" className="rounded-2xl" asChild>
                 <Link to="/login">
                   Solicitar Adelanto
@@ -60,11 +89,16 @@ export function Hero() {
               <Button variant="white" size="lg" className="rounded-2xl" asChild>
                 <a href="#como-funciona">¿Cómo funciona?</a>
               </Button>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Right — Photo */}
-          <div className="relative">
+          <motion.div
+            className="relative"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3, duration: 0.7, ease: "easeOut" }}
+          >
             <div className="relative rounded-3xl overflow-hidden shadow-elevated">
               <img
                 src={heroImage}
@@ -73,18 +107,21 @@ export function Hero() {
                 height={960}
                 className="w-full h-[280px] md:h-[400px] lg:h-[540px] object-cover object-top"
               />
-              {/* Floating stat card */}
-              <div className="absolute bottom-6 left-6 bg-surface-container-lowest/90 backdrop-blur-xl rounded-2xl p-4 shadow-elevated">
+              <motion.div
+                className="absolute bottom-6 left-6 bg-surface-container-lowest/90 backdrop-blur-xl rounded-2xl p-4 shadow-elevated"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1, duration: 0.5 }}
+              >
                 <p className="text-xs text-muted-foreground mb-0.5">Adelanto aprobado</p>
                 <p className="font-headline text-2xl font-bold text-primary">RD$12,500</p>
                 <p className="text-xs text-muted-foreground mt-1">En tu cuenta en 3 minutos →</p>
-              </div>
+              </motion.div>
             </div>
 
-            {/* Decorative elements */}
             <div className="absolute -top-6 -right-6 w-24 h-24 rounded-2xl bg-accent/60 -z-10" />
             <div className="absolute -bottom-4 -left-4 w-16 h-16 rounded-full bg-secondary-container/30 -z-10" />
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
