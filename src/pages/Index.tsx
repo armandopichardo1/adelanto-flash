@@ -5,7 +5,7 @@ import { HowItWorks } from "@/components/landing/HowItWorks";
 import { Stats } from "@/components/landing/Stats";
 import { CTA } from "@/components/landing/CTA";
 import { Footer } from "@/components/landing/Footer";
-import { LoanCalculator } from "@/components/landing/LoanCalculator";
+import { AdvanceCalculator } from "@/components/landing/AdvanceCalculator";
 
 const Index = () => {
   return (
@@ -18,7 +18,7 @@ const Index = () => {
         </section>
         <Features />
         <section id="calculadora">
-          <LoanCalculator />
+          <AdvanceCalculator />
         </section>
         <Stats />
         <section id="empresas">
