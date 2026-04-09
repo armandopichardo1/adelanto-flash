@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { FeeConfigPanel } from "@/components/admin/FeeConfigPanel";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
@@ -128,6 +129,9 @@ export default function AdminDashboard() {
       </header>
 
       <main className="container mx-auto px-4 py-8 space-y-8">
+        {/* Fee Configuration */}
+        <FeeConfigPanel />
+
         {/* Critical KPIs */}
         <section>
           <h2 className="font-headline text-xl font-bold text-foreground mb-4">Indicadores Críticos</h2>
