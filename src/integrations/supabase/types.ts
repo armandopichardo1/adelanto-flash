@@ -41,6 +41,42 @@ export type Database = {
         }
         Relationships: []
       }
+      risk_config: {
+        Row: {
+          company_id: string | null
+          id: string
+          max_advance_per_employer: number
+          max_salary_deduction_rate: number
+          safety_cap: number
+          tenure_1_to_3yr: number
+          tenure_over_3yr: number
+          tenure_under_1yr: number
+          updated_at: string
+        }
+        Insert: {
+          company_id?: string | null
+          id?: string
+          max_advance_per_employer?: number
+          max_salary_deduction_rate?: number
+          safety_cap?: number
+          tenure_1_to_3yr?: number
+          tenure_over_3yr?: number
+          tenure_under_1yr?: number
+          updated_at?: string
+        }
+        Update: {
+          company_id?: string | null
+          id?: string
+          max_advance_per_employer?: number
+          max_salary_deduction_rate?: number
+          safety_cap?: number
+          tenure_1_to_3yr?: number
+          tenure_over_3yr?: number
+          tenure_under_1yr?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
