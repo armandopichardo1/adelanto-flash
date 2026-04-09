@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Settings, DollarSign, Percent, Layers, Save, Loader2, Trash2, Plus } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 type FeeMode = "flat" | "percentage" | "tiered";
@@ -16,6 +17,7 @@ interface TierRow {
 const FEE_CONFIG_ID = "00000000-0000-0000-0000-000000000001";
 
 export function FeeConfigPanel() {
+  const queryClient = useQueryClient();
   const [mode, setMode] = useState<FeeMode>("flat");
   const [flatAmount, setFlatAmount] = useState(200);
   const [percentageRate, setPercentageRate] = useState(3); // displayed as %, stored as decimal
@@ -69,6 +71,7 @@ export function FeeConfigPanel() {
       toast.error("Error guardando configuración");
     } else {
       toast.success("Configuración de comisiones actualizada");
+      queryClient.invalidateQueries({ queryKey: ["fee-config"] });
     }
     setSaving(false);
   }

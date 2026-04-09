@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
@@ -22,9 +22,12 @@ import {
   RotateCcw,
   ChevronDown,
   ChevronUp,
+  Loader2,
 } from "lucide-react";
 import { formatDOP } from "@/lib/advance-calculator";
 import { mockEmployers } from "@/lib/mock-data";
+import { supabase } from "@/integrations/supabase/client";
+import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 // ─── Risk Category Definitions & Recommendations ────────────
@@ -151,6 +154,7 @@ function calculateImpact(
 
 // ─── Component ──────────────────────────────────────────────
 export function RiskConfigPanel() {
+  const queryClient = useQueryClient();
   const [selectedCompany, setSelectedCompany] = useState<string>("global");
   const [safetyCap, setSafetyCap] = useState(50);
   const [tenureUnder1, setTenureUnder1] = useState(20);
@@ -159,39 +163,114 @@ export function RiskConfigPanel() {
   const [maxConcentration, setMaxConcentration] = useState(15);
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const [showCalculator, setShowCalculator] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [dbDefaults, setDbDefaults] = useState({ safetyCap: 50, tenureUnder1: 20, tenure1to3: 50, tenureOver3: 80, maxConcentration: 15 });
+
+  const loadConfig = useCallback(async (companyId: string) => {
+    setLoading(true);
+    const query = companyId === "global"
+      ? supabase.from("risk_config").select("*").is("company_id", null).single()
+      : supabase.from("risk_config").select("*").eq("company_id", companyId).maybeSingle();
+    
+    const { data } = await query;
+    
+    if (data) {
+      const vals = {
+        safetyCap: Math.round(Number(data.safety_cap) * 100),
+        tenureUnder1: Math.round(Number(data.tenure_under_1yr) * 100),
+        tenure1to3: Math.round(Number(data.tenure_1_to_3yr) * 100),
+        tenureOver3: Math.round(Number(data.tenure_over_3yr) * 100),
+        maxConcentration: Math.round(Number(data.max_advance_per_employer) * 100),
+      };
+      setSafetyCap(vals.safetyCap);
+      setTenureUnder1(vals.tenureUnder1);
+      setTenure1to3(vals.tenure1to3);
+      setTenureOver3(vals.tenureOver3);
+      setMaxConcentration(vals.maxConcentration);
+      setDbDefaults(vals);
+    } else if (companyId !== "global") {
+      // No company override exists — load global as baseline
+      const { data: globalData } = await supabase.from("risk_config").select("*").is("company_id", null).single();
+      if (globalData) {
+        const vals = {
+          safetyCap: Math.round(Number(globalData.safety_cap) * 100),
+          tenureUnder1: Math.round(Number(globalData.tenure_under_1yr) * 100),
+          tenure1to3: Math.round(Number(globalData.tenure_1_to_3yr) * 100),
+          tenureOver3: Math.round(Number(globalData.tenure_over_3yr) * 100),
+          maxConcentration: Math.round(Number(globalData.max_advance_per_employer) * 100),
+        };
+        setSafetyCap(vals.safetyCap);
+        setTenureUnder1(vals.tenureUnder1);
+        setTenure1to3(vals.tenure1to3);
+        setTenureOver3(vals.tenureOver3);
+        setMaxConcentration(vals.maxConcentration);
+        setDbDefaults(vals);
+      }
+    }
+    setLoading(false);
+  }, []);
+
+  useEffect(() => { loadConfig(selectedCompany); }, [selectedCompany, loadConfig]);
+
+  const hasChanges = useMemo(() => {
+    return safetyCap !== dbDefaults.safetyCap || tenureUnder1 !== dbDefaults.tenureUnder1 || tenure1to3 !== dbDefaults.tenure1to3 || tenureOver3 !== dbDefaults.tenureOver3 || maxConcentration !== dbDefaults.maxConcentration;
+  }, [safetyCap, tenureUnder1, tenure1to3, tenureOver3, maxConcentration, dbDefaults]);
+
+  const handleReset = () => {
+    setSafetyCap(dbDefaults.safetyCap);
+    setTenureUnder1(dbDefaults.tenureUnder1);
+    setTenure1to3(dbDefaults.tenure1to3);
+    setTenureOver3(dbDefaults.tenureOver3);
+    setMaxConcentration(dbDefaults.maxConcentration);
+    toast.info("Valores restaurados");
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
+    const payload = {
+      safety_cap: safetyCap / 100,
+      max_salary_deduction_rate: 0.30, // Art. 201 fixed
+      tenure_under_1yr: tenureUnder1 / 100,
+      tenure_1_to_3yr: tenure1to3 / 100,
+      tenure_over_3yr: tenureOver3 / 100,
+      max_advance_per_employer: maxConcentration / 100,
+    };
+    const companyId = selectedCompany === "global" ? null : selectedCompany;
+
+    // Upsert: update if exists, insert if not
+    const { data: existing } = companyId
+      ? await supabase.from("risk_config").select("id").eq("company_id", companyId).maybeSingle()
+      : await supabase.from("risk_config").select("id").is("company_id", null).single();
+
+    let error;
+    if (existing) {
+      ({ error } = await supabase.from("risk_config").update(payload).eq("id", existing.id));
+    } else {
+      ({ error } = await supabase.from("risk_config").insert({ ...payload, company_id: companyId }));
+    }
+
+    if (error) {
+      console.error("Error saving risk config:", error);
+      toast.error("Error guardando configuración de riesgo");
+    } else {
+      const scope = selectedCompany === "global" ? "genérica" : mockEmployers.find((e) => e.id === selectedCompany)?.name;
+      toast.success(`Configuración de riesgo ${scope} guardada`);
+      setDbDefaults({ safetyCap, tenureUnder1, tenure1to3, tenureOver3, maxConcentration });
+      // Invalidate all risk-config queries so employee dashboards pick up changes
+      queryClient.invalidateQueries({ queryKey: ["risk-config"] });
+    }
+    setSaving(false);
+  };
+
+  const handleCompanyChange = (value: string) => {
+    setSelectedCompany(value);
+  };
 
   const impacts = useMemo(
     () => calculateImpact(safetyCap, tenureUnder1, tenure1to3, tenureOver3),
     [safetyCap, tenureUnder1, tenure1to3, tenureOver3]
   );
-
-  const hasChanges = useMemo(() => {
-    return safetyCap !== 50 || tenureUnder1 !== 20 || tenure1to3 !== 50 || tenureOver3 !== 80 || maxConcentration !== 15;
-  }, [safetyCap, tenureUnder1, tenure1to3, tenureOver3, maxConcentration]);
-
-  const handleReset = () => {
-    setSafetyCap(50);
-    setTenureUnder1(20);
-    setTenure1to3(50);
-    setTenureOver3(80);
-    setMaxConcentration(15);
-    toast.info("Valores restaurados a configuración predeterminada");
-  };
-
-  const handleSave = () => {
-    const scope = selectedCompany === "global" ? "genérica" : mockEmployers.find((e) => e.id === selectedCompany)?.name;
-    toast.success(`Configuración de riesgo ${scope} guardada`);
-  };
-
-  const handleCompanyChange = (value: string) => {
-    setSelectedCompany(value);
-    // In production, load company-specific config from DB here
-    if (value !== "global") {
-      toast.info("Cargando configuración específica de empresa...");
-    } else {
-      handleReset();
-    }
-  };
 
   function getHealthColor(categoryId: string, value: number): string {
     const cat = RISK_CATEGORIES[categoryId];
@@ -245,8 +324,9 @@ export function RiskConfigPanel() {
                 <RotateCcw className="w-4 h-4" /> Restaurar
               </Button>
             )}
-            <Button onClick={handleSave} size="sm">
-              <Save className="w-4 h-4" /> Guardar
+            <Button onClick={handleSave} disabled={saving || !hasChanges} size="sm">
+              {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+              {saving ? "Guardando..." : "Guardar"}
             </Button>
           </div>
         </div>
