@@ -323,8 +323,9 @@ export function RiskConfigPanel() {
                 <RotateCcw className="w-4 h-4" /> Restaurar
               </Button>
             )}
-            <Button onClick={handleSave} size="sm">
-              <Save className="w-4 h-4" /> Guardar
+            <Button onClick={handleSave} disabled={saving || !hasChanges} size="sm">
+              {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+              {saving ? "Guardando..." : "Guardar"}
             </Button>
           </div>
         </div>
