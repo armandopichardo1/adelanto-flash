@@ -188,7 +188,17 @@ export default function AdvanceRequestFlow() {
   );
 }
 
+function OfferRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex justify-between items-center py-2">
+      <span className="text-muted-foreground text-sm">{label}</span>
+      <span className="font-semibold text-foreground">{value}</span>
+    </div>
+  );
+}
+
 function StepHeader({ title, onBack, step }: { title: string; onBack: () => void; step: number }) {
+  const totalSteps = 4;
   return (
     <header className="bg-surface-container-lowest sticky top-0 z-50 shadow-card">
       <div className="container mx-auto px-4 py-4">
