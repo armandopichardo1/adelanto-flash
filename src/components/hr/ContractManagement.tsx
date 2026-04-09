@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+// Table imports removed - using card layout for mobile
 import { FileText, Plus, CheckCircle2, Clock, Eye, PenLine } from "lucide-react";
 import { toast } from "sonner";
 import {
