@@ -72,6 +72,10 @@ export default function AdminDashboard() {
       </header>
 
       <main className="container mx-auto px-4 py-8 space-y-8">
+        {viewingCompany ? (
+          <CompanyHRView companyName={viewingCompany} onBack={() => setViewingCompany(null)} />
+        ) : (
+        <>
         {/* Title */}
         <div className="flex items-start justify-between">
           <div>
