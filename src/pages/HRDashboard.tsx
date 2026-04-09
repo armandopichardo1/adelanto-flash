@@ -21,6 +21,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { CollateralCoverageChart } from "@/components/hr/CollateralCoverageChart";
 import { PayrollUpload } from "@/components/hr/PayrollUpload";
+import { EmployeeManagement } from "@/components/hr/EmployeeManagement";
 import {
   hrCompany,
   hrPendingRequests,
@@ -176,45 +177,9 @@ export default function HRDashboard() {
             </div>
           </section>
 
-          {/* Employee List */}
-          <section className="bg-surface-container-lowest rounded-2xl shadow-card overflow-hidden">
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="font-headline text-lg font-bold text-foreground">Lista de Empleados</h2>
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input placeholder="Buscar..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="pl-10 w-48" />
-                </div>
-              </div>
-            </div>
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-surface-container-low hover:bg-surface-container-low">
-                  <TableHead>Empleado</TableHead>
-                  <TableHead>Cédula</TableHead>
-                  <TableHead>Salario</TableHead>
-                  <TableHead>Antigüedad</TableHead>
-                  <TableHead>Depto.</TableHead>
-                  <TableHead>Estado</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {companyEmployees
-                  .filter((e) => e.name.toLowerCase().includes(searchTerm.toLowerCase()) || e.cedula.includes(searchTerm))
-                  .map((emp) => (
-                    <TableRow key={emp.id} className="border-outline-variant/15">
-                      <TableCell className="font-medium">{emp.name}</TableCell>
-                      <TableCell className="font-mono text-sm">{emp.cedula}</TableCell>
-                      <TableCell>{formatDOP(emp.salary)}</TableCell>
-                      <TableCell>{emp.tenure} años</TableCell>
-                      <TableCell className="text-sm text-muted-foreground">{emp.department}</TableCell>
-                      <TableCell>
-                        <Badge variant="outline" className={emp.status === "ACTIVO" ? "bg-accent text-accent-foreground" : "bg-surface-container text-muted-foreground"}>{emp.status}</Badge>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
+          {/* Employee Management (CRUD) */}
+          <section className="lg:col-span-2">
+            <EmployeeManagement employees={companyEmployees} companyName={hrCompany.name} />
           </section>
         </div>
       </main>

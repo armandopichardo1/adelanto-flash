@@ -1,6 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FeeConfigPanel } from "@/components/admin/FeeConfigPanel";
 import { RiskConfigPanel } from "@/components/admin/RiskConfigPanel";
+import { HRUserManagement } from "@/components/admin/HRUserManagement";
+import { CompanyHRView } from "@/components/admin/CompanyHRView";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
@@ -70,6 +72,10 @@ export default function AdminDashboard() {
       </header>
 
       <main className="container mx-auto px-4 py-8 space-y-8">
+        {viewingCompany ? (
+          <CompanyHRView companyName={viewingCompany} onBack={() => setViewingCompany(null)} />
+        ) : (
+        <>
         {/* Title */}
         <div className="flex items-start justify-between">
           <div>
@@ -241,6 +247,11 @@ export default function AdminDashboard() {
             </TableBody>
           </Table>
         </section>
+
+        {/* HR User Management */}
+        <HRUserManagement onViewCompany={(company) => setViewingCompany(company)} />
+        </>
+        )}
       </main>
     </div>
   );
@@ -256,7 +267,7 @@ function KPICard({ icon, label, value, badge, badgeColor, status }: { icon: Reac
     </div>
   );
 }
-
+  const [viewingCompany, setViewingCompany] = useState<string | null>(null);
 
 function StatusBadge({ status }: { status: "healthy" | "warning" | "toxic" }) {
   const config = { healthy: { label: "Saludable", className: "bg-accent text-accent-foreground" }, warning: { label: "Precaución", className: "bg-warning/10 text-warning" }, toxic: { label: "Tóxico", className: "bg-destructive/10 text-destructive" } };
