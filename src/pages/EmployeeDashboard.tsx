@@ -33,6 +33,8 @@ import { toast } from "sonner";
 
 export default function EmployeeDashboard() {
   const navigate = useNavigate();
+  const feeConfig = useFeeConfig();
+  const riskConfig = useRiskConfig();
 
   useEffect(() => {
     const session = localStorage.getItem("adelantoYaSession");
@@ -45,7 +47,9 @@ export default function EmployeeDashboard() {
     monthlySalary: currentEmployee.monthlySalary,
     tenureYears: currentEmployee.tenureYears,
     riskMode: currentEmployee.riskMode,
-  }), []);
+    feeConfig,
+    riskConfig,
+  }), [feeConfig, riskConfig]);
 
   const smartRefill = useMemo(() => checkSmartRefill(currentActiveAdvance, advanceLimit.maxAdvanceAmount), [advanceLimit.maxAdvanceAmount]);
   const sliderMax = smartRefill.canRefill ? smartRefill.remainingAvailable : advanceLimit.maxAdvanceAmount;
@@ -56,12 +60,12 @@ export default function EmployeeDashboard() {
 
   const advanceDetails = useMemo(() => {
     if (smartRefill.canRefill) return calculateRefillDetails(requestedAmount, currentEmployee.monthlySalary);
-    return calculateAdvanceDetails(requestedAmount, currentEmployee.monthlySalary);
-  }, [requestedAmount, smartRefill.canRefill]);
+    return calculateAdvanceDetails(requestedAmount, currentEmployee.monthlySalary, feeConfig);
+  }, [requestedAmount, smartRefill.canRefill, feeConfig]);
 
   const tenureLevel = getTenureLevel(currentEmployee.tenureYears);
   const tenureConfig = tenureLevelConfig[tenureLevel] || tenureLevelConfig.bronze;
-  const feeLabel = getFeeLabel(DEFAULT_FEE_CONFIG);
+  const feeLabel = getFeeLabel(feeConfig);
 
   return (
     <div className="min-h-screen bg-surface-container-low">
