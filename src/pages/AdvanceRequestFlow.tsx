@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowLeft, Zap, Check, RefreshCw, FileText } from "lucide-react";
+import { SignatureCanvas } from "@/components/shared/SignatureCanvas";
 import {
   calculateAdvanceLimit,
   calculateAdvanceDetails,
