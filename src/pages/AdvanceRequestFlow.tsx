@@ -151,10 +151,9 @@ export default function AdvanceRequestFlow() {
             </div>
           </div>
           <div className="bg-surface-container-lowest rounded-2xl shadow-card p-6 mb-6">
-            <p className="text-sm font-medium text-foreground mb-3">Firma Digital</p>
-            <div className="h-32 border-2 border-dashed border-outline-variant rounded-2xl flex items-center justify-center cursor-crosshair bg-surface-container-low">
-              <p className="text-muted-foreground text-sm">Firma aquí con el dedo o mouse</p>
-            </div>
+            <SignatureCanvas
+              onSignatureChange={(has) => setHasSig(has)}
+            />
           </div>
           <div className="bg-surface-container-lowest rounded-2xl shadow-card p-6 mb-6">
             <div className="flex items-start gap-3">
