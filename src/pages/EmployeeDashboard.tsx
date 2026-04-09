@@ -247,6 +247,16 @@ export default function EmployeeDashboard() {
       </main>
 
       <BottomNav activeTab="home" />
+
+      {needsToSign && employeeContract && (
+        <ContractSigningModal
+          open={showContractModal}
+          onOpenChange={setShowContractModal}
+          contract={employeeContract}
+          contractData={contractData}
+          onSigned={() => setContractSigned(true)}
+        />
+      )}
     </div>
   );
 }

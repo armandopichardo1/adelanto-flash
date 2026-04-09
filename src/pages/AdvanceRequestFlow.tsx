@@ -1,9 +1,9 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ArrowLeft, Zap, Check, RefreshCw } from "lucide-react";
+import { ArrowLeft, Zap, Check, RefreshCw, FileText } from "lucide-react";
 import {
   calculateAdvanceLimit,
   calculateAdvanceDetails,
@@ -14,6 +14,7 @@ import {
 import { checkSmartRefill, calculateRefillDetails } from "@/lib/smart-refill";
 import { SavingsComparison } from "@/components/employee/SavingsComparison";
 import { currentEmployee, currentActiveAdvance } from "@/lib/mock-data";
+import { isEmployeeContractFullySigned } from "@/lib/contract-template";
 import { toast } from "sonner";
 
 export default function AdvanceRequestFlow() {
