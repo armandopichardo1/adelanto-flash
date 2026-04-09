@@ -14,7 +14,6 @@ import {
   Home,
   LogOut,
   Bell,
-  Save,
 } from "lucide-react";
 import { formatDOP, formatPercent } from "@/lib/advance-calculator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
