@@ -1,13 +1,17 @@
+import { useNavigate } from "react-router-dom";
+
 interface BottomNavProps {
   activeTab?: string;
 }
 
 export function BottomNav({ activeTab = "home" }: BottomNavProps) {
+  const navigate = useNavigate();
+
   const items = [
-    { icon: "home", label: "Inicio", id: "home" },
-    { icon: "payments", label: "Adelantos", id: "advances" },
-    { icon: "receipt_long", label: "Historial", id: "history" },
-    { icon: "person", label: "Perfil", id: "profile" },
+    { icon: "home", label: "Inicio", id: "home", path: "/employee" },
+    { icon: "payments", label: "Adelantos", id: "advances", path: "/advance-request" },
+    { icon: "receipt_long", label: "Historial", id: "history", path: "/history" },
+    { icon: "person", label: "Perfil", id: "profile", path: "/profile" },
   ];
 
   return (
@@ -15,6 +19,7 @@ export function BottomNav({ activeTab = "home" }: BottomNavProps) {
       {items.map((item) => (
         <button
           key={item.id}
+          onClick={() => navigate(item.path)}
           className={`flex flex-col items-center gap-1 px-3 py-1 rounded-xl transition-colors ${
             activeTab === item.id ? "text-primary" : "text-muted-foreground"
           }`}

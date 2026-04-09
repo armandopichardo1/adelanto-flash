@@ -43,7 +43,7 @@ export default function AdvanceRequestFlow() {
 
   const handleConfirm = () => {
     if (!termsAccepted) { toast.error("Debes aceptar los términos para continuar"); return; }
-    setStep(3);
+    setStep(4);
     toast.success("¡Solicitud enviada exitosamente!");
   };
 
@@ -84,7 +84,45 @@ export default function AdvanceRequestFlow() {
   if (step === 2) {
     return (
       <div className="min-h-screen bg-surface-container-low">
-        <StepHeader title="Confirmar Solicitud" onBack={() => setStep(1)} step={2} />
+        <StepHeader title="Tu Oferta Personalizada" onBack={() => setStep(1)} step={2} />
+        <main className="container mx-auto px-4 py-8 max-w-lg">
+          <div className="bg-surface-container-lowest rounded-3xl shadow-card p-8">
+            <div className="text-center mb-6">
+              <span className="material-symbols-outlined text-primary text-4xl">verified</span>
+              <h2 className="font-headline text-xl font-bold text-foreground mt-2">Tu oferta</h2>
+            </div>
+            <div className="bg-gradient-to-br from-primary to-primary-container rounded-2xl p-6 text-primary-foreground mb-6">
+              <p className="text-primary-foreground/70 text-sm">Monto aprobado</p>
+              <p className="font-headline text-4xl font-extrabold mt-1">{formatDOP(requestedAmount)}</p>
+            </div>
+            <div className="space-y-3 mb-6">
+              <OfferRow label="Cuota por nómina" value={formatDOP(totalToDeduct)} />
+              <OfferRow label="Comisión de servicio" value={formatDOP(fee)} />
+              <OfferRow label="Total a descontar" value={formatDOP(totalToDeduct)} />
+              <OfferRow label="Depósito" value="Hoy, 2-4 horas" />
+              <OfferRow label="Frecuencia" value="Quincenal" />
+            </div>
+            <div className="bg-accent rounded-2xl p-4 mb-6">
+              <p className="text-sm text-primary font-medium text-center">✓ Sin cargos ocultos · Transparencia total</p>
+            </div>
+            <div className="space-y-3">
+              <Button variant="flash" size="xl" className="w-full" onClick={() => setStep(3)}>
+                <Check className="w-5 h-5" /> Aceptar Oferta
+              </Button>
+              <Button variant="soft" size="lg" className="w-full" onClick={() => setStep(1)}>
+                Modificar monto
+              </Button>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  if (step === 3) {
+    return (
+      <div className="min-h-screen bg-surface-container-low">
+        <StepHeader title="Confirmar Solicitud" onBack={() => setStep(2)} step={3} />
         <main className="container mx-auto px-4 py-8 max-w-lg">
           <div className="grid grid-cols-2 gap-4 mb-6">
             <div className="col-span-2 bg-gradient-to-br from-primary to-primary-container rounded-3xl p-6 text-primary-foreground relative overflow-hidden">
