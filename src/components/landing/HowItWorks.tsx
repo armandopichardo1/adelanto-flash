@@ -30,10 +30,10 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section className="py-16 md:py-32 bg-surface">
+    <section className="py-10 md:py-16 bg-surface">
       <div className="container mx-auto px-4">
         <motion.div
-          className="max-w-xl mb-10 md:mb-16"
+          className="max-w-xl mb-8 md:mb-10"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}

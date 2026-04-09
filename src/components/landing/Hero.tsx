@@ -12,14 +12,14 @@ const trustPoints = [
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden bg-surface min-h-[70vh] lg:min-h-[90vh] flex items-center">
+    <section className="relative overflow-hidden bg-surface min-h-[50vh] lg:min-h-[70vh] flex items-center">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 right-0 w-[60%] h-full bg-accent/30 rounded-bl-[120px]" />
         <div className="absolute -bottom-20 -left-20 w-80 h-80 rounded-full bg-secondary-container/10 blur-3xl" />
       </div>
 
-      <div className="relative container mx-auto px-4 py-10 md:py-0">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+      <div className="relative container mx-auto px-4 py-8 md:py-0">
+        <div className="grid lg:grid-cols-2 gap-6 lg:gap-12 items-center">
           {/* Left — Copy */}
           <motion.div
             className="max-w-xl"
@@ -36,7 +36,7 @@ export function Hero() {
               Bienestar financiero para tu equipo
             </motion.p>
 
-            <h1 className="font-headline text-3xl md:text-5xl lg:text-[3.5rem] font-extrabold leading-[1.1] text-foreground mb-4">
+            <h1 className="font-headline text-3xl md:text-4xl lg:text-5xl font-extrabold leading-[1.1] text-foreground mb-3">
               Accede a tu salario{" "}
               <span className="relative">
                 <span className="text-primary">cuando lo necesites</span>
@@ -55,11 +55,11 @@ export function Hero() {
               </span>
             </h1>
 
-            <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-6">
+            <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-4">
               Adelanto Ya permite a los trabajadores dominicanos acceder a su dinero ganado antes del día de pago. Sin trámites, sin esperas — solo tu esfuerzo convertido en liquidez inmediata.
             </p>
 
-            <ul className="space-y-2 mb-8">
+            <ul className="space-y-1.5 mb-6">
               {trustPoints.map((point, i) => (
                 <motion.li
                   key={point}
@@ -105,7 +105,7 @@ export function Hero() {
                 alt="Trabajadora dominicana accediendo a su adelanto de salario desde su celular"
                 width={1280}
                 height={960}
-                className="w-full h-[280px] md:h-[400px] lg:h-[540px] object-cover object-top"
+                className="w-full h-[240px] md:h-[320px] lg:h-[420px] object-cover object-top"
               />
               <motion.div
                 className="absolute bottom-6 left-6 bg-surface-container-lowest/90 backdrop-blur-xl rounded-2xl p-4 shadow-elevated"

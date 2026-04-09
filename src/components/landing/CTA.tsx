@@ -11,7 +11,7 @@ const benefits = [
 
 export function CTA() {
   return (
-    <section className="py-16 md:py-32 bg-surface-container-low">
+    <section className="py-10 md:py-16 bg-surface-container-low">
       <div className="container mx-auto px-4">
         <motion.div
           className="relative rounded-3xl overflow-hidden"
@@ -25,7 +25,7 @@ export function CTA() {
           <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent" />
           <div className="absolute top-0 right-0 w-1/2 h-full bg-primary/5 rounded-bl-[200px]" />
 
-          <div className="relative px-8 py-16 md:px-16 md:py-20">
+          <div className="relative px-6 py-10 md:px-12 md:py-14">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               {/* Left */}
               <motion.div

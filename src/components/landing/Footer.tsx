@@ -23,8 +23,8 @@ const footerLinks = {
 export function Footer() {
   return (
     <footer className="bg-foreground">
-      <div className="container mx-auto px-4 py-16 md:py-20">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-14">
+      <div className="container mx-auto px-4 py-10 md:py-14">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
           {/* Brand column */}
           <div className="col-span-2 md:col-span-1">
             <Link to="/" className="flex items-center mb-5">
