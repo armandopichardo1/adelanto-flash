@@ -22,6 +22,7 @@ import {
   RotateCcw,
   ChevronDown,
   ChevronUp,
+  Loader2,
 } from "lucide-react";
 import { formatDOP } from "@/lib/advance-calculator";
 import { mockEmployers } from "@/lib/mock-data";
