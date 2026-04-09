@@ -36,8 +36,8 @@ interface EmployeeManagementProps {
 
 const DEPARTMENTS = ["Producción", "Calidad", "Empaque", "Logística", "Supervisión", "Mantenimiento", "Control de Calidad", "Administración", "RRHH"];
 
-const emptyForm = {
-  name: "", cedula: "", salary: "", department: "Producción", status: "ACTIVO" as const,
+const emptyForm: { name: string; cedula: string; salary: string; department: string; status: "ACTIVO" | "INACTIVO" } = {
+  name: "", cedula: "", salary: "", department: "Producción", status: "ACTIVO",
 };
 
 export function EmployeeManagement({ employees: initialEmployees, companyName, onEmployeesChange }: EmployeeManagementProps) {

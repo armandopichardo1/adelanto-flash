@@ -40,7 +40,7 @@ interface HRUserManagementProps {
   onViewCompany?: (companyName: string) => void;
 }
 
-const emptyForm = { name: "", email: "", company: "", role: "hr_admin" as const };
+const emptyForm: { name: string; email: string; company: string; role: "hr_admin" | "hr_viewer" } = { name: "", email: "", company: "", role: "hr_admin" };
 
 export function HRUserManagement({ onViewCompany }: HRUserManagementProps) {
   const [users, setUsers] = useState<HRUser[]>(initialHRUsers);
