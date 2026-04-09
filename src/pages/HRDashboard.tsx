@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import { CollateralCoverageChart } from "@/components/hr/CollateralCoverageChart";
 import { PayrollUpload } from "@/components/hr/PayrollUpload";
 import { EmployeeManagement } from "@/components/hr/EmployeeManagement";
+import { ContractManagement } from "@/components/hr/ContractManagement";
 import {
   hrCompany,
   hrPendingRequests,
@@ -175,6 +176,21 @@ export default function HRDashboard() {
                 </div>
               ))}
             </div>
+          </section>
+
+          {/* Contract Management */}
+          <section className="lg:col-span-2">
+            <ContractManagement
+              employees={companyEmployees.map(e => ({
+                id: e.id,
+                name: e.name,
+                cedula: e.cedula,
+                salary: e.salary,
+                department: e.department,
+              }))}
+              companyName={hrCompany.name}
+              companyRNC={hrCompany.rnc}
+            />
           </section>
 
           {/* Employee Management (CRUD) */}
