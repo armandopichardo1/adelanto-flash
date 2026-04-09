@@ -182,7 +182,10 @@ export default function AdvanceRequestFlow() {
             <DetailRow label="Fecha Estimada" value="Hoy, 2-4 horas" />
           </div>
         </div>
-        <Button variant="default" size="lg" className="w-full" onClick={() => navigate("/employee")}>Volver al Inicio</Button>
+        <div className="space-y-3">
+          <Button variant="default" size="lg" className="w-full" onClick={() => navigate("/request-status")}>Ver estado de solicitud</Button>
+          <Button variant="soft" size="lg" className="w-full" onClick={() => navigate("/employee")}>Volver al Inicio</Button>
+        </div>
       </main>
     </div>
   );
