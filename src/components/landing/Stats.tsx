@@ -9,7 +9,7 @@ const stats = [
 
 export function Stats() {
   return (
-    <section className="py-24 md:py-32 bg-surface relative overflow-hidden">
+    <section className="py-16 md:py-32 bg-surface relative overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left — Image */}

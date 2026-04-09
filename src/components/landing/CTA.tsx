@@ -10,7 +10,7 @@ const benefits = [
 
 export function CTA() {
   return (
-    <section className="py-24 md:py-32 bg-surface-container-low">
+    <section className="py-16 md:py-32 bg-surface-container-low">
       <div className="container mx-auto px-4">
         <div className="relative rounded-3xl overflow-hidden">
           {/* Background */}

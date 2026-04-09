@@ -26,9 +26,9 @@ export function LoanCalculator() {
   const feeLabel = getFeeLabel(DEFAULT_FEE_CONFIG);
 
   return (
-    <section className="py-24 md:py-32 bg-surface-container-low">
+    <section className="py-16 md:py-32 bg-surface-container-low">
       <div className="container mx-auto px-4">
-        <div className="max-w-xl mb-12">
+        <div className="max-w-xl mb-8 md:mb-12">
           <p className="text-primary font-semibold text-sm tracking-wide uppercase mb-3">Calculadora</p>
           <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground mb-4">
             ¿Cuánto puedes solicitar?
