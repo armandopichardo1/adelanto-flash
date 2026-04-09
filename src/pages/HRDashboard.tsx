@@ -10,7 +10,6 @@ import {
   XCircle,
   Download,
   Search,
-  UserPlus,
   Home,
   LogOut,
   Bell,
@@ -21,6 +20,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { CollateralCoverageChart } from "@/components/hr/CollateralCoverageChart";
+import { PayrollUpload } from "@/components/hr/PayrollUpload";
 import {
   hrCompany,
   hrPendingRequests,
@@ -49,16 +49,36 @@ export default function HRDashboard() {
   const adoptionRate = Math.round((hrCompany.activeUsers / hrCompany.totalEmployees) * 100);
 
   const handleExportPayroll = () => {
-    const csvContent = [
-      ["Cédula", "Concepto", "Monto"].join(","),
-      ...hrActiveAdvances.map((a) => [a.cedula, "Adelanto Ya", a.totalToDeduct].join(",")),
+    const now = new Date();
+    const dateStr = now.toISOString().split("T")[0];
+    const bom = "\uFEFF"; // UTF-8 BOM for Excel compatibility
+    const csvContent = bom + [
+      ["Empresa", "RNC", "Período", "Fecha Generación"].join(","),
+      [hrCompany.name, hrCompany.rnc, `${now.toLocaleDateString("es-DO", { month: "long", year: "numeric" })}`, dateStr].join(","),
+      "",
+      ["Cédula", "Nombre Completo", "Concepto", "Monto Adelanto (RD$)", "Comisión Servicio (RD$)", "Total a Descontar (RD$)", "Fecha Desembolso", "Estado"].join(","),
+      ...hrActiveAdvances.map((a) => [
+        a.cedula,
+        `"${a.employee}"`,
+        "Adelanto de Nómina - Adelanto Ya",
+        a.amount,
+        a.totalToDeduct - a.amount,
+        a.totalToDeduct,
+        a.disbursedDate,
+        a.status === "active" ? "ACTIVO" : "COMPLETADO",
+      ].join(",")),
+      "",
+      `"Total descuentos:,,,,,${hrActiveAdvances.reduce((s, a) => s + a.totalToDeduct, 0)},,"`,
+      `"Registros:,,,,,,${hrActiveAdvances.length},"`,
     ].join("\n");
-    const blob = new Blob([csvContent], { type: "text/csv" });
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `nomina_adelanto_ya_${new Date().toISOString().split("T")[0]}.csv`;
+    a.download = `nomina_descuentos_${hrCompany.name.replace(/\s+/g, "_")}_${dateStr}.csv`;
     a.click();
+    URL.revokeObjectURL(url);
+    toast.success(`Archivo de nómina exportado: ${hrActiveAdvances.length} descuentos`);
   };
 
   // Filter employees by the HR company
@@ -98,9 +118,9 @@ export default function HRDashboard() {
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-widest mb-1">Panel de Control B2B</p>
           <h1 className="font-headline text-3xl md:text-4xl font-extrabold text-foreground">{hrCompany.name}</h1>
           <p className="text-muted-foreground mt-1 max-w-2xl">Gestiona adelantos de nómina y valida solicitudes de tus empleados en tiempo real.</p>
-          <div className="flex gap-3 mt-4">
-            <Button variant="default" onClick={handleExportPayroll}><Download className="w-4 h-4" /> Exportar para Nómina (CSV)</Button>
-            <Button variant="outline"><UserPlus className="w-4 h-4" /> Nuevo Empleado</Button>
+          <div className="flex gap-3 mt-4 flex-wrap">
+            <Button variant="default" onClick={handleExportPayroll}><Download className="w-4 h-4" /> Exportar Descuentos Nómina (CSV)</Button>
+            <PayrollUpload onImportComplete={(n) => toast.info(`${n} empleados listos para activar`)} />
           </div>
         </div>
 
