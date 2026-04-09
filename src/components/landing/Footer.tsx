@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-
+import logoWhite from "@/assets/logo-adelanto-ya-white.png";
 
 const footerLinks = {
   producto: [
