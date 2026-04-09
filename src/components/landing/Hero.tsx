@@ -28,7 +28,7 @@ export function Hero() {
           {/* Subheadline */}
           <p className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: '0.1s' }}>
             Accede a tu dinero ganado cuando lo necesites. 
-            <span className="text-foreground font-medium"> Sin préstamos, sin deudas</span> — solo tu salario adelantado.
+            <span className="text-foreground font-medium"> Sin complicaciones, sin esperas</span> — solo tu salario adelantado.
           </p>
 
           {/* CTA Buttons */}
