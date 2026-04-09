@@ -8,6 +8,8 @@ import {
   Award,
   Zap,
   RefreshCw,
+  FileText,
+  AlertTriangle,
 } from "lucide-react";
 import {
   calculateAdvanceLimit,
@@ -21,6 +23,7 @@ import { useRiskConfig } from "@/hooks/use-risk-config";
 import { checkSmartRefill, calculateRefillDetails } from "@/lib/smart-refill";
 import { DineroScoreGauge } from "@/components/employee/DineroScoreGauge";
 import { SavingsComparison } from "@/components/employee/SavingsComparison";
+import { ContractSigningModal } from "@/components/employee/ContractSigningModal";
 import { TopBar } from "@/components/shared/TopBar";
 import { BottomNav } from "@/components/shared/BottomNav";
 import {
@@ -28,7 +31,13 @@ import {
   currentActiveAdvance,
   mockActivity,
   tenureLevelConfig,
+  hrCompany,
 } from "@/lib/mock-data";
+import {
+  getContractForEmployee,
+  isEmployeeContractFullySigned,
+  type ContractData,
+} from "@/lib/contract-template";
 import { toast } from "sonner";
 
 export default function EmployeeDashboard() {
