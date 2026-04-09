@@ -27,10 +27,10 @@ export function AdvanceCalculator() {
   const feeLabel = getFeeLabel(DEFAULT_FEE_CONFIG);
 
   return (
-    <section className="py-16 md:py-32 bg-surface-container-low">
+    <section className="py-10 md:py-16 bg-surface-container-low">
       <div className="container mx-auto px-4">
         <motion.div
-          className="max-w-xl mb-8 md:mb-12"
+          className="max-w-xl mb-6 md:mb-8"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}

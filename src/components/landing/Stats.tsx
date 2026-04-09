@@ -10,9 +10,9 @@ const stats = [
 
 export function Stats() {
   return (
-    <section className="py-16 md:py-32 bg-surface relative overflow-hidden">
+    <section className="py-10 md:py-16 bg-surface relative overflow-hidden">
       <div className="container mx-auto px-4">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-14 items-center">
           {/* Left — Image */}
           <motion.div
             className="relative rounded-3xl overflow-hidden shadow-card"
@@ -27,7 +27,7 @@ export function Stats() {
               width={1280}
               height={640}
               loading="lazy"
-              className="w-full h-[360px] object-cover"
+              className="w-full h-[280px] md:h-[320px] object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-foreground/40 to-transparent" />
             <div className="absolute bottom-6 left-6 right-6">
@@ -49,7 +49,7 @@ export function Stats() {
             <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground mb-4">
               Crecimiento real, impacto medible
             </h2>
-            <p className="text-muted-foreground mb-10 max-w-md">
+            <p className="text-muted-foreground mb-6 max-w-md">
               Desde zonas francas hasta oficinas corporativas, Adelanto Ya transforma la relación de los trabajadores con su salario.
             </p>
 

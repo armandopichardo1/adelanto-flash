@@ -42,11 +42,11 @@ const features = [
 
 export function Features() {
   return (
-    <section className="py-16 md:py-32 bg-surface-container-low">
+    <section className="py-10 md:py-16 bg-surface-container-low">
       <div className="container mx-auto px-4">
         {/* Section header */}
         <motion.div
-          className="max-w-2xl mx-auto text-center mb-10 md:mb-16"
+          className="max-w-2xl mx-auto text-center mb-8 md:mb-10"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
