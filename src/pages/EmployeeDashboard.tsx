@@ -44,6 +44,22 @@ export default function EmployeeDashboard() {
   const navigate = useNavigate();
   const feeConfig = useFeeConfig();
   const riskConfig = useRiskConfig();
+  const [contractSigned, setContractSigned] = useState(() => isEmployeeContractFullySigned("e-01"));
+  const [showContractModal, setShowContractModal] = useState(false);
+
+  const employeeContract = getContractForEmployee("e-01");
+  const needsToSign = employeeContract?.status === "pending_employee";
+
+  const contractData: ContractData = {
+    employerName: hrCompany.name,
+    employerRNC: hrCompany.rnc,
+    employeeName: currentEmployee.name,
+    employeeCedula: currentEmployee.cedula,
+    employeeDepartment: currentEmployee.department,
+    employeeSalary: currentEmployee.monthlySalary,
+    maxAdvancePercent: 30,
+    date: new Date().toLocaleDateString("es-DO", { day: "numeric", month: "long", year: "numeric" }),
+  };
 
   useEffect(() => {
     const session = localStorage.getItem("adelantoYaSession");
