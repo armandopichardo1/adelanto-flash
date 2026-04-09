@@ -22,6 +22,7 @@ export default function AdvanceRequestFlow() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [termsAccepted, setTermsAccepted] = useState(false);
+  const [hasSig, setHasSig] = useState(false);
 
   // Block access if contract is not fully signed
   useEffect(() => {
