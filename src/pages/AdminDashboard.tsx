@@ -217,14 +217,6 @@ function KPICard({ icon, label, value, badge, badgeColor, status }: { icon: Reac
   );
 }
 
-function SliderField({ label, value, onChange, min, max, step, suffix }: { label: string; value: number; onChange: (v: number) => void; min: number; max: number; step: number; suffix: string }) {
-  return (
-    <div>
-      <div className="flex justify-between mb-2"><Label className="text-sm">{label}</Label><span className="text-sm font-bold text-foreground">{value}{suffix}</span></div>
-      <Slider value={[value]} onValueChange={([v]) => onChange(v)} min={min} max={max} step={step} />
-    </div>
-  );
-}
 
 function StatusBadge({ status }: { status: "healthy" | "warning" | "toxic" }) {
   const config = { healthy: { label: "Saludable", className: "bg-accent text-accent-foreground" }, warning: { label: "Precaución", className: "bg-warning/10 text-warning" }, toxic: { label: "Tóxico", className: "bg-destructive/10 text-destructive" } };
