@@ -125,7 +125,18 @@ export function PayrollUpload({
         if (isNaN(salary) || salary < 1000) errors.push("Salario inválido (mín. RD$1,000)");
         if (salary > 500000) errors.push("Salario excesivo (>RD$500,000)");
         if (!department) errors.push("Departamento vacío");
-        if (!joinDate) errors.push("Fecha de ingreso vacía");
+        if (!joinDate) {
+          errors.push("Fecha de ingreso vacía");
+        } else if (!/^\d{4}-\d{2}-\d{2}$/.test(joinDate)) {
+          errors.push("Formato fecha inválido (debe ser YYYY-MM-DD)");
+        } else {
+          const parsed = new Date(joinDate + "T00:00:00");
+          if (isNaN(parsed.getTime())) {
+            errors.push("Fecha inválida");
+          } else if (parsed > new Date()) {
+            errors.push("Fecha de ingreso no puede ser futura");
+          }
+        }
 
         employees.push({ row: i + 1, cedula, name, salary, department, joinDate, errors });
       }
