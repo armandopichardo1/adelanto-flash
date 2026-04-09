@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowLeft, Zap, Check, RefreshCw, FileText } from "lucide-react";
+import { SignatureCanvas } from "@/components/shared/SignatureCanvas";
 import {
   calculateAdvanceLimit,
   calculateAdvanceDetails,
@@ -21,6 +22,7 @@ export default function AdvanceRequestFlow() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [termsAccepted, setTermsAccepted] = useState(false);
+  const [hasSig, setHasSig] = useState(false);
 
   // Block access if contract is not fully signed
   useEffect(() => {
@@ -51,7 +53,7 @@ export default function AdvanceRequestFlow() {
   const totalToDeduct = "incrementalTotalToDeduct" in advanceDetails ? advanceDetails.incrementalTotalToDeduct : advanceDetails.totalToDeduct;
 
   const handleConfirm = () => {
-    if (!termsAccepted) { toast.error("Debes aceptar los términos para continuar"); return; }
+    if (!termsAccepted || !hasSig) { toast.error("Debes firmar y aceptar los términos para continuar"); return; }
     setStep(4);
     toast.success("¡Solicitud enviada exitosamente!");
   };
@@ -149,10 +151,9 @@ export default function AdvanceRequestFlow() {
             </div>
           </div>
           <div className="bg-surface-container-lowest rounded-2xl shadow-card p-6 mb-6">
-            <p className="text-sm font-medium text-foreground mb-3">Firma Digital</p>
-            <div className="h-32 border-2 border-dashed border-outline-variant rounded-2xl flex items-center justify-center cursor-crosshair bg-surface-container-low">
-              <p className="text-muted-foreground text-sm">Firma aquí con el dedo o mouse</p>
-            </div>
+            <SignatureCanvas
+              onSignatureChange={(has) => setHasSig(has)}
+            />
           </div>
           <div className="bg-surface-container-lowest rounded-2xl shadow-card p-6 mb-6">
             <div className="flex items-start gap-3">
@@ -162,7 +163,7 @@ export default function AdvanceRequestFlow() {
               </label>
             </div>
           </div>
-          <Button variant="flash" size="xl" className="w-full" onClick={handleConfirm} disabled={!termsAccepted}>
+          <Button variant="flash" size="xl" className="w-full" onClick={handleConfirm} disabled={!termsAccepted || !hasSig}>
             <Check className="w-5 h-5" /> Confirmar Solicitud
           </Button>
         </main>
