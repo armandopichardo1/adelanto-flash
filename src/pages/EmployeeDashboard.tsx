@@ -8,6 +8,8 @@ import {
   Award,
   Zap,
   RefreshCw,
+  FileText,
+  AlertTriangle,
 } from "lucide-react";
 import {
   calculateAdvanceLimit,
@@ -21,6 +23,7 @@ import { useRiskConfig } from "@/hooks/use-risk-config";
 import { checkSmartRefill, calculateRefillDetails } from "@/lib/smart-refill";
 import { DineroScoreGauge } from "@/components/employee/DineroScoreGauge";
 import { SavingsComparison } from "@/components/employee/SavingsComparison";
+import { ContractSigningModal } from "@/components/employee/ContractSigningModal";
 import { TopBar } from "@/components/shared/TopBar";
 import { BottomNav } from "@/components/shared/BottomNav";
 import {
@@ -28,13 +31,35 @@ import {
   currentActiveAdvance,
   mockActivity,
   tenureLevelConfig,
+  hrCompany,
 } from "@/lib/mock-data";
+import {
+  getContractForEmployee,
+  isEmployeeContractFullySigned,
+  type ContractData,
+} from "@/lib/contract-template";
 import { toast } from "sonner";
 
 export default function EmployeeDashboard() {
   const navigate = useNavigate();
   const feeConfig = useFeeConfig();
   const riskConfig = useRiskConfig();
+  const [contractSigned, setContractSigned] = useState(() => isEmployeeContractFullySigned("e-01"));
+  const [showContractModal, setShowContractModal] = useState(false);
+
+  const employeeContract = getContractForEmployee("e-01");
+  const needsToSign = employeeContract?.status === "pending_employee";
+
+  const contractData: ContractData = {
+    employerName: hrCompany.name,
+    employerRNC: hrCompany.rnc,
+    employeeName: currentEmployee.name,
+    employeeCedula: currentEmployee.cedula,
+    employeeDepartment: currentEmployee.department,
+    employeeSalary: currentEmployee.monthlySalary,
+    maxAdvancePercent: 30,
+    date: new Date().toLocaleDateString("es-DO", { day: "numeric", month: "long", year: "numeric" }),
+  };
 
   useEffect(() => {
     const session = localStorage.getItem("adelantoYaSession");
@@ -110,6 +135,26 @@ export default function EmployeeDashboard() {
           </div>
         </div>
 
+        {/* Contract Banner */}
+        {!contractSigned && (
+          <div className="bg-warning/10 border border-warning/30 rounded-2xl p-4 flex items-start gap-3">
+            <AlertTriangle className="w-5 h-5 text-warning mt-0.5 shrink-0" />
+            <div className="flex-1">
+              <p className="font-medium text-foreground text-sm">Contrato pendiente de firma</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                {needsToSign
+                  ? "Tu empleador ya firmó el contrato. Fírmalo para poder solicitar adelantos."
+                  : "Tu empleador debe crear y firmar el contrato antes de que puedas solicitar adelantos."}
+              </p>
+              {needsToSign && (
+                <Button variant="default" size="sm" className="mt-3" onClick={() => setShowContractModal(true)}>
+                  <FileText className="w-4 h-4" /> Firmar Contrato
+                </Button>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Adelanto Flash Card */}
         <div className="bg-surface-container-lowest rounded-3xl p-6 shadow-card">
           <div className="text-center mb-4">
@@ -144,11 +189,17 @@ export default function EmployeeDashboard() {
           <div className="flex justify-center mb-6">
             <SavingsComparison requestedAmount={requestedAmount} monthlySalary={currentEmployee.monthlySalary} />
           </div>
-          <Button variant="flash" size="xl" className="w-full" asChild>
-            <Link to="/advance-request">
-              {smartRefill.canRefill ? (<><RefreshCw className="w-5 h-5" /> Recargar Adelanto</>) : (<><Zap className="w-5 h-5" /> Solicitar Adelanto →</>)}
-            </Link>
-          </Button>
+          {contractSigned ? (
+            <Button variant="flash" size="xl" className="w-full" asChild>
+              <Link to="/advance-request">
+                {smartRefill.canRefill ? (<><RefreshCw className="w-5 h-5" /> Recargar Adelanto</>) : (<><Zap className="w-5 h-5" /> Solicitar Adelanto →</>)}
+              </Link>
+            </Button>
+          ) : (
+            <Button variant="flash" size="xl" className="w-full opacity-50" disabled>
+              <FileText className="w-5 h-5" /> Firma tu contrato primero
+            </Button>
+          )}
         </div>
 
         {/* Dinero Score */}
@@ -196,6 +247,16 @@ export default function EmployeeDashboard() {
       </main>
 
       <BottomNav activeTab="home" />
+
+      {needsToSign && employeeContract && (
+        <ContractSigningModal
+          open={showContractModal}
+          onOpenChange={setShowContractModal}
+          contract={employeeContract}
+          contractData={contractData}
+          onSigned={() => setContractSigned(true)}
+        />
+      )}
     </div>
   );
 }
