@@ -17,6 +17,7 @@ interface TierRow {
 const FEE_CONFIG_ID = "00000000-0000-0000-0000-000000000001";
 
 export function FeeConfigPanel() {
+  const queryClient = useQueryClient();
   const [mode, setMode] = useState<FeeMode>("flat");
   const [flatAmount, setFlatAmount] = useState(200);
   const [percentageRate, setPercentageRate] = useState(3); // displayed as %, stored as decimal
