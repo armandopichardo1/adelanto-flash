@@ -15,8 +15,9 @@ import {
   formatDOP,
   getTenureLevel,
   getFeeLabel,
-  DEFAULT_FEE_CONFIG,
 } from "@/lib/advance-calculator";
+import { useFeeConfig } from "@/hooks/use-fee-config";
+import { useRiskConfig } from "@/hooks/use-risk-config";
 import { checkSmartRefill, calculateRefillDetails } from "@/lib/smart-refill";
 import { DineroScoreGauge } from "@/components/employee/DineroScoreGauge";
 import { SavingsComparison } from "@/components/employee/SavingsComparison";
